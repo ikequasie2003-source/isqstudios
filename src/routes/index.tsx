@@ -7,7 +7,7 @@ import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
 import teesDetail from "@/assets/tees-detail.jpeg.asset.json";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
-import logo from "@/assets/isq-logo.asset.json";
+import logo from "@/assets/isq-logo-new.jpeg.asset.json";
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
