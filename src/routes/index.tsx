@@ -5,6 +5,7 @@ import ExpandOnHover from "@/components/ui/expand-cards";
 import teesRack from "@/assets/tees-rack.jpeg.asset.json";
 import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
 import teesDetail from "@/assets/tees-detail.jpeg.asset.json";
+import videoFrame from "@/assets/video-frame.jpg.asset.json";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import logo from "@/assets/isq-logo-new.jpeg.asset.json";
@@ -223,7 +224,7 @@ function Lookbook() {
             teesDetail.url,
             "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=720&q=80",
             "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=720&q=80",
-            "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=720&q=80",
+            videoFrame.url,
           ]}
         />
       </div>
