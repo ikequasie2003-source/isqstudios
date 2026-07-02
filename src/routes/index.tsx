@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
+import ExpandOnHover from "@/components/ui/expand-cards";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import logo from "@/assets/isq-logo.asset.json";
