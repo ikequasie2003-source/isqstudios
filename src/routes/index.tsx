@@ -200,6 +200,22 @@ function Story() {
   );
 }
 
+function Lookbook() {
+  return (
+    <section className="bg-[#f5f4f3]">
+      <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
+        <div className="eyebrow">The Lookbook</div>
+        <h2 className="mt-3 max-w-2xl font-display text-4xl md:text-5xl">
+          Studio 001 — hover to expand.
+        </h2>
+      </div>
+      <div className="pt-10 pb-20 lg:pb-28">
+        <ExpandOnHover />
+      </div>
+    </section>
+  );
+}
+
 function Values() {
   const items = [
     { n: "01", t: "Premium Fabrics", d: "Heavyweight cotton sourced for weight, drape, and honest wear." },
