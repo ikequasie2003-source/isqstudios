@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
+import ExpandOnHover from "@/components/ui/expand-cards";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import logo from "@/assets/isq-logo.asset.json";
@@ -33,6 +34,7 @@ function Index() {
           <Tees />
           <Caps />
           <Story />
+          <Lookbook />
           <Values />
           <Newsletter />
         </main>
@@ -193,6 +195,22 @@ function Story() {
       </div>
       <div className="order-1 lg:order-2 lg:col-span-6">
         <img src={storyImg} alt="ISQ Studios lookbook" loading="lazy" width={1200} height={1400} className="h-full max-h-[720px] w-full object-cover" />
+      </div>
+    </section>
+  );
+}
+
+function Lookbook() {
+  return (
+    <section className="bg-[#f5f4f3]">
+      <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
+        <div className="eyebrow">The Lookbook</div>
+        <h2 className="mt-3 max-w-2xl font-display text-4xl md:text-5xl">
+          Studio 001 — hover to expand.
+        </h2>
+      </div>
+      <div className="pt-10 pb-20 lg:pb-28">
+        <ExpandOnHover />
       </div>
     </section>
   );
