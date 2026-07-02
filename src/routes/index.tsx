@@ -34,6 +34,7 @@ function Index() {
           <Tees />
           <Caps />
           <Story />
+          <Lookbook />
           <Values />
           <Newsletter />
         </main>
