@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Play } from "lucide-react";
 
 const defaultImages = [
   "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80",
@@ -14,9 +15,9 @@ const defaultImages = [
   "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=720&q=80",
 ];
 
-type Props = { images?: string[]; defaultExpanded?: number };
+type Props = { images?: string[]; defaultExpanded?: number; videoIndex?: number };
 
-const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3 }: Props) => {
+const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex }: Props) => {
   const [expandedImage, setExpandedImage] = useState(defaultExpanded);
 
   const getImageWidth = (index: number) =>
@@ -45,18 +46,33 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3 }: Props) =
                       alt={`Look ${idx + 1}`}
                       loading="lazy"
                     />
+                    {videoIndex === idx && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                          <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
                 {/* Mobile fallback: horizontal scroll */}
                 <div className="flex w-full gap-2 overflow-x-auto md:hidden">
                   {images.map((src, idx) => (
+                  <div key={idx} className="relative flex-shrink-0">
                     <img
-                      key={idx}
                       src={src}
                       alt={`Look ${idx + 1}`}
                       loading="lazy"
                       className="h-72 w-56 flex-shrink-0 rounded-2xl object-cover"
                     />
+                    {videoIndex === idx && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                          <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   ))}
                 </div>
               </div>
