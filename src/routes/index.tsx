@@ -228,6 +228,7 @@ function Lookbook() {
             videoFrame.url,
           ]}
           videoIndex={8}
+          videoUrl={lookbookVideo.url}
         />
       </div>
     </section>
