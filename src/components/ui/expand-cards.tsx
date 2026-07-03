@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Play } from "lucide-react";
 
 const defaultImages = [
   "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80",
