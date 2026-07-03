@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useCart, keyOf } from "@/lib/cart";
-import logo from "@/assets/isq-logo.asset.json";
+import logo from "@/assets/isq-logo-new.jpeg.asset.json";
 
 export function Header() {
   const { count, setOpen } = useCart();
