@@ -58,13 +58,21 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
                 {/* Mobile fallback: horizontal scroll */}
                 <div className="flex w-full gap-2 overflow-x-auto md:hidden">
                   {images.map((src, idx) => (
+                  <div key={idx} className="relative flex-shrink-0">
                     <img
-                      key={idx}
                       src={src}
                       alt={`Look ${idx + 1}`}
                       loading="lazy"
                       className="h-72 w-56 flex-shrink-0 rounded-2xl object-cover"
                     />
+                    {videoIndex === idx && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                          <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   ))}
                 </div>
               </div>
