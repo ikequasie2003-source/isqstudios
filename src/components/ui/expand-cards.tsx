@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Play } from "lucide-react";
+import { useRef, useState } from "react";
+import { Play, Pause } from "lucide-react";
 
 const defaultImages = [
   "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80",
@@ -15,13 +15,36 @@ const defaultImages = [
   "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=720&q=80",
 ];
 
-type Props = { images?: string[]; defaultExpanded?: number; videoIndex?: number };
+type Props = {
+  images?: string[];
+  defaultExpanded?: number;
+  videoIndex?: number;
+  videoUrl?: string;
+};
 
-const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex }: Props) => {
+const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex, videoUrl }: Props) => {
   const [expandedImage, setExpandedImage] = useState(defaultExpanded);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const getImageWidth = (index: number) =>
     index === expandedImage ? "24rem" : "5rem";
+
+  const toggleVideo = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) {
+      v.play();
+      setIsPlaying(true);
+    } else {
+      v.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const handleVideoEnded = () => setIsPlaying(false);
+
+  const isVideo = (idx: number) => videoIndex === idx && videoUrl;
 
   return (
     <div className="w-full bg-[#f5f4f3]">
@@ -39,17 +62,38 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
                       height: "24rem",
                     }}
                     onMouseEnter={() => setExpandedImage(idx + 1)}
+                    onClick={isVideo(idx) ? toggleVideo : undefined}
                   >
-                    <img
-                      className="h-full w-full object-cover"
-                      src={src}
-                      alt={`Look ${idx + 1}`}
-                      loading="lazy"
-                    />
-                    {videoIndex === idx && (
+                    {isVideo(idx) ? (
+                      <video
+                        ref={videoRef}
+                        src={videoUrl}
+                        className="h-full w-full object-cover"
+                        muted
+                        loop
+                        playsInline
+                        onEnded={handleVideoEnded}
+                        poster={src}
+                      />
+                    ) : (
+                      <img
+                        className="h-full w-full object-cover"
+                        src={src}
+                        alt={`Look ${idx + 1}`}
+                        loading="lazy"
+                      />
+                    )}
+                    {isVideo(idx) && !isPlaying && (
                       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
                           <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                        </div>
+                      </div>
+                    )}
+                    {isVideo(idx) && isPlaying && (
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-100">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                          <Pause className="h-5 w-5 text-white" fill="white" />
                         </div>
                       </div>
                     )}
@@ -58,21 +102,45 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
                 {/* Mobile fallback: horizontal scroll */}
                 <div className="flex w-full gap-2 overflow-x-auto md:hidden">
                   {images.map((src, idx) => (
-                  <div key={idx} className="relative flex-shrink-0">
-                    <img
-                      src={src}
-                      alt={`Look ${idx + 1}`}
-                      loading="lazy"
-                      className="h-72 w-56 flex-shrink-0 rounded-2xl object-cover"
-                    />
-                    {videoIndex === idx && (
-                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
-                          <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                    <div
+                      key={idx}
+                      className="relative flex-shrink-0"
+                      onClick={isVideo(idx) ? toggleVideo : undefined}
+                    >
+                      {isVideo(idx) ? (
+                        <video
+                          ref={idx === videoIndex ? videoRef : undefined}
+                          src={videoUrl}
+                          className="h-72 w-56 flex-shrink-0 rounded-2xl object-cover"
+                          muted
+                          loop
+                          playsInline
+                          onEnded={handleVideoEnded}
+                          poster={src}
+                        />
+                      ) : (
+                        <img
+                          src={src}
+                          alt={`Look ${idx + 1}`}
+                          loading="lazy"
+                          className="h-72 w-56 flex-shrink-0 rounded-2xl object-cover"
+                        />
+                      )}
+                      {isVideo(idx) && !isPlaying && (
+                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                            <Play className="ml-0.5 h-5 w-5 text-white" fill="white" />
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                      {isVideo(idx) && isPlaying && (
+                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 hover:opacity-100">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm">
+                            <Pause className="h-5 w-5 text-white" fill="white" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
