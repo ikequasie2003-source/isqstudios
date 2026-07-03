@@ -6,6 +6,7 @@ import teesRack from "@/assets/tees-rack.jpeg.asset.json";
 import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
 import teesDetail from "@/assets/tees-detail.jpeg.asset.json";
 import videoFrame from "@/assets/video-frame.jpg.asset.json";
+import lookbookVideo from "@/assets/lookbook-video.mp4.asset.json";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import logo from "@/assets/isq-logo-new.jpeg.asset.json";
@@ -227,6 +228,7 @@ function Lookbook() {
             videoFrame.url,
           ]}
           videoIndex={8}
+          videoUrl={lookbookVideo.url}
         />
       </div>
     </section>
