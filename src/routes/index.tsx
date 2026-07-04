@@ -13,7 +13,7 @@ import logo from "@/assets/isq-logo-new.jpeg.asset.json";
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
-import { tees, caps, sizes } from "@/lib/products";
+import { tees, caps, sizes, gsmOptions, type Gsm } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -114,11 +114,17 @@ function Marquee() {
 }
 
 function Tees() {
+  const [gsm, setGsm] = useState<Gsm>("260");
   const [color, setColor] = useState<string>("All");
-  const [size, setSize] = useState<string>("All");
-  const colorOptions = ["All", ...Array.from(new Set(tees.map((t) => t.color)))];
-  const filtered = useMemo(() => tees.filter((t) => color === "All" || t.color === color), [color]);
-  void size;
+  const activeGsm = gsmOptions.find((g) => g.value === gsm)!;
+  const colorOptions = useMemo(
+    () => Array.from(new Map(tees.filter((t) => t.gsm === gsm).map((t) => [t.color, t.swatch])).entries()),
+    [gsm],
+  );
+  const filtered = useMemo(
+    () => tees.filter((t) => t.gsm === gsm && (color === "All" || t.color === color)),
+    [gsm, color],
+  );
 
   return (
     <section id="tees" className="mx-auto max-w-[1400px] px-6 py-24 lg:px-14 lg:py-32">
@@ -127,24 +133,55 @@ function Tees() {
           <div className="eyebrow">The Tee — 001</div>
           <h2 className="mt-3 font-display text-4xl md:text-5xl">Plain, not plain.</h2>
         </div>
-        <p className="max-w-sm text-sm text-foreground/70">
-          A heavyweight 240 GSM cotton tee, cut boxy, finished clean. Eight tones. One silhouette.
-        </p>
+        <p className="max-w-sm text-sm text-foreground/70">{activeGsm.blurb}</p>
       </div>
 
-      <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-y border-border py-4 text-xs uppercase tracking-[0.24em]">
+      <div className="mt-10 grid grid-cols-3 gap-2 border-y border-border py-4 sm:flex sm:gap-0">
+        {gsmOptions.map((g) => {
+          const active = g.value === gsm;
+          return (
+            <button
+              key={g.value}
+              onClick={() => {
+                setGsm(g.value);
+                setColor("All");
+              }}
+              className={`flex flex-1 flex-col items-center justify-center gap-1 border px-4 py-3 text-[11px] uppercase tracking-[0.24em] transition-colors sm:border-0 sm:border-r sm:last:border-r-0 ${
+                active ? "border-ink bg-ink text-cream sm:bg-transparent sm:text-foreground sm:underline sm:underline-offset-8" : "border-border text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={active}
+            >
+              <span>{g.label}</span>
+              <span className="text-[10px] tracking-[0.2em] opacity-70">${g.price}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-xs uppercase tracking-[0.24em]">
         <span className="text-muted-foreground">Color</span>
-        {colorOptions.map((c) => (
-          <button key={c} onClick={() => setColor(c)} className={`transition-colors ${color === c ? "text-foreground underline underline-offset-4" : "text-muted-foreground hover:text-foreground"}`}>
-            {c}
-          </button>
-        ))}
-        <span className="ml-auto text-muted-foreground">Size</span>
-        {["All", ...sizes].map((s) => (
-          <button key={s} onClick={() => setSize(s)} className={`transition-colors ${size === s ? "text-foreground underline underline-offset-4" : "text-muted-foreground hover:text-foreground"}`}>
-            {s}
-          </button>
-        ))}
+        <button
+          onClick={() => setColor("All")}
+          className={`transition-colors ${color === "All" ? "text-foreground underline underline-offset-4" : "text-muted-foreground hover:text-foreground"}`}
+        >
+          All
+        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          {colorOptions.map(([c, sw]) => {
+            const active = color === c;
+            return (
+              <button
+                key={c}
+                onClick={() => setColor(c)}
+                title={c}
+                aria-label={c}
+                aria-pressed={active}
+                className={`h-6 w-6 rounded-full border transition-all ${active ? "border-ink ring-2 ring-ink ring-offset-2 ring-offset-background" : "border-border hover:border-ink"}`}
+                style={{ backgroundColor: sw }}
+              />
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4">
@@ -155,6 +192,7 @@ function Tees() {
     </section>
   );
 }
+
 
 function Caps() {
   return (
