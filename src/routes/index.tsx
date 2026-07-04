@@ -13,7 +13,7 @@ import logo from "@/assets/isq-logo-new.jpeg.asset.json";
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
-import { tees, caps, sizes } from "@/lib/products";
+import { tees, caps, sizes, gsmOptions, type Gsm } from "@/lib/products";
 
 export const Route = createFileRoute("/")({
   head: () => ({
