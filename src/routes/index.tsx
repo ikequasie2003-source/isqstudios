@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
+import { Warp } from "@paper-design/shaders-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
 import teesRack from "@/assets/tees-rack.jpeg.asset.json";
 import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
