@@ -47,7 +47,7 @@ export function ProductCard({ product }: { product: Product }) {
           <p className="text-sm tabular-nums">${product.price}</p>
         </div>
         <p className="mt-1 text-xs uppercase tracking-[0.24em] text-muted-foreground">{product.color}</p>
-        <div className="mt-3 flex gap-1.5">
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {sizes.map((s) => (
             <button
               key={s}
