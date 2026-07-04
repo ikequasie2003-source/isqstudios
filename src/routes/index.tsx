@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
-import { Warp } from "@paper-design/shaders-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
 import teesRack from "@/assets/tees-rack.jpeg.asset.json";
 import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
@@ -90,7 +89,7 @@ function Hero() {
         </div>
         <div className="order-1 lg:order-2 lg:col-span-7">
           <div className="relative h-[70vh] min-h-[520px] w-full lg:h-[calc(100vh-6rem)]">
-            <Warp style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+            <img src={heroImg} alt="Two models wearing ISQ Studios essentials" width={1600} height={1024} className="h-full w-full object-cover" />
           </div>
         </div>
       </div>
