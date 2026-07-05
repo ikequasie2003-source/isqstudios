@@ -262,14 +262,14 @@ function Lookbook() {
         <ExpandOnHover
           images={[
             "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80",
-            teesRack.url,
+            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${teesRack.r2_key}`,
             "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=720&q=80",
             "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=720&q=80",
-            capsFlatlay.url,
-            teesDetail.url,
+            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${capsFlatlay.r2_key}`,
+            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${teesDetail.r2_key}`,
             "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=720&q=80",
             "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=720&q=80",
-            videoFrame.url,
+            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${videoFrame.r2_key}`,
           ]}
           videoIndex={8}
           videoUrl={lookbookVideo.url}
