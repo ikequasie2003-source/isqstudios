@@ -2,10 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
-import teesRack from "@/assets/tees-rack.jpeg.asset.json";
-import capsFlatlay from "@/assets/caps-flatlay.jpeg.asset.json";
-import teesDetail from "@/assets/tees-detail.jpeg.asset.json";
-import videoFrame from "@/assets/video-frame.jpg.asset.json";
 import lookbookVideo from "@/assets/lookbook-video.mp4.asset.json";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
@@ -250,6 +246,23 @@ function Story() {
 }
 
 function Lookbook() {
+  const row1 = [
+    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80", // black tee worn
+    "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=720&q=80", // white tee worn
+    "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=720&q=80", // cream/neutral
+    "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=720&q=80", // army green flat
+    "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=720&q=80", // khaki
+    "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=720&q=80",    // folded stack
+  ];
+  const row2 = [
+    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=720&q=80", // sea blue
+    "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=720&q=80", // pink
+    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=720&q=80",    // wine/dark
+    "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=720&q=80", // closeup texture
+    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=720&q=80", // lifestyle
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=720&q=80",    // rack/display
+  ];
+
   return (
     <section className="bg-[#f5f4f3]">
       <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
@@ -258,20 +271,14 @@ function Lookbook() {
           Studio 001 — hover to expand.
         </h2>
       </div>
-      <div className="pt-10 pb-20 lg:pb-28">
+      <div className="pt-10 pb-4 lg:pb-6">
+        <ExpandOnHover images={row1} defaultExpanded={3} />
+      </div>
+      <div className="pb-20 lg:pb-28">
         <ExpandOnHover
-          images={[
-            "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80",
-            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${teesRack.r2_key}`,
-            "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=720&q=80",
-            "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=720&q=80",
-            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${capsFlatlay.r2_key}`,
-            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${teesDetail.r2_key}`,
-            "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=720&q=80",
-            "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=720&q=80",
-            `https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/${videoFrame.r2_key}`,
-          ]}
-          videoIndex={8}
+          images={row2}
+          defaultExpanded={3}
+          videoIndex={4}
           videoUrl={lookbookVideo.url}
         />
       </div>
