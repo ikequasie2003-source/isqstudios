@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import { useCart } from "@/lib/cart";
-import { sizes, type Product } from "@/lib/products";
+import { sizes, type Product, type Size } from "@/lib/products";
+import { resolveCardImage } from "@/lib/media-resolver";
 
 export function ProductCard({ product }: { product: Product }) {
-  const [size, setSize] = useState<string>("M");
+  const [size, setSize] = useState<Size>("M");
   const { add } = useCart();
   const isLight = ["#f5f2ea", "#e9dfc9"].includes(product.swatch);
+
+  // Use admin-uploaded image if available, fall back to built-in
+  const image = resolveCardImage(product.category, product.gsm, product.color, product.image);
+
+  const handleAdd = () => {
+    if (!product.gsm) return;
+    add({ gsm: product.gsm, color: product.color, size, qty: 1, name: product.name, image });
+  };
 
   return (
     <article className="group flex flex-col">
       <div className="relative aspect-[4/5] overflow-hidden bg-bone">
-        {product.image ? (
+        {image ? (
           <img
-            src={product.image}
+            src={image}
             alt={`${product.color} ${product.name}`}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -34,7 +43,7 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
         <button
-          onClick={() => add({ id: product.id, name: product.name, color: product.color, size, price: product.price, image: product.image })}
+          onClick={handleAdd}
           className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center bg-background/90 text-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
           aria-label={`Add ${product.color} ${product.name} to cart`}
         >
@@ -61,7 +70,7 @@ export function ProductCard({ product }: { product: Product }) {
           ))}
         </div>
         <button
-          onClick={() => add({ id: product.id, name: product.name, color: product.color, size, price: product.price, image: product.image })}
+          onClick={handleAdd}
           className="mt-3 w-full border border-ink py-2.5 text-[11px] uppercase tracking-[0.24em] transition-colors hover:bg-ink hover:text-cream"
         >
           Add to Bag

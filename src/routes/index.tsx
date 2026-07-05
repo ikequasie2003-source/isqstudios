@@ -9,11 +9,11 @@ import videoFrame from "@/assets/video-frame.jpg.asset.json";
 import lookbookVideo from "@/assets/lookbook-video.mp4.asset.json";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
-import logo from "@/assets/isq-logo-new.jpeg.asset.json";
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
 import { tees, caps, sizes, gsmOptions, type Gsm } from "@/lib/products";
+import { Logo } from "@/components/logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,8 +52,14 @@ function Index() {
 
 function TopBanner() {
   return (
-    <div className="bg-ink py-2 text-center text-[10px] uppercase tracking-[0.32em] text-cream/90">
-      Complimentary shipping on orders over $150 · Est. 2024
+    <div className="bg-ink py-2 overflow-hidden text-center text-[10px] uppercase tracking-[0.32em] text-cream/90">
+      <div className="flex animate-[marquee_18s_linear_infinite] gap-16 whitespace-nowrap">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <span key={i} style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+            The Reckless Culture <span className="text-gold/60">✦</span>
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -338,8 +344,7 @@ function Footer() {
     <footer id="footer" className="border-t border-border bg-bone/60">
       <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-10 px-6 py-16 md:grid-cols-4 lg:px-14">
         <div className="col-span-2">
-          <img src={logo.url} alt="ISQ Studios" className="h-12 w-auto" />
-          <p className="mt-4 text-xs uppercase tracking-[0.32em] text-muted-foreground">The Reckless Culture</p>
+          <Logo className="h-14 w-auto" />
           <p className="mt-6 max-w-xs text-sm text-foreground/70">
             Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
           </p>

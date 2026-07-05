@@ -1,0 +1,1122 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import {
+  Package, AlertTriangle, XCircle, TrendingUp,
+  LogOut, Search, ChevronUp, ChevronDown, Eye, EyeOff,
+  RefreshCw, Download, ImagePlus, Trash2, Upload, X, Database, ShoppingBag,
+} from "lucide-react";
+import {
+  getAllVariants, getInventorySummary, decrementStock, incrementStock,
+  type Variant, type AvailabilityStatus,
+} from "@/lib/inventory";
+import { gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
+import { isAdminAuthenticated, adminLogin, adminLogout } from "@/lib/admin-auth";
+import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock } from "@/lib/db";
+import { Logo } from "@/components/logo";
+
+export const Route = createFileRoute("/admin")({
+  head: () => ({ meta: [{ title: "Admin — ISQ Studios" }] }),
+  component: AdminPage,
+});
+
+// ─── Login Screen ─────────────────────────────────────────────────────────────
+
+function LoginScreen({ onLogin }: { onLogin: () => void }) {
+  const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminLogin(password)) {
+      onLogin();
+    } else {
+      setError(true);
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      setPassword("");
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <div className="eyebrow mb-2">ISQ Studios</div>
+          <h1 className="font-display text-3xl">Admin Access</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Enter your password to continue</p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className={`space-y-4 transition-transform ${shake ? "animate-[shake_0.4s_ease-in-out]" : ""}`}
+        >
+          <div className="relative">
+            <input
+              type={show ? "text" : "password"}
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); setError(false); }}
+              placeholder="Password"
+              autoFocus
+              className={`w-full border bg-transparent px-4 py-3 pr-12 text-sm outline-none transition-colors placeholder:text-muted-foreground ${
+                error ? "border-red-500" : "border-border focus:border-ink"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setShow(!show)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+
+          {error && (
+            <p className="text-xs uppercase tracking-widest text-red-500">Incorrect password</p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full bg-ink py-3 text-xs uppercase tracking-[0.24em] text-cream transition-opacity hover:opacity-80"
+          >
+            Enter
+          </button>
+        </form>
+
+        <p className="mt-8 text-center text-[10px] uppercase tracking-widest text-muted-foreground/50">
+          Not a public page
+        </p>
+      </div>
+      <style>{`
+        @keyframes shake {
+          0%,100% { transform: translateX(0); }
+          20%      { transform: translateX(-8px); }
+          40%      { transform: translateX(8px); }
+          60%      { transform: translateX(-6px); }
+          80%      { transform: translateX(6px); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// ─── Summary Card ─────────────────────────────────────────────────────────────
+
+function SummaryCard({
+  icon: Icon,
+  label,
+  value,
+  sub,
+  color,
+}: {
+  icon: React.ElementType;
+  label: string;
+  value: number | string;
+  sub?: string;
+  color?: string;
+}) {
+  return (
+    <div className="border border-border bg-background p-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">{label}</p>
+          <p className={`mt-2 font-display text-3xl ${color ?? ""}`}>{value}</p>
+          {sub && <p className="mt-1 text-xs text-muted-foreground">{sub}</p>}
+        </div>
+        <div className={`rounded-sm p-2 ${color ? "bg-current/10" : "bg-bone"}`}>
+          <Icon className={`h-5 w-5 ${color ?? "text-muted-foreground"}`} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Availability pill ────────────────────────────────────────────────────────
+
+function AvailPill({ status }: { status: AvailabilityStatus }) {
+  const map: Record<AvailabilityStatus, { label: string; cls: string }> = {
+    in_stock:     { label: "In Stock",     cls: "bg-green-50  text-green-700  border-green-200"  },
+    low_stock:    { label: "Low Stock",    cls: "bg-amber-50  text-amber-700  border-amber-200"  },
+    out_of_stock: { label: "Out of Stock", cls: "bg-red-50    text-red-700    border-red-200"    },
+  };
+  const { label, cls } = map[status];
+  return (
+    <span className={`inline-block border px-2 py-0.5 text-[10px] uppercase tracking-widest ${cls}`}>
+      {label}
+    </span>
+  );
+}
+
+// ─── Inline stock editor ──────────────────────────────────────────────────────
+
+function StockEditor({ variant, onUpdate }: { variant: Variant; onUpdate: () => void }) {
+  const [editing, setEditing] = useState(false);
+  const [val, setVal] = useState(String(variant.qty));
+
+  const save = () => {
+    const newQty = parseInt(val, 10);
+    if (isNaN(newQty) || newQty < 0) { setEditing(false); return; }
+    const diff = newQty - variant.qty;
+    if (diff > 0) decrementStock(variant.gsm, variant.color, variant.size, -diff); // trick: negative decrement = add
+    // Use direct approach — increment or decrement to reach target
+    if (diff > 0) incrementStock(variant.gsm, variant.color, variant.size, diff);
+    else if (diff < 0) decrementStock(variant.gsm, variant.color, variant.size, Math.abs(diff));
+    setEditing(false);
+    onUpdate();
+  };
+
+  if (editing) {
+    return (
+      <div className="flex items-center gap-1">
+        <input
+          type="number"
+          min={0}
+          value={val}
+          onChange={(e) => setVal(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") save(); if (e.key === "Escape") setEditing(false); }}
+          autoFocus
+          className="w-16 border border-ink bg-transparent px-2 py-1 text-sm outline-none tabular-nums"
+        />
+        <button onClick={save} className="text-[10px] uppercase tracking-widest text-green-600 hover:underline">Save</button>
+        <button onClick={() => setEditing(false)} className="text-[10px] uppercase tracking-widest text-muted-foreground hover:underline">Cancel</button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => { setVal(String(variant.qty)); setEditing(true); }}
+      className="group flex items-center gap-1.5 tabular-nums hover:underline"
+    >
+      <span>{variant.qty}</span>
+      <span className="text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100">edit</span>
+    </button>
+  );
+}
+
+// ─── Media Tab ───────────────────────────────────────────────────────────────
+
+const MEDIA_STORAGE_KEY = "isq_admin_media";
+
+type MediaEntry = {
+  id: string;
+  label: string;       // e.g. "260 GSM — Black — Front"
+  category: "tee" | "cap";
+  gsm?: string;
+  color: string;
+  angle: string;
+  src: string;         // base64 data URL
+  filename: string;
+  uploadedAt: string;
+};
+
+function loadMedia(): MediaEntry[] {
+  try { return JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY) ?? "[]"); }
+  catch { return []; }
+}
+function saveMedia(entries: MediaEntry[]) {
+  localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(entries));
+}
+
+const TEE_COLORS = ["Black","Sea Blue","White","Cream","Khaki","Army Green","Pink","Wine"];
+const CAP_COLORS = ["Onyx","Cream","Khaki","Army"];
+const ANGLES = ["Front","Back","Folded","Close-up","Lifestyle"];
+const GSM_VALUES = ["230","260","320"];
+
+function DropZone({ onFiles }: { onFiles: (files: File[]) => void }) {
+  const [dragging, setDragging] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handle = useCallback((files: FileList | null) => {
+    if (!files) return;
+    const valid = Array.from(files).filter((f) => f.type.startsWith("image/"));
+    if (valid.length) onFiles(valid);
+  }, [onFiles]);
+
+  return (
+    <div
+      onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={(e) => { e.preventDefault(); setDragging(false); handle(e.dataTransfer.files); }}
+      onClick={() => inputRef.current?.click()}
+      className={`flex cursor-pointer flex-col items-center justify-center gap-3 border-2 border-dashed rounded-sm py-14 transition-colors ${
+        dragging ? "border-ink bg-bone" : "border-border hover:border-ink/50 hover:bg-bone/40"
+      }`}
+    >
+      <Upload className="h-8 w-8 text-muted-foreground" />
+      <div className="text-center">
+        <p className="text-sm font-medium">Drop images here or click to browse</p>
+        <p className="mt-1 text-xs text-muted-foreground">PNG, JPG, WEBP — multiple files supported</p>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={(e) => handle(e.target.files)}
+      />
+    </div>
+  );
+}
+
+function MediaTab() {
+  const [media, setMedia] = useState<MediaEntry[]>(loadMedia);
+  const [pending, setPending] = useState<{ file: File; preview: string; category: "tee"|"cap"; gsm: string; color: string; angle: string }[]>([]);
+  const [filterCat, setFilterCat] = useState<"all"|"tee"|"cap">("all");
+  const [filterColor, setFilterColor] = useState("all");
+  const [lightbox, setLightbox] = useState<MediaEntry | null>(null);
+
+  const handleFiles = (files: File[]) => {
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPending((prev) => [
+          ...prev,
+          { file, preview: e.target!.result as string, category: "tee", gsm: "260", color: "Black", angle: "Front" },
+        ]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const updatePending = (idx: number, patch: Partial<typeof pending[0]>) => {
+    setPending((prev) => prev.map((p, i) => (i === idx ? { ...p, ...patch } : p)));
+  };
+
+  const removePending = (idx: number) => {
+    setPending((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const saveAll = () => {
+    const newEntries: MediaEntry[] = pending.map((p) => ({
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      label: p.category === "tee"
+        ? `${p.gsm} GSM — ${p.color} — ${p.angle}`
+        : `Cap — ${p.color} — ${p.angle}`,
+      category: p.category,
+      gsm: p.category === "tee" ? p.gsm : undefined,
+      color: p.color,
+      angle: p.angle,
+      src: p.preview,
+      filename: p.file.name,
+      uploadedAt: new Date().toISOString(),
+    }));
+    const updated = [...media, ...newEntries];
+    saveMedia(updated);
+    setMedia(updated);
+    setPending([]);
+  };
+
+  const deleteMedia = (id: string) => {
+    const updated = media.filter((m) => m.id !== id);
+    saveMedia(updated);
+    setMedia(updated);
+  };
+
+  const displayed = media.filter((m) => {
+    if (filterCat !== "all" && m.category !== filterCat) return false;
+    if (filterColor !== "all" && m.color !== filterColor) return false;
+    return true;
+  });
+
+  const allColors = Array.from(new Set(media.map((m) => m.color)));
+
+  return (
+    <div className="space-y-8">
+      {/* Upload area */}
+      <div className="border border-border bg-background p-6">
+        <h2 className="mb-4 text-xs uppercase tracking-[0.24em]">Upload Images</h2>
+        <DropZone onFiles={handleFiles} />
+
+        {/* Pending queue */}
+        {pending.length > 0 && (
+          <div className="mt-6 space-y-4">
+            <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
+              {pending.length} image{pending.length !== 1 ? "s" : ""} ready to save
+            </p>
+            {pending.map((p, i) => (
+              <div key={i} className="flex gap-4 border border-border p-4">
+                {/* Preview */}
+                <img src={p.preview} alt="" className="h-24 w-20 shrink-0 object-cover" />
+
+                {/* Metadata fields */}
+                <div className="flex flex-1 flex-wrap gap-3">
+                  {/* Category */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] uppercase tracking-widest text-muted-foreground">Category</label>
+                    <select
+                      value={p.category}
+                      onChange={(e) => updatePending(i, {
+                        category: e.target.value as "tee"|"cap",
+                        color: e.target.value === "tee" ? "Black" : "Onyx",
+                      })}
+                      className="border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                    >
+                      <option value="tee">T-Shirt</option>
+                      <option value="cap">Cap</option>
+                    </select>
+                  </div>
+
+                  {/* GSM — tees only */}
+                  {p.category === "tee" && (
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] uppercase tracking-widest text-muted-foreground">GSM</label>
+                      <select
+                        value={p.gsm}
+                        onChange={(e) => updatePending(i, { gsm: e.target.value })}
+                        className="border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                      >
+                        {GSM_VALUES.map((g) => <option key={g} value={g}>{g} GSM</option>)}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Color */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] uppercase tracking-widest text-muted-foreground">Color</label>
+                    <select
+                      value={p.color}
+                      onChange={(e) => updatePending(i, { color: e.target.value })}
+                      className="border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                    >
+                      {(p.category === "tee" ? TEE_COLORS : CAP_COLORS).map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Angle */}
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] uppercase tracking-widest text-muted-foreground">Angle</label>
+                    <select
+                      value={p.angle}
+                      onChange={(e) => updatePending(i, { angle: e.target.value })}
+                      className="border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
+                    >
+                      {ANGLES.map((a) => <option key={a} value={a}>{a}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <label className="text-[10px] uppercase tracking-widest text-muted-foreground">File</label>
+                    <span className="py-1.5 text-xs text-muted-foreground">{p.file.name}</span>
+                  </div>
+                </div>
+
+                {/* Remove */}
+                <button onClick={() => removePending(i)} className="shrink-0 text-muted-foreground hover:text-red-500">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+
+            <div className="flex gap-3">
+              <button
+                onClick={saveAll}
+                className="flex items-center gap-2 bg-ink px-6 py-3 text-xs uppercase tracking-[0.24em] text-cream hover:opacity-80"
+              >
+                <ImagePlus className="h-4 w-4" /> Save {pending.length} Image{pending.length !== 1 ? "s" : ""}
+              </button>
+              <button
+                onClick={() => setPending([])}
+                className="border border-border px-6 py-3 text-xs uppercase tracking-[0.24em] text-muted-foreground hover:text-foreground"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Media library */}
+      <div>
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <h2 className="text-xs uppercase tracking-[0.24em]">Media Library</h2>
+          <span className="text-xs text-muted-foreground">({media.length} images)</span>
+          <div className="ml-auto flex gap-2">
+            <select
+              value={filterCat}
+              onChange={(e) => setFilterCat(e.target.value as "all"|"tee"|"cap")}
+              className="border border-border bg-background px-3 py-1.5 text-xs outline-none"
+            >
+              <option value="all">All Categories</option>
+              <option value="tee">T-Shirts</option>
+              <option value="cap">Caps</option>
+            </select>
+            <select
+              value={filterColor}
+              onChange={(e) => setFilterColor(e.target.value)}
+              className="border border-border bg-background px-3 py-1.5 text-xs outline-none"
+            >
+              <option value="all">All Colors</option>
+              {allColors.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+        </div>
+
+        {displayed.length === 0 ? (
+          <div className="flex flex-col items-center justify-center border border-dashed border-border py-20 text-center">
+            <ImagePlus className="mb-3 h-8 w-8 text-muted-foreground/40" />
+            <p className="text-sm text-muted-foreground">No images uploaded yet</p>
+            <p className="mt-1 text-xs text-muted-foreground/60">Use the upload area above to add product images</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+            {displayed.map((m) => (
+              <div key={m.id} className="group relative border border-border bg-background">
+                {/* Image */}
+                <div
+                  className="aspect-[4/5] cursor-zoom-in overflow-hidden bg-bone"
+                  onClick={() => setLightbox(m)}
+                >
+                  <img
+                    src={m.src}
+                    alt={m.label}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Label */}
+                <div className="p-2">
+                  <p className="truncate text-[11px] font-medium">{m.label}</p>
+                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">{m.filename}</p>
+                  <p className="mt-0.5 text-[10px] text-muted-foreground/60">
+                    {new Date(m.uploadedAt).toLocaleDateString()}
+                  </p>
+                </div>
+
+                {/* Delete button */}
+                <button
+                  onClick={() => deleteMedia(m.id)}
+                  className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center bg-background/90 text-muted-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:text-red-500"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setLightbox(null)}
+        >
+          <div className="relative max-h-[90vh] max-w-3xl" onClick={(e) => e.stopPropagation()}>
+            <img src={lightbox.src} alt={lightbox.label} className="max-h-[85vh] object-contain" />
+            <div className="mt-3 text-center">
+              <p className="text-sm text-white">{lightbox.label}</p>
+              <p className="text-xs text-white/50">{lightbox.filename}</p>
+            </div>
+            <button
+              onClick={() => setLightbox(null)}
+              className="absolute right-0 top-0 p-2 text-white/60 hover:text-white"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Orders Tab ──────────────────────────────────────────────────────────────
+
+function OrdersTab() {
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async () => {
+    setLoading(true);
+    const { data, error } = await fetchOrders();
+    if (error) setError(error.message);
+    else setOrders(data ?? []);
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const statusColors: Record<string, string> = {
+    pending:   "bg-amber-50 text-amber-700 border-amber-200",
+    confirmed: "bg-blue-50 text-blue-700 border-blue-200",
+    shipped:   "bg-purple-50 text-purple-700 border-purple-200",
+    delivered: "bg-green-50 text-green-700 border-green-200",
+    cancelled: "bg-red-50 text-red-700 border-red-200",
+  };
+
+  const handleStatus = async (orderId: string, status: any) => {
+    await updateOrderStatus(orderId, status);
+    load();
+  };
+
+  if (loading) return <div className="py-20 text-center text-sm text-muted-foreground">Loading orders…</div>;
+  if (error) return <div className="py-20 text-center text-sm text-red-500">{error}</div>;
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <p className="text-xs text-muted-foreground">{orders.length} order{orders.length !== 1 ? "s" : ""}</p>
+        <button onClick={load} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
+          <RefreshCw className="h-3.5 w-3.5" /> Refresh
+        </button>
+      </div>
+      {orders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center border border-dashed border-border py-24 text-center">
+          <ShoppingBag className="mb-3 h-8 w-8 text-muted-foreground/40" />
+          <p className="text-sm text-muted-foreground">No orders yet</p>
+          <p className="mt-1 text-xs text-muted-foreground/60">Orders will appear here once customers checkout</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order) => (
+            <div key={order.id} className="border border-border bg-background p-5">
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p className="font-mono text-xs text-muted-foreground">#{order.id.slice(0, 8).toUpperCase()}</p>
+                  <p className="mt-1 text-sm font-medium">{order.customer_name ?? "Guest"}</p>
+                  {order.customer_email && (
+                    <p className="text-xs text-muted-foreground">{order.customer_email}</p>
+                  )}
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {new Date(order.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className={`border px-2 py-0.5 text-[10px] uppercase tracking-widest ${statusColors[order.status]}`}>
+                    {order.status}
+                  </span>
+                  <select
+                    value={order.status}
+                    onChange={(e) => handleStatus(order.id, e.target.value)}
+                    className="border border-border bg-background px-2 py-1 text-xs outline-none"
+                  >
+                    {["pending","confirmed","shipped","delivered","cancelled"].map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                  </select>
+                  <p className="text-sm font-medium">${order.total.toFixed(2)}</p>
+                </div>
+              </div>
+              {/* Order items */}
+              {order.order_items?.length > 0 && (
+                <div className="mt-4 border-t border-border pt-4">
+                  <div className="space-y-2">
+                    {order.order_items.map((item: any) => (
+                      <div key={item.id} className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground font-mono">{item.sku}</span>
+                        <span>{item.product_name} — {item.color}{item.gsm ? ` · ${item.gsm} GSM` : ""} · {item.size}</span>
+                        <span className="tabular-nums">×{item.qty} · ${(item.price * item.qty).toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-3 flex justify-end gap-4 text-xs text-muted-foreground">
+                    <span>Subtotal: ${order.subtotal.toFixed(2)}</span>
+                    <span>Shipping: ${order.shipping.toFixed(2)}</span>
+                    <span className="font-medium text-foreground">Total: ${order.total.toFixed(2)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Database Tab ─────────────────────────────────────────────────────────────
+
+function DatabaseTab() {
+  const [seeding, setSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<{ ok: boolean; message: string } | null>(null);
+
+  const handleSeed = async () => {
+    setSeeding(true);
+    setSeedResult(null);
+    const result = await seedVariants();
+    setSeedResult({
+      ok: result.ok,
+      message: result.ok
+        ? "✓ All 168 variants seeded to Supabase successfully."
+        : `Error: ${result.error}`,
+    });
+    setSeeding(false);
+  };
+
+  return (
+    <div className="space-y-6 max-w-2xl">
+      <div className="border border-border bg-background p-6">
+        <h2 className="text-xs uppercase tracking-[0.24em]">Connection</h2>
+        <div className="mt-4 space-y-2 text-sm">
+          <div className="flex items-center gap-3">
+            <span className="h-2 w-2 rounded-full bg-green-500" />
+            <span className="text-muted-foreground">Connected to Supabase</span>
+          </div>
+          <p className="text-xs text-muted-foreground font-mono">
+            https://tgiedzllcimqpgudoekk.supabase.co
+          </p>
+        </div>
+      </div>
+
+      <div className="border border-border bg-background p-6">
+        <h2 className="text-xs uppercase tracking-[0.24em]">Setup</h2>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Before using the database, run the SQL schema in Supabase, then seed the inventory.
+        </p>
+        <ol className="mt-4 space-y-3 text-sm text-muted-foreground">
+          <li className="flex gap-3">
+            <span className="text-gold font-medium">1.</span>
+            <span>
+              Open the{" "}
+              <a
+                href="https://supabase.com/dashboard/project/tgiedzllcimqpgudoekk/sql/new"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
+                Supabase SQL Editor
+              </a>
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span className="text-gold font-medium">2.</span>
+            <span>Copy the contents of <code className="bg-bone px-1 py-0.5 text-xs">supabase-schema.sql</code> from your project root and run it</span>
+          </li>
+          <li className="flex gap-3">
+            <span className="text-gold font-medium">3.</span>
+            <span>Click Seed Inventory below to push all 168 variants to the database</span>
+          </li>
+        </ol>
+
+        <div className="mt-6 flex items-center gap-4">
+          <button
+            onClick={handleSeed}
+            disabled={seeding}
+            className="flex items-center gap-2 bg-ink px-6 py-3 text-xs uppercase tracking-[0.24em] text-cream transition-opacity hover:opacity-80 disabled:opacity-40"
+          >
+            <Database className="h-4 w-4" />
+            {seeding ? "Seeding…" : "Seed Inventory to Supabase"}
+          </button>
+        </div>
+
+        {seedResult && (
+          <p className={`mt-4 text-sm ${seedResult.ok ? "text-green-600" : "text-red-500"}`}>
+            {seedResult.message}
+          </p>
+        )}
+      </div>
+
+      <div className="border border-border bg-background p-6">
+        <h2 className="mb-3 text-xs uppercase tracking-[0.24em]">Tables</h2>
+        <div className="space-y-2 text-sm">
+          {[
+            { name: "variants", desc: "168 rows — GSM × Color × Size inventory" },
+            { name: "orders", desc: "Customer orders" },
+            { name: "order_items", desc: "Line items per order" },
+            { name: "media", desc: "Product image library" },
+          ].map((t) => (
+            <div key={t.name} className="flex items-center justify-between border-b border-border/50 py-2 last:border-0">
+              <span className="font-mono text-xs">{t.name}</span>
+              <span className="text-xs text-muted-foreground">{t.desc}</span>
+              <a
+                href={`https://supabase.com/dashboard/project/tgiedzllcimqpgudoekk/editor`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              >
+                View
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Main Admin Panel ─────────────────────────────────────────────────────────
+
+type SortKey = "sku" | "color" | "gsm" | "size" | "qty" | "price" | "availability";
+
+function AdminPanel({ onLogout }: { onLogout: () => void }) {
+  const [tick, setTick] = useState(0); // force re-render after stock edits
+  const [search, setSearch] = useState("");
+  const [filterGsm, setFilterGsm] = useState<Gsm | "all">("all");
+  const [filterColor, setFilterColor] = useState("all");
+  const [filterStatus, setFilterStatus] = useState<AvailabilityStatus | "all">("all");
+  const [sortKey, setSortKey] = useState<SortKey>("sku");
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+  const [activeTab, setActiveTab] = useState<"inventory" | "alerts" | "media" | "orders" | "database">("inventory");
+
+  const refresh = () => setTick((t) => t + 1);
+
+  // Live data — re-reads store on every tick
+  const allVariants = useMemo(() => getAllVariants(), [tick]);
+  const summary = useMemo(() => getInventorySummary(), [tick]);
+
+  const colors = useMemo(
+    () => Array.from(new Set(allVariants.map((v) => v.color))),
+    [allVariants],
+  );
+
+  const filtered = useMemo(() => {
+    let result = allVariants;
+
+    if (filterGsm !== "all") result = result.filter((v) => v.gsm === filterGsm);
+    if (filterColor !== "all") result = result.filter((v) => v.color === filterColor);
+    if (filterStatus !== "all") result = result.filter((v) => v.availability === filterStatus);
+
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (v) =>
+          v.sku.toLowerCase().includes(q) ||
+          v.color.toLowerCase().includes(q) ||
+          v.size.toLowerCase().includes(q) ||
+          v.gsm.includes(q),
+      );
+    }
+
+    return [...result].sort((a, b) => {
+      let av: string | number = a[sortKey] as string | number;
+      let bv: string | number = b[sortKey] as string | number;
+      if (sortKey === "size") {
+        av = sizes.indexOf(a.size as Size);
+        bv = sizes.indexOf(b.size as Size);
+      }
+      if (av < bv) return sortDir === "asc" ? -1 : 1;
+      if (av > bv) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [allVariants, filterGsm, filterColor, filterStatus, search, sortKey, sortDir]);
+
+  const alerts = useMemo(
+    () => allVariants.filter((v) => v.availability !== "in_stock"),
+    [allVariants],
+  );
+
+  const handleSort = (key: SortKey) => {
+    if (sortKey === key) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setSortKey(key); setSortDir("asc"); }
+  };
+
+  const exportCsv = () => {
+    const header = "SKU,GSM,Color,Size,Price,Qty,Availability,Weight,Barcode";
+    const rows = allVariants.map(
+      (v) =>
+        `${v.sku},${v.gsm},${v.color},${v.size},$${v.price},${v.qty},${v.availability},${v.weight}g,${v.barcode ?? ""}`,
+    );
+    const blob = new Blob([[header, ...rows].join("\n")], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `isq-inventory-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const SortIcon = ({ k }: { k: SortKey }) =>
+    sortKey === k ? (
+      sortDir === "asc" ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />
+    ) : (
+      <ChevronDown className="h-3 w-3 opacity-30" />
+    );
+
+  return (
+    <div className="min-h-screen bg-bone/40 text-foreground">
+      {/* Top bar */}
+      <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+        <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
+          <div className="flex items-center gap-4">
+            <a href="/" className="flex items-center">
+              <Logo className="h-9 w-auto" />
+            </a>
+            <span className="border border-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-muted-foreground">
+              Admin
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <a href="/" className="text-xs uppercase tracking-[0.24em] text-muted-foreground hover:text-foreground">
+              ← Store
+            </a>
+            <button
+              onClick={() => { adminLogout(); onLogout(); }}
+              className="flex items-center gap-1.5 text-xs uppercase tracking-[0.24em] text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="h-3.5 w-3.5" /> Logout
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-[1400px] px-6 py-8">
+        {/* Summary cards */}
+        <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <SummaryCard
+            icon={Package}
+            label="Total Variants"
+            value={summary.totalVariants}
+            sub={`${summary.totalUnits} total units`}
+          />
+          <SummaryCard
+            icon={TrendingUp}
+            label="In Stock"
+            value={summary.inStock}
+            sub="variants available"
+            color="text-green-600"
+          />
+          <SummaryCard
+            icon={AlertTriangle}
+            label="Low Stock"
+            value={summary.lowStock}
+            sub="≤ 5 units remaining"
+            color="text-amber-500"
+          />
+          <SummaryCard
+            icon={XCircle}
+            label="Out of Stock"
+            value={summary.outOfStock}
+            sub="variants unavailable"
+            color="text-red-500"
+          />
+        </div>
+
+        {/* Tabs */}
+        <div className="mb-6 flex items-center justify-between border-b border-border">
+          <div className="flex gap-6">
+            {(["inventory", "alerts", "media", "orders", "database"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`pb-3 text-xs uppercase tracking-[0.24em] transition-colors ${
+                  activeTab === tab
+                    ? "border-b-2 border-ink text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {tab}
+                {tab === "alerts" && alerts.length > 0 && (
+                  <span className="ml-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
+                    {alerts.length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-3 pb-3">
+            <button
+              onClick={refresh}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <RefreshCw className="h-3.5 w-3.5" /> Refresh
+            </button>
+            <button
+              onClick={exportCsv}
+              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <Download className="h-3.5 w-3.5" /> Export CSV
+            </button>
+          </div>
+        </div>
+
+        {activeTab === "alerts" && (
+          <div className="space-y-2">
+            {alerts.length === 0 ? (
+              <p className="py-16 text-center text-sm text-muted-foreground">No alerts — all variants are in stock.</p>
+            ) : (
+              <>
+                <p className="mb-4 text-xs text-muted-foreground">{alerts.length} variant{alerts.length !== 1 ? "s" : ""} need attention</p>
+                <div className="overflow-hidden border border-border bg-background">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border bg-bone/60">
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">SKU</th>
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">Color</th>
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">GSM</th>
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">Size</th>
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">Qty</th>
+                        <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {alerts.map((v) => (
+                        <tr key={v.sku} className="border-b border-border/50 last:border-0 hover:bg-bone/40">
+                          <td className="px-4 py-3 font-mono text-xs">{v.sku}</td>
+                          <td className="px-4 py-3">{v.color}</td>
+                          <td className="px-4 py-3">{v.gsm} GSM</td>
+                          <td className="px-4 py-3">{v.size}</td>
+                          <td className="px-4 py-3 tabular-nums">
+                            <StockEditor variant={v} onUpdate={refresh} />
+                          </td>
+                          <td className="px-4 py-3"><AvailPill status={v.availability} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {activeTab === "inventory" && (
+          <>
+            {/* Filters + search */}
+            <div className="mb-5 flex flex-wrap items-center gap-3">
+              {/* Search */}
+              <div className="flex items-center gap-2 border border-border bg-background px-3 py-2">
+                <Search className="h-3.5 w-3.5 text-muted-foreground" />
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search SKU, color, size…"
+                  className="w-44 bg-transparent text-xs outline-none placeholder:text-muted-foreground"
+                />
+              </div>
+
+              {/* GSM filter */}
+              <select
+                value={filterGsm}
+                onChange={(e) => setFilterGsm(e.target.value as Gsm | "all")}
+                className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+              >
+                <option value="all">All GSM</option>
+                {gsmOptions.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+              </select>
+
+              {/* Color filter */}
+              <select
+                value={filterColor}
+                onChange={(e) => setFilterColor(e.target.value)}
+                className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+              >
+                <option value="all">All Colors</option>
+                {colors.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+
+              {/* Status filter */}
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value as AvailabilityStatus | "all")}
+                className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+              >
+                <option value="all">All Status</option>
+                <option value="in_stock">In Stock</option>
+                <option value="low_stock">Low Stock</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
+
+              <span className="ml-auto text-xs text-muted-foreground">
+                {filtered.length} of {allVariants.length} variants
+              </span>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto border border-border bg-background">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-bone/60">
+                    {(
+                      [
+                        { key: "sku", label: "SKU" },
+                        { key: "gsm", label: "GSM" },
+                        { key: "color", label: "Color" },
+                        { key: "size", label: "Size" },
+                        { key: "price", label: "Price" },
+                        { key: "qty", label: "Stock" },
+                        { key: "availability", label: "Status" },
+                      ] as { key: SortKey; label: string }[]
+                    ).map(({ key, label }) => (
+                      <th
+                        key={key}
+                        onClick={() => handleSort(key)}
+                        className="cursor-pointer select-none px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
+                      >
+                        <div className="flex items-center gap-1">
+                          {label} <SortIcon k={key} />
+                        </div>
+                      </th>
+                    ))}
+                    <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">
+                      Weight
+                    </th>
+                    <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">
+                      Barcode
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.length === 0 ? (
+                    <tr>
+                      <td colSpan={9} className="px-4 py-16 text-center text-sm text-muted-foreground">
+                        No variants match your filters
+                      </td>
+                    </tr>
+                  ) : (
+                    filtered.map((v) => (
+                      <tr
+                        key={v.sku}
+                        className={`border-b border-border/40 last:border-0 transition-colors hover:bg-bone/40 ${
+                          v.availability === "out_of_stock" ? "opacity-50" : ""
+                        }`}
+                      >
+                        <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{v.sku}</td>
+                        <td className="px-4 py-3 text-xs">{v.gsm} GSM</td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="h-3 w-3 rounded-full border border-border/50 shrink-0"
+                              style={{
+                                backgroundColor:
+                                  { Black: "#111", "Sea Blue": "#5b7f8a", White: "#f5f2ea", Cream: "#e9dfc9",
+                                    Khaki: "#a08b6a", "Army Green": "#4a5238", Pink: "#d8a9a3", Wine: "#5c1f28",
+                                  }[v.color] ?? "#ccc",
+                              }}
+                            />
+                            {v.color}
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 font-mono text-xs">{v.size}</td>
+                        <td className="px-4 py-3 tabular-nums">${v.price}</td>
+                        <td className="px-4 py-3">
+                          <StockEditor variant={v} onUpdate={refresh} />
+                        </td>
+                        <td className="px-4 py-3"><AvailPill status={v.availability} /></td>
+                        <td className="px-4 py-3 text-xs text-muted-foreground">{v.weight}g</td>
+                        <td className="px-4 py-3 font-mono text-[11px] text-muted-foreground">{v.barcode}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {activeTab === "media" && <MediaTab />}
+        {activeTab === "orders" && <OrdersTab />}
+        {activeTab === "database" && <DatabaseTab />}
+      </div>
+    </div>
+  );
+}
+
+// ─── Route component ──────────────────────────────────────────────────────────
+
+function AdminPage() {
+  const [authed, setAuthed] = useState(isAdminAuthenticated());
+
+  if (!authed) {
+    return <LoginScreen onLogin={() => setAuthed(true)} />;
+  }
+
+  return <AdminPanel onLogout={() => setAuthed(false)} />;
+}
