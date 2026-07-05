@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Play, Pause } from "lucide-react";
 
 const defaultImages = [
@@ -26,6 +26,31 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
   const [expandedImage, setExpandedImage] = useState(defaultExpanded);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Autoplay when section scrolls into view
+  useEffect(() => {
+    if (videoIndex === undefined || !videoUrl) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const v = videoRef.current;
+          if (!v) return;
+          if (entry.isIntersecting) {
+            v.play().then(() => setIsPlaying(true)).catch(() => {});
+          } else {
+            v.pause();
+            setIsPlaying(false);
+          }
+        });
+      },
+      { threshold: 0.5 }, // trigger when 50% of the section is visible
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, [videoIndex, videoUrl]);
 
   const getImageWidth = (index: number) =>
     index === expandedImage ? "24rem" : "5rem";
@@ -47,7 +72,7 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
   const isVideo = (idx: number) => videoIndex === idx && videoUrl;
 
   return (
-    <div className="w-full bg-[#f5f4f3]">
+    <div className="w-full bg-[#f5f4f3]" ref={sectionRef}>
       <div className="relative flex w-full items-center justify-center p-2">
         <div className="w-full overflow-hidden rounded-3xl">
           <div className="flex w-full items-center justify-center overflow-hidden bg-[#f5f4f3]">
