@@ -190,3 +190,34 @@ export async function deleteMedia(id: string) {
   const { error } = await supabase.from("media").delete().eq("id", id);
   return error ? { ok: false, error: error.message } : { ok: true };
 }
+
+// ─── Storage ─────────────────────────────────────────────────────────────────
+
+/**
+ * Upload a file to Supabase Storage (media bucket).
+ * Returns the public URL of the uploaded file.
+ */
+export async function uploadMediaFile(
+  file: File,
+  path: string,
+): Promise<{ url: string | null; error: string | null }> {
+  const { data, error } = await supabase.storage
+    .from("media")
+    .upload(path, file, { upsert: true, contentType: file.type });
+
+  if (error) return { url: null, error: error.message };
+
+  const { data: urlData } = supabase.storage
+    .from("media")
+    .getPublicUrl(data.path);
+
+  return { url: urlData.publicUrl, error: null };
+}
+
+/**
+ * Delete a file from Supabase Storage.
+ */
+export async function deleteStorageFile(path: string) {
+  const { error } = await supabase.storage.from("media").remove([path]);
+  return error ? { ok: false, error: error.message } : { ok: true };
+}

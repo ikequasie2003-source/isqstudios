@@ -11,7 +11,7 @@ import {
 } from "@/lib/inventory";
 import { gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
 import { isAdminAuthenticated, adminLogin, adminLogout } from "@/lib/admin-auth";
-import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock } from "@/lib/db";
+import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock, uploadMediaFile, insertMedia } from "@/lib/db";
 import { Logo } from "@/components/logo";
 
 export const Route = createFileRoute("/admin")({
@@ -216,7 +216,12 @@ function loadMedia(): MediaEntry[] {
   catch { return []; }
 }
 function saveMedia(entries: MediaEntry[]) {
-  localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(entries));
+  try {
+    localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(entries));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 const TEE_COLORS = ["Black","Sea Blue","White","Cream","Khaki","Army Green","Pink","Wine"];
@@ -267,17 +272,30 @@ function MediaTab() {
   const [filterCat, setFilterCat] = useState<"all"|"tee"|"cap">("all");
   const [filterColor, setFilterColor] = useState("all");
   const [lightbox, setLightbox] = useState<MediaEntry | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const handleFiles = (files: File[]) => {
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setPending((prev) => [
-          ...prev,
-          { file, preview: e.target!.result as string, category: "tee", gsm: "260", color: "Black", angle: "Front" },
-        ]);
-      };
-      reader.readAsDataURL(file);
+    const readers = files.map(
+      (file) =>
+        new Promise<{ file: File; preview: string; category: "tee" | "cap"; gsm: string; color: string; angle: string }>(
+          (resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) =>
+              resolve({
+                file,
+                preview: e.target!.result as string,
+                category: "tee",
+                gsm: "260",
+                color: "Black",
+                angle: "Front",
+              });
+            reader.readAsDataURL(file);
+          },
+        ),
+    );
+    Promise.all(readers).then((newItems) => {
+      setPending((prev) => [...prev, ...newItems]);
     });
   };
 
@@ -289,24 +307,58 @@ function MediaTab() {
     setPending((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const saveAll = () => {
-    const newEntries: MediaEntry[] = pending.map((p) => ({
-      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-      label: p.category === "tee"
-        ? `${p.gsm} GSM — ${p.color} — ${p.angle}`
-        : `Cap — ${p.color} — ${p.angle}`,
-      category: p.category,
-      gsm: p.category === "tee" ? p.gsm : undefined,
-      color: p.color,
-      angle: p.angle,
-      src: p.preview,
-      filename: p.file.name,
-      uploadedAt: new Date().toISOString(),
-    }));
+  const saveAll = async () => {
+    setSaveError(null);
+    setSaving(true);
+
+    const newEntries: MediaEntry[] = [];
+
+    for (const p of pending) {
+      // Build a clean storage path: category/color/angle-timestamp.ext
+      const ext = p.file.name.split(".").pop() ?? "jpg";
+      const slug = `${p.category}/${p.color.toLowerCase().replace(/\s+/g, "-")}/${p.angle.toLowerCase()}-${Date.now()}.${ext}`;
+
+      const { url, error } = await uploadMediaFile(p.file, slug);
+
+      if (error || !url) {
+        setSaveError(`Failed to upload ${p.file.name}: ${error}`);
+        setSaving(false);
+        return;
+      }
+
+      newEntries.push({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        label: p.category === "tee"
+          ? `${p.gsm} GSM — ${p.color} — ${p.angle}`
+          : `Cap — ${p.color} — ${p.angle}`,
+        category: p.category,
+        gsm: p.category === "tee" ? p.gsm : undefined,
+        color: p.color,
+        angle: p.angle,
+        src: url,
+        filename: p.file.name,
+        uploadedAt: new Date().toISOString(),
+      });
+    }
+
+    // Also save to DB table for persistence
+    for (const entry of newEntries) {
+      await insertMedia({
+        label: entry.label,
+        category: entry.category,
+        gsm: entry.gsm,
+        color: entry.color,
+        angle: entry.angle,
+        url: entry.src,
+        filename: entry.filename,
+      });
+    }
+
     const updated = [...media, ...newEntries];
-    saveMedia(updated);
+    saveMedia(updated); // keep localStorage as cache
     setMedia(updated);
     setPending([]);
+    setSaving(false);
   };
 
   const deleteMedia = (id: string) => {
@@ -415,9 +467,11 @@ function MediaTab() {
             <div className="flex gap-3">
               <button
                 onClick={saveAll}
-                className="flex items-center gap-2 bg-ink px-6 py-3 text-xs uppercase tracking-[0.24em] text-cream hover:opacity-80"
+                disabled={saving}
+                className="flex items-center gap-2 bg-ink px-6 py-3 text-xs uppercase tracking-[0.24em] text-cream hover:opacity-80 disabled:opacity-50"
               >
-                <ImagePlus className="h-4 w-4" /> Save {pending.length} Image{pending.length !== 1 ? "s" : ""}
+                <ImagePlus className="h-4 w-4" />
+                {saving ? "Uploading…" : `Save ${pending.length} Image${pending.length !== 1 ? "s" : ""}`}
               </button>
               <button
                 onClick={() => setPending([])}
@@ -426,6 +480,9 @@ function MediaTab() {
                 Clear All
               </button>
             </div>
+            {saveError && (
+              <p className="mt-3 text-xs text-red-500">{saveError}</p>
+            )}
           </div>
         )}
       </div>
