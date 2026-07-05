@@ -2,7 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ArrowRight, Instagram, Twitter } from "lucide-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
-import lookbookVideo from "@/assets/lookbook-video.mp4.asset.json";
+import lb1 from "@/assets/lookbook/q.png";
+import lb2 from "@/assets/lookbook/qa.png";
+import lb3 from "@/assets/lookbook/qq.png";
+import lb4 from "@/assets/lookbook/qs.png";
+import lb5 from "@/assets/lookbook/qw.png";
+import lb6 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_38_05 PM - Copy.png";
+import lb7 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_40_12 PM - Copy.png";
+import lb8 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_42_37 PM - Copy.png";
+import lbVideo from "@/assets/lookbook/qv.mp4";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import { CartProvider } from "@/lib/cart";
@@ -246,23 +254,6 @@ function Story() {
 }
 
 function Lookbook() {
-  const row1 = [
-    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=720&q=80", // black tee worn
-    "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=720&q=80", // white tee worn
-    "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=720&q=80", // cream/neutral
-    "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=720&q=80", // army green flat
-    "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=720&q=80", // khaki
-    "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=720&q=80",    // folded stack
-  ];
-  const row2 = [
-    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=720&q=80", // sea blue
-    "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=720&q=80", // pink
-    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=720&q=80",    // wine/dark
-    "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=720&q=80", // closeup texture
-    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=720&q=80", // lifestyle
-    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=720&q=80",    // rack/display
-  ];
-
   return (
     <section className="bg-[#f5f4f3]">
       <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
@@ -271,15 +262,11 @@ function Lookbook() {
           Studio 001 — hover to expand.
         </h2>
       </div>
-      <div className="pt-10 pb-4 lg:pb-6">
-        <ExpandOnHover images={row1} defaultExpanded={3} />
-      </div>
-      <div className="pb-20 lg:pb-28">
+      <div className="pt-10 pb-20 lg:pb-28">
         <ExpandOnHover
-          images={row2}
-          defaultExpanded={3}
-          videoIndex={4}
-          videoUrl={lookbookVideo.url}
+          images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb1]}
+          videoIndex={8}
+          videoUrl={lbVideo}
         />
       </div>
     </section>
