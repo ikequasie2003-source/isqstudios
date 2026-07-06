@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { refreshMediaCache } from "../lib/media-resolver";
 
 function NotFoundComponent() {
   return (
@@ -120,6 +121,11 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    // Fetch media from Supabase on app load so product images resolve everywhere
+    refreshMediaCache();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>

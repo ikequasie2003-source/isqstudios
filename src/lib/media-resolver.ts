@@ -1,10 +1,13 @@
 /**
  * Resolves product gallery images.
- * Priority: admin-uploaded images → default Unsplash fallbacks
+ * Priority: admin-uploaded images (Supabase) → localStorage cache → default fallbacks
  */
 import { getGalleryImages, type ProductImage, type Gsm } from "@/lib/products";
+import { supabase } from "@/lib/supabase";
 
 const MEDIA_STORAGE_KEY = "isq_admin_media";
+const MEDIA_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const MEDIA_CACHE_TS_KEY = "isq_admin_media_ts";
 
 type StoredMedia = {
   id: string;
@@ -18,7 +21,10 @@ type StoredMedia = {
   uploadedAt: string;
 };
 
-function loadStoredMedia(): StoredMedia[] {
+// In-memory cache for the current session
+let memoryCache: StoredMedia[] | null = null;
+
+function loadLocalMedia(): StoredMedia[] {
   try {
     return JSON.parse(localStorage.getItem(MEDIA_STORAGE_KEY) ?? "[]");
   } catch {
@@ -26,20 +32,76 @@ function loadStoredMedia(): StoredMedia[] {
   }
 }
 
+function saveLocalMedia(entries: StoredMedia[]) {
+  try {
+    localStorage.setItem(MEDIA_STORAGE_KEY, JSON.stringify(entries));
+    localStorage.setItem(MEDIA_CACHE_TS_KEY, String(Date.now()));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function isCacheStale(): boolean {
+  const ts = localStorage.getItem(MEDIA_CACHE_TS_KEY);
+  if (!ts) return true;
+  return Date.now() - Number(ts) > MEDIA_CACHE_TTL;
+}
+
 /**
- * Returns the best single "hero" image for a product card.
- * Checks admin uploads first (Front angle, exact GSM match),
- * falls back to product.image, then null.
+ * Fetch media from Supabase and refresh the local cache.
+ * Call this once on app start / page load.
  */
+export async function refreshMediaCache(): Promise<void> {
+  try {
+    const { data, error } = await supabase
+      .from("media")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error || !data) return;
+
+    const entries: StoredMedia[] = data.map((m) => ({
+      id: m.id,
+      label: m.label,
+      category: m.category as "tee" | "cap",
+      gsm: m.gsm ?? undefined,
+      color: m.color,
+      angle: m.angle,
+      src: m.url,
+      filename: m.filename,
+      uploadedAt: m.created_at,
+    }));
+
+    memoryCache = entries;
+    saveLocalMedia(entries);
+  } catch {
+    // fall back to localStorage
+  }
+}
+
+function getMedia(): StoredMedia[] {
+  if (memoryCache) return memoryCache;
+  const local = loadLocalMedia();
+  memoryCache = local;
+
+  // Refresh in background if cache is stale
+  if (isCacheStale()) {
+    refreshMediaCache();
+  }
+
+  return local;
+}
+
+// ─── Resolvers ────────────────────────────────────────────────────────────────
+
 export function resolveCardImage(
   category: "tee" | "cap",
   gsm: string | undefined,
   color: string,
   fallback?: string,
 ): string | undefined {
-  const stored = loadStoredMedia();
+  const stored = getMedia();
 
-  // Exact GSM + color + Front match
   const exactMatch = stored.find(
     (m) =>
       m.category === category &&
@@ -52,49 +114,34 @@ export function resolveCardImage(
   return fallback;
 }
 
-/**
- * Returns 4 gallery images for a given gsm + color.
- * Checks admin-uploaded media first, falls back to defaults.
- */
 export function resolveGalleryImages(gsm: Gsm, color: string): ProductImage[] {
-  const stored = loadStoredMedia();
+  const stored = getMedia();
   const angles = ["Front", "Back", "Folded", "Close-up"];
-
-  // Get defaults
   const defaults = getGalleryImages(gsm, color);
 
-  // For each angle, check if admin uploaded an image for this gsm+color+angle
   return angles.map((angle, i) => {
-    // Try exact GSM + color + angle match
     const exact = stored.find(
       (m) => m.category === "tee" && m.color === color && m.angle === angle && m.gsm === gsm,
     );
     if (exact) return { src: exact.src, label: angle };
 
-    // Fall back to same color + angle, any GSM
     const anyGsm = stored.find(
       (m) => m.category === "tee" && m.color === color && m.angle === angle,
     );
     if (anyGsm) return { src: anyGsm.src, label: angle };
 
-    // Fall back to default
     return defaults[i] ?? { src: null, label: angle };
   });
 }
 
-/**
- * Returns gallery images for caps.
- */
 export function resolveCapGalleryImages(color: string): ProductImage[] {
-  const stored = loadStoredMedia();
+  const stored = getMedia();
   const angles = ["Front", "Back", "Side", "Close-up"];
 
   return angles.map((angle) => {
     const match = stored.find(
       (m) => m.category === "cap" && m.color === color && m.angle === angle,
     );
-    return match
-      ? { src: match.src, label: angle }
-      : { src: null, label: angle };
+    return match ? { src: match.src, label: angle } : { src: null, label: angle };
   });
 }
