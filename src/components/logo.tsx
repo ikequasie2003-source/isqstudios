@@ -6,13 +6,15 @@
 type LogoProps = {
   className?: string;
   dark?: boolean;
+  style?: React.CSSProperties;
 };
 
-export function Logo({ className = "h-10 w-auto", dark = false }: LogoProps) {
+export function Logo({ className = "h-10 w-auto", dark = false, style }: LogoProps) {
   return (
     <svg
       viewBox="0 0 80 80"
       className={className}
+      style={style}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="ISQ Studios"

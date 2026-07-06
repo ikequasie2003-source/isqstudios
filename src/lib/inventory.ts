@@ -84,18 +84,23 @@ const INITIAL_STOCK: StockMap = {
   "tee-320-white":      { S: 16, M: 20, L: 15, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
   "tee-320-cream":      { S: 9,  M: 13, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
   "tee-320-khaki":      { S: 11, M: 17, L: 13, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-army-green": { S: 6,  M: 10, L: 7,  XL: 3,  "2XL": 1, "3XL": 0, "4XL": 0 },
   "tee-320-pink":       { S: 12, M: 16, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
   "tee-320-wine":       { S: 5,  M: 8,  L: 6,  XL: 2,  "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-brown":      { S: 10, M: 15, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
+  "tee-320-grey":       { S: 12, M: 18, L: 14, XL: 7,  "2XL": 4, "3XL": 2, "4XL": 0 },
 };
 
 // ─── Build full variant catalogue ─────────────────────────────────────────────
 
+// Colors per GSM — mirrors products.ts
+const colorsByGsm: Record<Gsm, string[]> = {
+  "230": ["Black", "Sea Blue", "White", "Cream", "Khaki", "Army Green", "Pink", "Wine"],
+  "260": ["Black", "Sea Blue", "White", "Cream", "Khaki", "Army Green", "Pink", "Wine"],
+  "320": ["Black", "White", "Cream", "Khaki", "Pink", "Wine", "Brown", "Grey"],
+};
+
 const teeColorMeta: { color: string; gsm: Gsm }[] = gsmOptions.flatMap((g) =>
-  [
-    "Black", "Sea Blue", "White", "Cream",
-    "Khaki", "Army Green", "Pink", "Wine",
-  ].map((color) => ({ color, gsm: g.value })),
+  colorsByGsm[g.value].map((color) => ({ color, gsm: g.value })),
 );
 
 function computeAvailability(qty: number): AvailabilityStatus {

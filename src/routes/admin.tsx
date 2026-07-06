@@ -13,6 +13,7 @@ import { gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
 import { isAdminAuthenticated, adminLogin, adminLogout } from "@/lib/admin-auth";
 import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock, uploadMediaFile, insertMedia } from "@/lib/db";
 import { Logo } from "@/components/logo";
+import adminBg from "@/assets/lookbook/qm.jfif";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — ISQ Studios" }] }),
@@ -40,54 +41,160 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <div className="eyebrow mb-2">ISQ Studios</div>
-          <h1 className="font-display text-3xl">Admin Access</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Enter your password to continue</p>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050008]">
+      {/* Clean dark background with animated gold silk waves */}
+      <div className="pointer-events-none absolute inset-0 bg-[#080806]" />
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 800 900">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#3d2800" />
+            <stop offset="50%" stopColor="#7a5010" />
+            <stop offset="100%" stopColor="#2a1a00" />
+          </linearGradient>
+          <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#5c3a00" />
+            <stop offset="50%" stopColor="#9a6818" />
+            <stop offset="100%" stopColor="#3d2200" />
+          </linearGradient>
+          <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#4a2e00" />
+            <stop offset="100%" stopColor="#8a6010" />
+          </linearGradient>
+          <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f0d060" stopOpacity="0.0" />
+            <stop offset="45%" stopColor="#f5e080" stopOpacity="1" />
+            <stop offset="55%" stopColor="#fff0a0" stopOpacity="1" />
+            <stop offset="100%" stopColor="#c89020" stopOpacity="0.0" />
+          </linearGradient>
+          <filter id="soft"><feGaussianBlur stdDeviation="10" /></filter>
+          <filter id="mid"><feGaussianBlur stdDeviation="5" /></filter>
+          <filter id="crisp"><feGaussianBlur stdDeviation="1.5" /></filter>
+        </defs>
+
+        {/* Bottom large wave */}
+        <path filter="url(#soft)" fill="url(#g1)" opacity="1">
+          <animate attributeName="d" dur="12s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+            values="
+              M-50,900 C50,780 120,650 250,580 C380,510 480,540 600,490 C720,440 820,400 950,370 L950,900 Z;
+              M-50,900 C70,760 140,630 270,560 C400,490 500,520 620,470 C740,420 840,380 950,350 L950,900 Z;
+              M-50,900 C50,780 120,650 250,580 C380,510 480,540 600,490 C720,440 820,400 950,370 L950,900 Z
+            "
+          />
+        </path>
+
+        {/* Top large wave */}
+        <path filter="url(#soft)" fill="url(#g2)" opacity="0.9">
+          <animate attributeName="d" dur="15s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+            values="
+              M950,0 C820,60 750,180 620,270 C490,360 400,320 270,390 C140,460 60,540 -50,580 L-50,0 Z;
+              M950,0 C800,80 730,200 600,290 C470,380 380,340 250,410 C120,480 40,560 -50,600 L-50,0 Z;
+              M950,0 C820,60 750,180 620,270 C490,360 400,320 270,390 C140,460 60,540 -50,580 L-50,0 Z
+            "
+          />
+        </path>
+
+        {/* Mid flowing ribbon — body */}
+        <path filter="url(#mid)" fill="url(#g3)" opacity="0.85">
+          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+            values="
+              M-50,440 C120,370 260,310 430,340 C580,368 680,450 880,390 L880,480 C680,540 580,460 430,432 C260,400 120,460 -50,530 Z;
+              M-50,420 C140,350 280,290 450,320 C600,348 700,430 900,370 L900,460 C700,520 600,440 450,412 C280,380 140,440 -50,510 Z;
+              M-50,440 C120,370 260,310 430,340 C580,368 680,450 880,390 L880,480 C680,540 580,460 430,432 C260,400 120,460 -50,530 Z
+            "
+          />
+        </path>
+
+        {/* Bright gold highlight ribbon */}
+        <path filter="url(#crisp)" fill="url(#shine)" opacity="0.85">
+          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+            values="
+              M-50,445 C120,376 260,316 430,345 C580,372 680,454 880,394 L880,410 C680,470 580,388 430,361 C260,332 120,392 -50,461 Z;
+              M-50,425 C140,356 280,296 450,325 C600,352 700,434 900,374 L900,390 C700,450 600,368 450,341 C280,312 140,372 -50,441 Z;
+              M-50,445 C120,376 260,316 430,345 C580,372 680,454 880,394 L880,410 C680,470 580,388 430,361 C260,332 120,392 -50,461 Z
+            "
+          />
+        </path>
+
+        {/* Extra thin bright core */}
+        <path filter="url(#crisp)" fill="#fff8d0" opacity="0.5">
+          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+            values="
+              M-50,449 C120,380 260,320 430,349 C580,376 680,458 880,398 L880,404 C680,464 580,380 430,353 C260,324 120,384 -50,453 Z;
+              M-50,429 C140,360 280,300 450,329 C600,356 700,438 900,378 L900,384 C700,444 600,360 450,333 C280,304 140,364 -50,433 Z;
+              M-50,449 C120,380 260,320 430,349 C580,376 680,458 880,398 L880,404 C680,464 580,380 430,353 C260,324 120,384 -50,453 Z
+            "
+          />
+        </path>
+      </svg>
+      {/* Subtle vignette */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.7)_100%)]" />
+
+      {/* Glassmorphism card */}
+      <div
+        className={`relative z-10 w-full max-w-sm mx-4 rounded-3xl border border-white/10 bg-white/5 p-10 shadow-2xl backdrop-blur-xl transition-transform ${shake ? "animate-[shake_0.4s_ease-in-out]" : ""}`}
+      >
+        {/* Logo */}
+        <div className="flex flex-col items-center mb-8">
+          <Logo className="h-16 w-auto" style={{ animation: "flipY 12s linear infinite" }} />
+          <p className="mt-3 text-[10px] uppercase tracking-[0.4em] text-white/40">Admin Portal</p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className={`space-y-4 transition-transform ${shake ? "animate-[shake_0.4s_ease-in-out]" : ""}`}
-        >
-          <div className="relative">
-            <input
-              type={show ? "text" : "password"}
-              value={password}
-              onChange={(e) => { setPassword(e.target.value); setError(false); }}
-              placeholder="Password"
-              autoFocus
-              className={`w-full border bg-transparent px-4 py-3 pr-12 text-sm outline-none transition-colors placeholder:text-muted-foreground ${
-                error ? "border-red-500" : "border-border focus:border-ink"
-              }`}
-            />
-            <button
-              type="button"
-              onClick={() => setShow(!show)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-            >
-              {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
+        {/* Welcome */}
+        <h1 className="mb-8 text-center font-display text-2xl text-white">
+          Welcome Back
+        </h1>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Password field */}
+          <div>
+            <label className="mb-2 block text-xs text-white/60 uppercase tracking-widest">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={show ? "text" : "password"}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(false); }}
+                placeholder="Enter your password"
+                autoFocus
+                className={`w-full rounded-xl border bg-white/5 px-4 py-3.5 pr-12 text-sm text-white outline-none backdrop-blur placeholder:text-white/20 transition-colors ${
+                  error
+                    ? "border-red-400/60 focus:border-red-400"
+                    : "border-white/10 focus:border-[#b8952a]/60"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => setShow(!show)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60"
+              >
+                {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+            {error && (
+              <p className="mt-2 text-xs text-red-400 tracking-widest uppercase">Incorrect password</p>
+            )}
           </div>
 
-          {error && (
-            <p className="text-xs uppercase tracking-widest text-red-500">Incorrect password</p>
-          )}
-
+          {/* Login button */}
           <button
             type="submit"
-            className="w-full bg-ink py-3 text-xs uppercase tracking-[0.24em] text-cream transition-opacity hover:opacity-80"
+            className="w-full rounded-xl py-3.5 text-sm font-medium uppercase tracking-[0.2em] text-white transition-all hover:opacity-90 active:scale-[0.98]"
+            style={{
+              background: "linear-gradient(135deg, #f0d080 0%, #c8992a 40%, #e8c55a 70%, #a07820 100%)",
+              boxShadow: "0 4px 24px rgba(184,149,42,0.35)",
+            }}
           >
             Enter
           </button>
         </form>
 
-        <p className="mt-8 text-center text-[10px] uppercase tracking-widest text-muted-foreground/50">
-          Not a public page
+        {/* Footer */}
+        <p className="mt-8 text-center text-[10px] uppercase tracking-[0.3em] text-white/20">
+          ISQ Studios · Admin Only
         </p>
       </div>
+
       <style>{`
         @keyframes shake {
           0%,100% { transform: translateX(0); }
@@ -224,7 +331,12 @@ function saveMedia(entries: MediaEntry[]) {
   }
 }
 
-const TEE_COLORS = ["Black","Sea Blue","White","Cream","Khaki","Army Green","Pink","Wine"];
+const TEE_COLORS_BY_GSM: Record<string, string[]> = {
+  "230": ["Black", "Sea Blue", "White", "Cream", "Khaki", "Army Green", "Pink", "Wine"],
+  "260": ["Black", "Sea Blue", "White", "Cream", "Khaki", "Army Green", "Pink", "Wine"],
+  "320": ["Black", "White", "Cream", "Khaki", "Pink", "Wine", "Brown", "Grey"],
+};
+const TEE_COLORS = TEE_COLORS_BY_GSM["260"]; // default fallback
 const CAP_COLORS = ["Onyx","Cream","Khaki","Army"];
 const ANGLES = ["Front","Back","Folded","Close-up","Lifestyle"];
 const GSM_VALUES = ["230","260","320"];
@@ -433,7 +545,7 @@ function MediaTab() {
                       onChange={(e) => updatePending(i, { color: e.target.value })}
                       className="border border-border bg-transparent px-2 py-1.5 text-xs outline-none"
                     >
-                      {(p.category === "tee" ? TEE_COLORS : CAP_COLORS).map((c) => (
+                      {(p.category === "tee" ? TEE_COLORS_BY_GSM[p.gsm] ?? TEE_COLORS : CAP_COLORS).map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>

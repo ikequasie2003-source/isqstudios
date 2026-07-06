@@ -95,10 +95,26 @@ const teeColors: { color: string; swatch: string; image?: string }[] = [
   { color: "Wine", swatch: "#5c1f28" },
 ];
 
+// Colors per GSM — 320 GSM has Brown & Grey instead of Army Green
+const teeColorsByGsm: Record<string, { color: string; swatch: string; image?: string }[]> = {
+  "230": teeColors,
+  "260": teeColors,
+  "320": [
+    { color: "Black",  swatch: "#111111", image: teeBlack },
+    { color: "White",  swatch: "#f5f2ea", image: teeWhite },
+    { color: "Cream",  swatch: "#e9dfc9" },
+    { color: "Khaki",  swatch: "#a08b6a" },
+    { color: "Pink",   swatch: "#d8a9a3" },
+    { color: "Wine",   swatch: "#5c1f28" },
+    { color: "Brown",  swatch: "#6b4226" },
+    { color: "Grey",   swatch: "#9e9e9e" },
+  ],
+};
+
 const slug = (s: string) => s.toLowerCase().replace(/\s+/g, "-");
 
 export const tees: Product[] = gsmOptions.flatMap((g) =>
-  teeColors.map<Product>((c) => ({
+  teeColorsByGsm[g.value].map<Product>((c) => ({
     id: `tee-${g.value}-${slug(c.color)}`,
     name: `Essential Tee — ${g.label}`,
     color: c.color,
@@ -141,15 +157,15 @@ export const stock: Record<string, Partial<Record<Size, number>>> = {
   "tee-260-army-green":  { S: 9,  M: 14, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
   "tee-260-pink":        { S: 16, M: 22, L: 17, XL: 9,  "2XL": 5, "3XL": 2, "4XL": 0 },
   "tee-260-wine":        { S: 8,  M: 12, L: 9,  XL: 4,  "2XL": 2, "3XL": 0, "4XL": 0 },
-  // 320 GSM
-  "tee-320-black":       { S: 14, M: 22, L: 18, XL: 10, "2XL": 6, "3XL": 3, "4XL": 1 },
-  "tee-320-sea-blue":    { S: 7,  M: 12, L: 9,  XL: 4,  "2XL": 2, "3XL": 0, "4XL": 0 },
-  "tee-320-white":       { S: 16, M: 20, L: 15, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-320-cream":       { S: 9,  M: 13, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
-  "tee-320-khaki":       { S: 11, M: 17, L: 13, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-army-green":  { S: 6,  M: 10, L: 7,  XL: 3,  "2XL": 1, "3XL": 0, "4XL": 0 },
-  "tee-320-pink":        { S: 12, M: 16, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-wine":        { S: 5,  M: 8,  L: 6,  XL: 2,  "2XL": 0, "3XL": 0, "4XL": 0 },
+  // 320 GSM — Brown & Grey replace Army Green
+  "tee-320-black":      { S: 14, M: 22, L: 18, XL: 10, "2XL": 6, "3XL": 3, "4XL": 1 },
+  "tee-320-white":      { S: 16, M: 20, L: 15, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
+  "tee-320-cream":      { S: 9,  M: 13, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
+  "tee-320-khaki":      { S: 11, M: 17, L: 13, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
+  "tee-320-pink":       { S: 12, M: 16, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
+  "tee-320-wine":       { S: 5,  M: 8,  L: 6,  XL: 2,  "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-brown":      { S: 10, M: 15, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
+  "tee-320-grey":       { S: 12, M: 18, L: 14, XL: 7,  "2XL": 4, "3XL": 2, "4XL": 0 },
 };
 
 export const getStock = (productId: string, size: Size): number =>

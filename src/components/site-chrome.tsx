@@ -11,7 +11,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6">
         <a href="/" aria-label="ISQ Studios home" className="flex items-center">
-          <Logo className="h-10 w-auto" />
+          <Logo className="h-10 w-auto" style={{ animation: "flipY 12s linear infinite" }} />
         </a>
         <nav className="hidden flex-1 items-center justify-center gap-8 text-xs uppercase tracking-[0.24em] text-foreground/80 md:flex">
           <a href="/shop" className="hover:text-foreground">Shop</a>
