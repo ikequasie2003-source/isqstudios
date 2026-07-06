@@ -11,7 +11,7 @@ import {
 } from "@/lib/inventory";
 import { gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
 import { isAdminAuthenticated, adminLogin, adminLogout } from "@/lib/admin-auth";
-import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock, uploadMediaFile, insertMedia } from "@/lib/db";
+import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock, uploadMediaFile, insertMedia, fetchMedia } from "@/lib/db";
 import { Logo } from "@/components/logo";
 import adminBg from "@/assets/lookbook/qm.jfif";
 
@@ -41,93 +41,67 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#050008]">
-      {/* Clean dark background with animated gold silk waves */}
-      <div className="pointer-events-none absolute inset-0 bg-[#080806]" />
-      <svg className="pointer-events-none absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid slice" viewBox="0 0 800 900">
-        <defs>
-          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3d2800" />
-            <stop offset="50%" stopColor="#7a5010" />
-            <stop offset="100%" stopColor="#2a1a00" />
-          </linearGradient>
-          <linearGradient id="g2" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#5c3a00" />
-            <stop offset="50%" stopColor="#9a6818" />
-            <stop offset="100%" stopColor="#3d2200" />
-          </linearGradient>
-          <linearGradient id="g3" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#4a2e00" />
-            <stop offset="100%" stopColor="#8a6010" />
-          </linearGradient>
-          <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f0d060" stopOpacity="0.0" />
-            <stop offset="45%" stopColor="#f5e080" stopOpacity="1" />
-            <stop offset="55%" stopColor="#fff0a0" stopOpacity="1" />
-            <stop offset="100%" stopColor="#c89020" stopOpacity="0.0" />
-          </linearGradient>
-          <filter id="soft"><feGaussianBlur stdDeviation="10" /></filter>
-          <filter id="mid"><feGaussianBlur stdDeviation="5" /></filter>
-          <filter id="crisp"><feGaussianBlur stdDeviation="1.5" /></filter>
-        </defs>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#080806]">
+      {/* GPU-accelerated CSS wave background */}
+      <div className="pointer-events-none absolute inset-0">
+        {/* Layer 1 — large bottom-left dark gold wave */}
+        <div className="absolute bottom-[-20%] left-[-20%] h-[80vh] w-[80vw] rounded-[60%_40%_30%_70%/60%_30%_70%_40%] bg-[#5a3800] opacity-80"
+          style={{ animation: "morphWave1 12s ease-in-out infinite", filter: "blur(40px)" }} />
+        {/* Layer 2 — top-right wave */}
+        <div className="absolute right-[-20%] top-[-20%] h-[70vh] w-[70vw] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-[#7a5010] opacity-70"
+          style={{ animation: "morphWave2 15s ease-in-out infinite", filter: "blur(50px)" }} />
+        {/* Layer 3 — mid ribbon */}
+        <div className="absolute left-[-10%] top-[35%] h-[30vh] w-[120vw] rounded-[50%] bg-[#6b4a08] opacity-60"
+          style={{ animation: "morphWave3 10s ease-in-out infinite", filter: "blur(30px)" }} />
+        {/* Layer 4 — bright gold shine ribbon */}
+        <div className="absolute left-[-10%] top-[42%] h-[6vh] w-[120vw] rounded-[50%] opacity-90"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, #f0d060 20%, #fff8a0 50%, #f0d060 80%, transparent 100%)",
+            animation: "shineRibbon 10s ease-in-out infinite",
+            filter: "blur(3px)",
+          }} />
+        {/* Layer 5 — extra bright core */}
+        <div className="absolute left-[-10%] top-[44%] h-[2vh] w-[120vw] rounded-[50%] opacity-60"
+          style={{
+            background: "linear-gradient(90deg, transparent 0%, #fffde0 30%, #ffffff 50%, #fffde0 70%, transparent 100%)",
+            animation: "shineRibbon 10s ease-in-out infinite",
+            filter: "blur(1px)",
+          }} />
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(0,0,0,0.75)_100%)]" />
+      </div>
 
-        {/* Bottom large wave */}
-        <path filter="url(#soft)" fill="url(#g1)" opacity="1">
-          <animate attributeName="d" dur="12s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
-            values="
-              M-50,900 C50,780 120,650 250,580 C380,510 480,540 600,490 C720,440 820,400 950,370 L950,900 Z;
-              M-50,900 C70,760 140,630 270,560 C400,490 500,520 620,470 C740,420 840,380 950,350 L950,900 Z;
-              M-50,900 C50,780 120,650 250,580 C380,510 480,540 600,490 C720,440 820,400 950,370 L950,900 Z
-            "
-          />
-        </path>
-
-        {/* Top large wave */}
-        <path filter="url(#soft)" fill="url(#g2)" opacity="0.9">
-          <animate attributeName="d" dur="15s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
-            values="
-              M950,0 C820,60 750,180 620,270 C490,360 400,320 270,390 C140,460 60,540 -50,580 L-50,0 Z;
-              M950,0 C800,80 730,200 600,290 C470,380 380,340 250,410 C120,480 40,560 -50,600 L-50,0 Z;
-              M950,0 C820,60 750,180 620,270 C490,360 400,320 270,390 C140,460 60,540 -50,580 L-50,0 Z
-            "
-          />
-        </path>
-
-        {/* Mid flowing ribbon — body */}
-        <path filter="url(#mid)" fill="url(#g3)" opacity="0.85">
-          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
-            values="
-              M-50,440 C120,370 260,310 430,340 C580,368 680,450 880,390 L880,480 C680,540 580,460 430,432 C260,400 120,460 -50,530 Z;
-              M-50,420 C140,350 280,290 450,320 C600,348 700,430 900,370 L900,460 C700,520 600,440 450,412 C280,380 140,440 -50,510 Z;
-              M-50,440 C120,370 260,310 430,340 C580,368 680,450 880,390 L880,480 C680,540 580,460 430,432 C260,400 120,460 -50,530 Z
-            "
-          />
-        </path>
-
-        {/* Bright gold highlight ribbon */}
-        <path filter="url(#crisp)" fill="url(#shine)" opacity="0.85">
-          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
-            values="
-              M-50,445 C120,376 260,316 430,345 C580,372 680,454 880,394 L880,410 C680,470 580,388 430,361 C260,332 120,392 -50,461 Z;
-              M-50,425 C140,356 280,296 450,325 C600,352 700,434 900,374 L900,390 C700,450 600,368 450,341 C280,312 140,372 -50,441 Z;
-              M-50,445 C120,376 260,316 430,345 C580,372 680,454 880,394 L880,410 C680,470 580,388 430,361 C260,332 120,392 -50,461 Z
-            "
-          />
-        </path>
-
-        {/* Extra thin bright core */}
-        <path filter="url(#crisp)" fill="#fff8d0" opacity="0.5">
-          <animate attributeName="d" dur="10s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
-            values="
-              M-50,449 C120,380 260,320 430,349 C580,376 680,458 880,398 L880,404 C680,464 580,380 430,353 C260,324 120,384 -50,453 Z;
-              M-50,429 C140,360 280,300 450,329 C600,356 700,438 900,378 L900,384 C700,444 600,360 450,333 C280,304 140,364 -50,433 Z;
-              M-50,449 C120,380 260,320 430,349 C580,376 680,458 880,398 L880,404 C680,464 580,380 430,353 C260,324 120,384 -50,453 Z
-            "
-          />
-        </path>
-      </svg>
-      {/* Subtle vignette */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_rgba(0,0,0,0.7)_100%)]" />
+      <style>{`
+        @keyframes morphWave1 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          33%       { transform: translate(3%, -4%) rotate(8deg) scale(1.05); border-radius: 40% 60% 50% 50% / 50% 50% 40% 60%; }
+          66%       { transform: translate(-3%, 3%) rotate(-5deg) scale(0.97); border-radius: 50% 50% 40% 60% / 30% 70% 50% 50%; }
+        }
+        @keyframes morphWave2 {
+          0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+          33%       { transform: translate(-4%, 3%) rotate(-6deg) scale(1.04); border-radius: 60% 40% 50% 50% / 50% 40% 70% 30%; }
+          66%       { transform: translate(3%, -3%) rotate(4deg) scale(0.98); border-radius: 50% 50% 30% 70% / 60% 40% 50% 50%; }
+        }
+        @keyframes morphWave3 {
+          0%, 100% { transform: translateY(0) scaleX(1); }
+          50%       { transform: translateY(-3vh) scaleX(1.04); }
+        }
+        @keyframes shineRibbon {
+          0%, 100% { transform: translateY(0) skewY(-1deg); }
+          50%       { transform: translateY(-2.5vh) skewY(1deg); }
+        }
+        @keyframes flipY {
+          0%   { transform: rotateY(0deg); }
+          100% { transform: rotateY(360deg); }
+        }
+        @keyframes shake {
+          0%,100% { transform: translateX(0); }
+          20%      { transform: translateX(-8px); }
+          40%      { transform: translateX(8px); }
+          60%      { transform: translateX(-6px); }
+          80%      { transform: translateX(6px); }
+        }
+      `}</style>
 
       {/* Glassmorphism card */}
       <div
@@ -387,6 +361,27 @@ function MediaTab() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
+  // Load from Supabase on mount — syncs across all devices
+  useEffect(() => {
+    fetchMedia().then(({ data }) => {
+      if (data && data.length > 0) {
+        const entries: MediaEntry[] = data.map((m) => ({
+          id: m.id,
+          label: m.label,
+          category: m.category,
+          gsm: m.gsm ?? undefined,
+          color: m.color,
+          angle: m.angle,
+          src: m.url,
+          filename: m.filename,
+          uploadedAt: m.created_at,
+        }));
+        saveMedia(entries); // sync to localStorage as cache
+        setMedia(entries);
+      }
+    });
+  }, []);
+
   const handleFiles = (files: File[]) => {
     const readers = files.map(
       (file) =>
@@ -473,7 +468,9 @@ function MediaTab() {
     setSaving(false);
   };
 
-  const deleteMedia = (id: string) => {
+  const deleteMedia = async (id: string) => {
+    // Delete from Supabase DB
+    await import("@/lib/db").then(({ deleteMedia: dbDelete }) => dbDelete(id));
     const updated = media.filter((m) => m.id !== id);
     saveMedia(updated);
     setMedia(updated);
