@@ -60,34 +60,33 @@ const GSM_WEIGHT: Record<Gsm, number> = {
 type StockMap = Record<string, Partial<Record<Size, number>>>;
 
 const INITIAL_STOCK: StockMap = {
-  // ── 230 GSM ──
-  "tee-230-black":      { S: 12, M: 20, L: 15, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-230-sea-blue":   { S: 6,  M: 14, L: 10, XL: 5,  "2XL": 3, "3XL": 0, "4XL": 0 },
-  "tee-230-white":      { S: 18, M: 22, L: 16, XL: 9,  "2XL": 5, "3XL": 3, "4XL": 1 },
-  "tee-230-cream":      { S: 8,  M: 12, L: 9,  XL: 4,  "2XL": 2, "3XL": 1, "4XL": 0 },
-  "tee-230-khaki":      { S: 10, M: 16, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-230-army-green": { S: 7,  M: 11, L: 8,  XL: 3,  "2XL": 1, "3XL": 0, "4XL": 0 },
-  "tee-230-pink":       { S: 14, M: 18, L: 13, XL: 7,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-230-wine":       { S: 5,  M: 9,  L: 7,  XL: 3,  "2XL": 1, "3XL": 0, "4XL": 0 },
-  // ── 260 GSM ──
-  "tee-260-black":      { S: 20, M: 30, L: 25, XL: 12, "2XL": 8, "3XL": 4, "4XL": 2 },
-  "tee-260-sea-blue":   { S: 10, M: 18, L: 14, XL: 7,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-260-white":      { S: 22, M: 28, L: 20, XL: 11, "2XL": 6, "3XL": 3, "4XL": 1 },
-  "tee-260-cream":      { S: 12, M: 16, L: 11, XL: 5,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-260-khaki":      { S: 15, M: 20, L: 16, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-260-army-green": { S: 9,  M: 14, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
-  "tee-260-pink":       { S: 16, M: 22, L: 17, XL: 9,  "2XL": 5, "3XL": 2, "4XL": 0 },
-  "tee-260-wine":       { S: 8,  M: 12, L: 9,  XL: 4,  "2XL": 2, "3XL": 0, "4XL": 0 },
-  // ── 320 GSM ──
-  "tee-320-black":      { S: 14, M: 22, L: 18, XL: 10, "2XL": 6, "3XL": 3, "4XL": 1 },
-  "tee-320-sea-blue":   { S: 7,  M: 12, L: 9,  XL: 4,  "2XL": 2, "3XL": 0, "4XL": 0 },
-  "tee-320-white":      { S: 16, M: 20, L: 15, XL: 8,  "2XL": 4, "3XL": 2, "4XL": 0 },
-  "tee-320-cream":      { S: 9,  M: 13, L: 10, XL: 5,  "2XL": 2, "3XL": 1, "4XL": 0 },
-  "tee-320-khaki":      { S: 11, M: 17, L: 13, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-pink":       { S: 12, M: 16, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-wine":       { S: 5,  M: 8,  L: 6,  XL: 2,  "2XL": 0, "3XL": 0, "4XL": 0 },
-  "tee-320-brown":      { S: 10, M: 15, L: 12, XL: 6,  "2XL": 3, "3XL": 1, "4XL": 0 },
-  "tee-320-grey":       { S: 12, M: 18, L: 14, XL: 7,  "2XL": 4, "3XL": 2, "4XL": 0 },
+  // ── 230 GSM ── all start at 0
+  "tee-230-black":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-sea-blue":   { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-white":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-cream":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-khaki":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-army-green": { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-pink":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-230-wine":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  // ── 260 GSM ── all start at 0
+  "tee-260-black":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-sea-blue":   { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-white":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-cream":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-khaki":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-army-green": { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-pink":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-260-wine":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  // ── 320 GSM ── all start at 0
+  "tee-320-black":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-white":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-cream":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-khaki":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-pink":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-wine":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-brown":      { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
+  "tee-320-grey":       { S: 0, M: 0, L: 0, XL: 0, "2XL": 0, "3XL": 0, "4XL": 0 },
 };
 
 // ─── Build full variant catalogue ─────────────────────────────────────────────

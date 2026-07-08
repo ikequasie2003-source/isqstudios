@@ -13,7 +13,7 @@ import { gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
 import { isAdminAuthenticated, adminLogin, adminLogout } from "@/lib/admin-auth";
 import { seedVariants, fetchOrders, updateOrderStatus, dbSetStock, uploadMediaFile, insertMedia, fetchMedia } from "@/lib/db";
 import { Logo } from "@/components/logo";
-import adminBg from "@/assets/lookbook/qm.jfif";
+import adminBg from "@/assets/lookbook/LUCES GAMER.jfif";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — ISQ Studios" }] }),
@@ -44,30 +44,24 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#080806]">
       {/* GPU-accelerated CSS wave background */}
       <div className="pointer-events-none absolute inset-0">
-        {/* Layer 1 — large bottom-left dark gold wave */}
         <div className="absolute bottom-[-20%] left-[-20%] h-[80vh] w-[80vw] rounded-[60%_40%_30%_70%/60%_30%_70%_40%] bg-[#5a3800] opacity-80"
           style={{ animation: "morphWave1 12s ease-in-out infinite", filter: "blur(40px)" }} />
-        {/* Layer 2 — top-right wave */}
         <div className="absolute right-[-20%] top-[-20%] h-[70vh] w-[70vw] rounded-[40%_60%_70%_30%/40%_50%_60%_50%] bg-[#7a5010] opacity-70"
           style={{ animation: "morphWave2 15s ease-in-out infinite", filter: "blur(50px)" }} />
-        {/* Layer 3 — mid ribbon */}
         <div className="absolute left-[-10%] top-[35%] h-[30vh] w-[120vw] rounded-[50%] bg-[#6b4a08] opacity-60"
           style={{ animation: "morphWave3 10s ease-in-out infinite", filter: "blur(30px)" }} />
-        {/* Layer 4 — bright gold shine ribbon */}
         <div className="absolute left-[-10%] top-[42%] h-[6vh] w-[120vw] rounded-[50%] opacity-90"
           style={{
             background: "linear-gradient(90deg, transparent 0%, #f0d060 20%, #fff8a0 50%, #f0d060 80%, transparent 100%)",
             animation: "shineRibbon 10s ease-in-out infinite",
             filter: "blur(3px)",
           }} />
-        {/* Layer 5 — extra bright core */}
         <div className="absolute left-[-10%] top-[44%] h-[2vh] w-[120vw] rounded-[50%] opacity-60"
           style={{
             background: "linear-gradient(90deg, transparent 0%, #fffde0 30%, #ffffff 50%, #fffde0 70%, transparent 100%)",
             animation: "shineRibbon 10s ease-in-out infinite",
             filter: "blur(1px)",
           }} />
-        {/* Vignette */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(0,0,0,0.75)_100%)]" />
       </div>
 
@@ -198,15 +192,15 @@ function SummaryCard({
   color?: string;
 }) {
   return (
-    <div className="border border-border bg-background p-6">
+    <div className="border border-white/10 bg-white/5 backdrop-blur-sm p-6 rounded-2xl">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] uppercase tracking-[0.32em] text-muted-foreground">{label}</p>
-          <p className={`mt-2 font-display text-3xl ${color ?? ""}`}>{value}</p>
-          {sub && <p className="mt-1 text-xs text-muted-foreground">{sub}</p>}
+          <p className="text-[10px] uppercase tracking-[0.32em] text-white/50">{label}</p>
+          <p className={`mt-2 font-display text-3xl text-white ${color ?? ""}`}>{value}</p>
+          {sub && <p className="mt-1 text-xs text-white/40">{sub}</p>}
         </div>
-        <div className={`rounded-sm p-2 ${color ? "bg-current/10" : "bg-bone"}`}>
-          <Icon className={`h-5 w-5 ${color ?? "text-muted-foreground"}`} />
+        <div className="rounded-sm p-2 bg-white/5">
+          <Icon className={`h-5 w-5 ${color ?? "text-white/40"}`} />
         </div>
       </div>
     </div>
@@ -217,9 +211,9 @@ function SummaryCard({
 
 function AvailPill({ status }: { status: AvailabilityStatus }) {
   const map: Record<AvailabilityStatus, { label: string; cls: string }> = {
-    in_stock:     { label: "In Stock",     cls: "bg-green-50  text-green-700  border-green-200"  },
-    low_stock:    { label: "Low Stock",    cls: "bg-amber-50  text-amber-700  border-amber-200"  },
-    out_of_stock: { label: "Out of Stock", cls: "bg-red-50    text-red-700    border-red-200"    },
+    in_stock:     { label: "In Stock",     cls: "bg-green-900/60  text-green-300  border-green-700"  },
+    low_stock:    { label: "Low Stock",    cls: "bg-amber-900/60  text-amber-300  border-amber-700"  },
+    out_of_stock: { label: "Out of Stock", cls: "bg-red-900/60    text-red-300    border-red-700"    },
   };
   const { label, cls } = map[status];
   return (
@@ -360,6 +354,8 @@ function MediaTab() {
   const [lightbox, setLightbox] = useState<MediaEntry | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   // Load from Supabase on mount — syncs across all devices
   useEffect(() => {
@@ -474,6 +470,17 @@ function MediaTab() {
     const updated = media.filter((m) => m.id !== id);
     saveMedia(updated);
     setMedia(updated);
+  };
+
+  const deleteSelected = async () => {
+    for (const id of Array.from(selected)) {
+      await import("@/lib/db").then(({ deleteMedia: dbDelete }) => dbDelete(id));
+    }
+    const updated = media.filter((m) => !selected.has(m.id));
+    saveMedia(updated);
+    setMedia(updated);
+    setSelected(new Set());
+    setSelectMode(false);
   };
 
   const displayed = media.filter((m) => {
@@ -601,6 +608,37 @@ function MediaTab() {
         <div className="mb-4 flex flex-wrap items-center gap-3">
           <h2 className="text-xs uppercase tracking-[0.24em]">Media Library</h2>
           <span className="text-xs text-muted-foreground">({media.length} images)</span>
+
+          {/* Select mode toggle */}
+          <button
+            onClick={() => { setSelectMode(!selectMode); setSelected(new Set()); }}
+            className={`text-xs uppercase tracking-[0.24em] border px-3 py-1.5 transition-colors ${
+              selectMode ? "border-ink bg-ink text-cream" : "border-border hover:border-ink"
+            }`}
+          >
+            {selectMode ? "Cancel" : "Select"}
+          </button>
+
+          {/* Bulk delete */}
+          {selectMode && selected.size > 0 && (
+            <button
+              onClick={deleteSelected}
+              className="flex items-center gap-1.5 border border-red-500 bg-red-500 px-3 py-1.5 text-xs uppercase tracking-[0.24em] text-white hover:bg-red-600"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              Delete {selected.size} selected
+            </button>
+          )}
+
+          {selectMode && (
+            <button
+              onClick={() => setSelected(new Set(displayed.map((m) => m.id)))}
+              className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            >
+              Select all
+            </button>
+          )}
+
           <div className="ml-auto flex gap-2">
             <select
               value={filterCat}
@@ -630,38 +668,63 @@ function MediaTab() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-            {displayed.map((m) => (
-              <div key={m.id} className="group relative border border-border bg-background">
-                {/* Image */}
+            {displayed.map((m) => {
+              const isSelected = selected.has(m.id);
+              return (
                 <div
-                  className="aspect-[4/5] cursor-zoom-in overflow-hidden bg-bone"
-                  onClick={() => setLightbox(m)}
+                  key={m.id}
+                  className={`group relative border bg-background cursor-pointer transition-all ${
+                    isSelected ? "border-ink ring-2 ring-ink" : "border-border"
+                  }`}
+                  onClick={() => {
+                    if (selectMode) {
+                      const next = new Set(selected);
+                      isSelected ? next.delete(m.id) : next.add(m.id);
+                      setSelected(next);
+                    } else {
+                      setLightbox(m);
+                    }
+                  }}
                 >
-                  <img
-                    src={m.src}
-                    alt={m.label}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
+                  {/* Checkbox in select mode */}
+                  {selectMode && (
+                    <div className={`absolute left-2 top-2 z-10 flex h-5 w-5 items-center justify-center rounded-sm border-2 transition-colors ${
+                      isSelected ? "border-ink bg-ink" : "border-white/80 bg-black/20"
+                    }`}>
+                      {isSelected && <span className="text-[10px] text-white font-bold">✓</span>}
+                    </div>
+                  )}
 
-                {/* Label */}
-                <div className="p-2">
-                  <p className="truncate text-[11px] font-medium">{m.label}</p>
-                  <p className="mt-0.5 truncate text-[10px] text-muted-foreground">{m.filename}</p>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground/60">
-                    {new Date(m.uploadedAt).toLocaleDateString()}
-                  </p>
-                </div>
+                  {/* Image */}
+                  <div className="aspect-[4/5] overflow-hidden bg-bone">
+                    <img
+                      src={m.src}
+                      alt={m.label}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
 
-                {/* Delete button */}
-                <button
-                  onClick={() => deleteMedia(m.id)}
-                  className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center bg-background/90 text-muted-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:text-red-500"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-            ))}
+                  {/* Label */}
+                  <div className="p-2">
+                    <p className="truncate text-[11px] font-medium">{m.label}</p>
+                    <p className="mt-0.5 truncate text-[10px] text-muted-foreground">{m.filename}</p>
+                    <p className="mt-0.5 text-[10px] text-muted-foreground/60">
+                      {new Date(m.uploadedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+
+                  {/* Single delete button (non-select mode) */}
+                  {!selectMode && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); deleteMedia(m.id); }}
+                      className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center bg-background/90 text-muted-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:text-red-500"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -995,9 +1058,60 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
     );
 
   return (
-    <div className="min-h-screen bg-bone/40 text-foreground">
+    <div className="relative min-h-screen text-foreground">
+      {/* ── Premium ambient background ── */}
+      {/* Base dark */}
+      <div className="pointer-events-none fixed inset-0 bg-[#06050a]" />
+
+      {/* Hexagon texture — with gold filter applied directly to image */}
+      <div
+        className="pointer-events-none fixed inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+        style={{
+          backgroundImage: `url(${adminBg})`,
+          filter: "sepia(1) saturate(3) hue-rotate(5deg) brightness(0.8)",
+        }}
+      />
+
+      {/* Dark overlay for readability */}
+      <div className="pointer-events-none fixed inset-0 bg-black/75" />
+      <div className="pointer-events-none fixed inset-0"
+        style={{ background: "radial-gradient(ellipse 70% 60% at 10% 90%, rgba(180,110,0,0.35) 0%, transparent 70%)" }} />
+
+      {/* Gold ambient glow — top right */}
+      <div className="pointer-events-none fixed inset-0"
+        style={{ background: "radial-gradient(ellipse 60% 50% at 95% 5%, rgba(210,150,20,0.25) 0%, transparent 65%)" }} />
+
+      {/* Warm mid glow — centre */}
+      <div className="pointer-events-none fixed inset-0"
+        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 55%, rgba(160,90,0,0.15) 0%, transparent 70%)" }} />
+
+      {/* Thin gold horizon line */}
+      <div className="pointer-events-none fixed left-0 right-0 h-px opacity-30"
+        style={{ top: "50%", background: "linear-gradient(90deg, transparent 0%, #f0c840 20%, #fff8a0 50%, #f0c840 80%, transparent 100%)" }} />
+
+      {/* Vignette */}
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_35%,_rgba(0,0,0,0.85)_100%)]" />
+      <div className="relative z-10 admin-dark">
+      <style>{`
+        .admin-dark .bg-background { background-color: rgba(8,6,4,0.88) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .admin-dark .bg-bone, .admin-dark .bg-bone\\/40, .admin-dark .bg-bone\\/60 { background-color: rgba(15,12,4,0.75) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .admin-dark [class*="border border-"] { border-radius: 1rem !important; background: rgba(255,200,60,0.04) !important; backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; border-color: rgba(255,200,80,0.18) !important; }
+        .admin-dark .overflow-x-auto { border-radius: 1rem !important; overflow: hidden; backdrop-filter: blur(14px); background: rgba(255,200,60,0.04) !important; }
+        .admin-dark .overflow-hidden.border { border-radius: 1rem !important; backdrop-filter: blur(14px); background: rgba(255,200,60,0.04) !important; }
+        .admin-dark .text-foreground { color: rgba(255,248,230,1) !important; }
+        .admin-dark .text-muted-foreground { color: rgba(220,185,110,0.8) !important; }
+        .admin-dark p, .admin-dark span, .admin-dark td, .admin-dark th, .admin-dark label, .admin-dark h1, .admin-dark h2, .admin-dark h3 { color: rgba(255,248,230,0.95) !important; }
+        .admin-dark .text-xs, .admin-dark .text-sm, .admin-dark .text-base { color: rgba(255,248,230,0.92) !important; }
+        .admin-dark table { background: transparent !important; }
+        .admin-dark tbody tr:hover { background-color: rgba(180,130,0,0.1) !important; }
+        .admin-dark thead tr { background-color: rgba(0,0,0,0.5) !important; }
+        .admin-dark input, .admin-dark select { background-color: rgba(15,12,4,0.8) !important; color: rgba(255,248,230,0.95) !important; border-color: rgba(255,200,80,0.25) !important; }
+        .admin-dark .bg-ink { background-color: #c8992a !important; }
+        .admin-dark .text-cream { color: #060400 !important; }
+        .admin-dark .opacity-50, .admin-dark .text-muted-foreground\\/60 { opacity: 0.8 !important; color: rgba(220,185,110,0.8) !important; }
+      `}</style>
       {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-white/8 bg-black/50 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <a href="/" className="flex items-center">
@@ -1151,10 +1265,11 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                 value={filterGsm}
                 onChange={(e) => setFilterGsm(e.target.value as Gsm | "all")}
                 className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+                style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}
               >
-                <option value="all">All GSM</option>
+                <option value="all" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>All GSM</option>
                 {gsmOptions.map((g) => (
-                  <option key={g.value} value={g.value}>{g.label}</option>
+                  <option key={g.value} value={g.value} style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>{g.label}</option>
                 ))}
               </select>
 
@@ -1163,9 +1278,10 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                 value={filterColor}
                 onChange={(e) => setFilterColor(e.target.value)}
                 className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+                style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}
               >
-                <option value="all">All Colors</option>
-                {colors.map((c) => <option key={c} value={c}>{c}</option>)}
+                <option value="all" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>All Colors</option>
+                {colors.map((c) => <option key={c} value={c} style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>{c}</option>)}
               </select>
 
               {/* Status filter */}
@@ -1173,11 +1289,12 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                 value={filterStatus}
                 onChange={(e) => setFilterStatus(e.target.value as AvailabilityStatus | "all")}
                 className="border border-border bg-background px-3 py-2 text-xs uppercase tracking-widest outline-none"
+                style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}
               >
-                <option value="all">All Status</option>
-                <option value="in_stock">In Stock</option>
-                <option value="low_stock">Low Stock</option>
-                <option value="out_of_stock">Out of Stock</option>
+                <option value="all" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>All Status</option>
+                <option value="in_stock" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>In Stock</option>
+                <option value="low_stock" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>Low Stock</option>
+                <option value="out_of_stock" style={{ backgroundColor: "#0a0800", color: "#fff8e0" }}>Out of Stock</option>
               </select>
 
               <span className="ml-auto text-xs text-muted-foreground">
@@ -1187,14 +1304,13 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
 
             {/* Table */}
             <div className="overflow-x-auto border border-border bg-background">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b border-border bg-bone/60">
+                  <tr className="border-b border-border/50">
                     {(
                       [
-                        { key: "sku", label: "SKU" },
-                        { key: "gsm", label: "GSM" },
                         { key: "color", label: "Color" },
+                        { key: "gsm", label: "GSM" },
                         { key: "size", label: "Size" },
                         { key: "price", label: "Price" },
                         { key: "qty", label: "Stock" },
@@ -1204,25 +1320,19 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                       <th
                         key={key}
                         onClick={() => handleSort(key)}
-                        className="cursor-pointer select-none px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
+                        className="cursor-pointer select-none px-3 py-2.5 text-left text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground"
                       >
                         <div className="flex items-center gap-1">
                           {label} <SortIcon k={key} />
                         </div>
                       </th>
                     ))}
-                    <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Weight
-                    </th>
-                    <th className="px-4 py-3 text-left text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Barcode
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filtered.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="px-4 py-16 text-center text-sm text-muted-foreground">
+                      <td colSpan={6} className="px-3 py-12 text-center text-sm text-muted-foreground">
                         No variants match your filters
                       </td>
                     </tr>
@@ -1230,34 +1340,32 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
                     filtered.map((v) => (
                       <tr
                         key={v.sku}
-                        className={`border-b border-border/40 last:border-0 transition-colors hover:bg-bone/40 ${
-                          v.availability === "out_of_stock" ? "opacity-50" : ""
+                        className={`border-b border-border/30 last:border-0 transition-colors hover:bg-white/5 ${
+                          v.availability === "out_of_stock" ? "opacity-40" : ""
                         }`}
                       >
-                        <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{v.sku}</td>
-                        <td className="px-4 py-3 text-xs">{v.gsm} GSM</td>
-                        <td className="px-4 py-3">
+                        <td className="px-3 py-2">
                           <div className="flex items-center gap-2">
                             <span
-                              className="h-3 w-3 rounded-full border border-border/50 shrink-0"
+                              className="h-2.5 w-2.5 rounded-full shrink-0"
                               style={{
                                 backgroundColor:
                                   { Black: "#111", "Sea Blue": "#5b7f8a", White: "#f5f2ea", Cream: "#e9dfc9",
                                     Khaki: "#a08b6a", "Army Green": "#4a5238", Pink: "#d8a9a3", Wine: "#5c1f28",
+                                    Brown: "#6b4226", Grey: "#9e9e9e",
                                   }[v.color] ?? "#ccc",
                               }}
                             />
                             {v.color}
                           </div>
                         </td>
-                        <td className="px-4 py-3 font-mono text-xs">{v.size}</td>
-                        <td className="px-4 py-3 tabular-nums">${v.price}</td>
-                        <td className="px-4 py-3">
+                        <td className="px-3 py-2 text-muted-foreground">{v.gsm}</td>
+                        <td className="px-3 py-2 font-mono">{v.size}</td>
+                        <td className="px-3 py-2 tabular-nums">${v.price}</td>
+                        <td className="px-3 py-2">
                           <StockEditor variant={v} onUpdate={refresh} />
                         </td>
-                        <td className="px-4 py-3"><AvailPill status={v.availability} /></td>
-                        <td className="px-4 py-3 text-xs text-muted-foreground">{v.weight}g</td>
-                        <td className="px-4 py-3 font-mono text-[11px] text-muted-foreground">{v.barcode}</td>
+                        <td className="px-3 py-2"><AvailPill status={v.availability} /></td>
                       </tr>
                     ))
                   )}
@@ -1270,6 +1378,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
         {activeTab === "media" && <MediaTab />}
         {activeTab === "orders" && <OrdersTab />}
         {activeTab === "database" && <DatabaseTab />}
+      </div>
       </div>
     </div>
   );
