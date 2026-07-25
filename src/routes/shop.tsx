@@ -15,7 +15,10 @@ export const Route = createFileRoute("/shop")({
       { name: "description", content: "Shop all ISQ Studios tees. Premium cotton, minimal design." },
     ],
   }),
-  validateSearch: (s: Record<string, unknown>) => ({ q: typeof s.q === "string" ? s.q : "" }),
+  validateSearch: (s: Record<string, unknown>) => ({
+    q: typeof s.q === "string" ? s.q : "",
+    cat: typeof s.cat === "string" ? s.cat : "",
+  }),
   component: ShopPage,
 });
 
@@ -441,8 +444,8 @@ function FilterPanel({
 // ─── Main Shop ────────────────────────────────────────────────────────────────
 
 function Shop() {
-  const { q: initialQ } = Route.useSearch();
-  const [category, setCategory] = useState<"tees" | "caps">("tees");
+  const { q: initialQ, cat: initialCat } = Route.useSearch();
+  const [category, setCategory] = useState<"tees" | "caps">(initialCat === "caps" ? "caps" : "tees");
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [sort, setSort] = useState<SortOption>("featured");
   const [drawerOpen, setDrawerOpen] = useState(false);

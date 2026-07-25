@@ -13,6 +13,11 @@ import lb8 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_42_37 PM - Copy
 import lbVideo from "@/assets/lookbook/qv.mp4";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
+import teeBlack from "@/assets/tee-black.jpg";
+import teeWhite from "@/assets/tee-white.jpg";
+import capBlack from "@/assets/cap-black.jpg";
+import capFlatlay from "@/assets/lookbook/qk.png";
+import teeRack from "@/assets/lookbook/ql.png";
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
@@ -70,37 +75,40 @@ function TopBanner() {
 
 function Hero() {
   return (
-    <section className="relative">
-      <div className="grid grid-cols-1 lg:grid-cols-12">
-        <div className="order-2 flex flex-col justify-between px-6 py-14 lg:order-1 lg:col-span-5 lg:px-14 lg:py-24">
-          <div className="eyebrow">Collection 001 — Essentials</div>
-          <div className="mt-10 lg:mt-0">
-            <h1 className="font-display text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.95]">
+    <section className="relative h-[100vh] min-h-[600px] overflow-hidden">
+      {/* Full-bleed editorial photo */}
+      <img
+        src={heroImg}
+        alt="ISQ Studios — The Reckless Culture"
+        className="absolute inset-0 h-full w-full object-cover object-center"
+      />
+      {/* Dark gradient overlay — bottom heavy so text on left reads */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+      {/* Content — left aligned, vertically centred */}
+      <div className="relative z-10 flex h-full items-center">
+        <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-14">
+          <div className="max-w-xl">
+            <div className="eyebrow text-cream/60">Collection 001 — Essentials</div>
+            <h1 className="mt-4 font-display text-[clamp(3rem,7vw,6.5rem)] leading-[0.92] text-white">
               The Reckless<br />Culture.
             </h1>
-            <p className="mt-6 max-w-md text-base text-foreground/70">
-              Minimal essentials designed for everyday expression. Heavyweight cotton, considered cuts,
-              nothing loud.
+            <p className="mt-6 max-w-md text-base text-white/60">
+              Minimal essentials designed for everyday expression. Heavyweight cotton, considered cuts, nothing loud.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="#tees" className="group inline-flex items-center justify-center gap-2 bg-ink px-8 py-4 text-xs uppercase tracking-[0.24em] text-cream">
-                Shop T-Shirts <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a href="#caps" className="group inline-flex items-center justify-center gap-2 border border-ink px-8 py-4 text-xs uppercase tracking-[0.24em] hover:bg-ink hover:text-cream">
-                Shop Caps <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </a>
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             </div>
           </div>
-          <div className="mt-14 flex items-center gap-6 text-[10px] uppercase tracking-[0.32em] text-muted-foreground lg:mt-0">
-            <span>ISQ / Studios</span>
-            <span className="hairline flex-1" />
-            <span>MMXXVI</span>
-          </div>
         </div>
-        <div className="order-1 lg:order-2 lg:col-span-7">
-          <div className="relative h-[70vh] min-h-[520px] w-full lg:h-[calc(100vh-6rem)]">
-            <img src={heroImg} alt="Two models wearing ISQ Studios essentials" width={1600} height={1024} className="h-full w-full object-cover" />
-          </div>
+      </div>
+
+      {/* Bottom meta bar */}
+      <div className="absolute bottom-6 left-0 right-0 z-10">
+        <div className="mx-auto flex max-w-[1400px] items-center gap-6 px-6 text-[10px] uppercase tracking-[0.32em] text-white/30 lg:px-14">
+          <span>ISQ / Studios</span>
+          <span className="flex-1 border-t border-white/10" />
+          <span>MMXXVI</span>
         </div>
       </div>
     </section>
@@ -124,80 +132,46 @@ function Marquee() {
 }
 
 function Tees() {
-  const [gsm, setGsm] = useState<Gsm>("260");
-  const [color, setColor] = useState<string>("All");
-  const activeGsm = gsmOptions.find((g) => g.value === gsm)!;
-  const colorOptions = useMemo(
-    () => Array.from(new Map(tees.filter((t) => t.gsm === gsm).map((t) => [t.color, t.swatch])).entries()),
-    [gsm],
-  );
-  const filtered = useMemo(
-    () => tees.filter((t) => t.gsm === gsm && (color === "All" || t.color === color)),
-    [gsm, color],
-  );
-
   return (
-    <section id="tees" className="mx-auto max-w-[1400px] px-6 py-24 lg:px-14 lg:py-32">
-      <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <div>
-          <div className="eyebrow">The Tee — 001</div>
-          <h2 className="mt-3 font-display text-4xl md:text-5xl">Plain, not plain.</h2>
+    <section id="tees" className="relative overflow-hidden">
+      {/* Full-bleed tee image */}
+      <div className="relative h-[85vh] min-h-[560px]">
+        <img
+          src={teeRack}
+          alt="ISQ Studios Essential Tee"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+          style={{ animation: "teeSwing 6s ease-in-out infinite", transformOrigin: "top center" }}
+        />
+        <style>{`
+          @keyframes teeSwing {
+            0%, 100% { transform: rotate(-3deg) scale(1.05); }
+            50%       { transform: rotate(3deg) scale(1.05); }
+          }
+        `}</style>
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 flex h-full items-center">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-14">
+            <div className="max-w-lg">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-[#b8952a]">Collection 001</p>
+              <h2 className="mt-3 font-display text-5xl leading-[0.95] text-white md:text-6xl">
+                The Tee.
+              </h2>
+              <p className="mt-5 max-w-xs text-sm text-white/55">
+                100% ring-spun cotton. Three weights. Eight tones. One silhouette.
+              </p>
+              <a
+                href="/shop?cat=tees"
+                className="mt-8 inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#b8952a] hover:bg-[#b8952a]/20"
+              >
+                Shop T-Shirts <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
+          </div>
         </div>
-        <p className="max-w-sm text-sm text-foreground/70">{activeGsm.blurb}</p>
-      </div>
-
-      <div className="mt-10 grid grid-cols-3 gap-2 border-y border-border py-4 sm:flex sm:gap-0">
-        {gsmOptions.map((g) => {
-          const active = g.value === gsm;
-          return (
-            <button
-              key={g.value}
-              onClick={() => {
-                setGsm(g.value);
-                setColor("All");
-              }}
-              className={`flex flex-1 flex-col items-center justify-center gap-1 border px-4 py-3 text-[11px] uppercase tracking-[0.24em] transition-colors sm:border-0 sm:border-r sm:last:border-r-0 ${
-                active ? "border-ink bg-ink text-cream sm:bg-transparent sm:text-foreground sm:underline sm:underline-offset-8" : "border-border text-muted-foreground hover:text-foreground"
-              }`}
-              aria-pressed={active}
-            >
-              <span>{g.label}</span>
-              <span className="text-[10px] tracking-[0.2em] opacity-70">${g.price}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 text-xs uppercase tracking-[0.24em]">
-        <span className="text-muted-foreground">Color</span>
-        <button
-          onClick={() => setColor("All")}
-          className={`transition-colors ${color === "All" ? "text-foreground underline underline-offset-4" : "text-muted-foreground hover:text-foreground"}`}
-        >
-          All
-        </button>
-        <div className="flex flex-wrap items-center gap-2">
-          {colorOptions.map(([c, sw]) => {
-            const active = color === c;
-            return (
-              <button
-                key={c}
-                onClick={() => setColor(c)}
-                title={c}
-                aria-label={c}
-                aria-pressed={active}
-                className={`h-6 w-6 rounded-full border transition-all ${active ? "border-ink ring-2 ring-ink ring-offset-2 ring-offset-background" : "border-border hover:border-ink"}`}
-                style={{ backgroundColor: sw }}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4">
-        {filtered.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
       </div>
     </section>
   );
@@ -206,21 +180,59 @@ function Tees() {
 
 function Caps() {
   return (
-    <section id="caps" className="border-t border-border bg-bone/50">
-      <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-14 lg:py-32">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <div className="eyebrow">The Cap — 002</div>
-            <h2 className="mt-3 font-display text-4xl md:text-5xl">Trucker, refined.</h2>
-          </div>
-          <p className="max-w-sm text-sm text-foreground/70">
-            Structured six-panel. Cotton twill front, breathable mesh back. Adjustable snap.
-          </p>
+    <section id="caps" className="relative overflow-hidden">
+      <div className="relative h-[85vh] min-h-[560px]">
+        {/* Two grey caps facing opposite directions */}
+        <div className="absolute inset-0 flex items-center justify-between gap-8 bg-white px-16">
+          {/* Cap 1 — facing right */}
+          <img
+            src={capFlatlay}
+            alt="Trucker Cap"
+            className="h-[95%] w-auto object-contain"
+            style={{ animation: "capLeft 6s ease-in-out infinite" }}
+          />
+          {/* Cap 2 — facing left (mirrored) */}
+          <img
+            src={capFlatlay}
+            alt="Trucker Cap"
+            className="h-[95%] w-auto object-contain"
+            style={{ animation: "capRight 6s ease-in-out infinite 1s" }}
+          />
         </div>
-        <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
-          {caps.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+        <style>{`
+          @keyframes capLeft {
+            0%, 100% { transform: scaleX(-1) rotate(8deg) translateY(0); }
+            50%       { transform: scaleX(-1) rotate(5deg) translateY(-10px); }
+          }
+          @keyframes capRight {
+            0%, 100% { transform: rotate(-8deg) translateY(0); }
+            50%       { transform: rotate(-5deg) translateY(-10px); }
+          }
+        `}</style>
+        {/* Gradient — darkens bottom for text, keeps cap visible */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/5" />
+
+        {/* Content — bottom left */}
+        <div className="relative z-10 flex h-full items-end">
+          <div className="mx-auto w-full max-w-[1400px] px-6 pb-14 lg:px-14 lg:pb-20">
+            <div className="max-w-lg">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-[#b8952a]">Collection 002</p>
+              <h2 className="mt-3 font-display text-5xl leading-[0.95] text-white md:text-6xl">
+                The Cap.
+              </h2>
+              <p className="mt-5 max-w-xs text-sm text-white/55">
+                Structured six-panel. Cotton twill front, breathable mesh back. Adjustable snap.
+              </p>
+              <div className="mt-8">
+                <a
+                  href="/shop?cat=caps"
+                  className="inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#b8952a] hover:bg-[#b8952a]/20"
+                >
+                  Shop Caps <ArrowRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
