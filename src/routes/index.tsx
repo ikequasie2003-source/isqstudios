@@ -75,12 +75,12 @@ function TopBanner() {
 
 function Hero() {
   return (
-    <section className="relative h-[100vh] min-h-[600px] overflow-hidden">
+    <section className="relative h-[100svh] min-h-[500px] overflow-hidden">
       {/* Full-bleed editorial photo */}
       <img
         src={heroImg}
         alt="ISQ Studios — The Reckless Culture"
-        className="absolute inset-0 h-full w-full object-cover object-center"
+        className="absolute inset-0 h-full w-full object-cover object-top"
       />
       {/* Dark gradient overlay — bottom heavy so text on left reads */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
