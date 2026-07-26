@@ -2,7 +2,7 @@
 // Change ADMIN_PASSWORD to something only you know.
 // For production, replace this with proper backend auth (Supabase, Clerk, etc.)
 
-const ADMIN_PASSWORD = "isqstudios2024";
+const ADMIN_PASSWORD = "isqstudios2026";
 const SESSION_KEY = "isq_admin_session";
 const SESSION_VALUE = "granted";
 
