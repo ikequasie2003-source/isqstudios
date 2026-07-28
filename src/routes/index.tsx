@@ -378,6 +378,16 @@ function Footer() {
           <div className="flex items-center gap-4">
             <a href="#" aria-label="Instagram" className="hover:text-foreground"><Instagram className="h-4 w-4" /></a>
             <a href="#" aria-label="Twitter" className="hover:text-foreground"><Twitter className="h-4 w-4" /></a>
+            <a href="mailto:ikequasie2003@gmail.com" aria-label="Email" className="hover:text-foreground">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75" />
+              </svg>
+            </a>
+            <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat" className="hover:text-foreground">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.002 2C8.667 2 6.667 4.002 6.667 7.335v.668c-.668.168-1.336.502-1.336.502s-.166.5.168.668c0 0-.502.334-.502.836 0 .334.168.668.502.836 0 0-.334.668-.334 1.17 0 .334.166.668.5.836-.168.334-.668 1.002-1.336 1.17-.668.168-1.502.334-1.67.836-.166.502.502.836 1.17 1.004.668.168 1.002.334 1.17.668.166.334-.168 1.336-.336 1.67-.166.336.168.502.504.336.668-.336 1.502-.836 2.504-.836.5 0 1.002.168 1.336.334.502.334 1.004.668 1.506.668s1.002-.334 1.504-.668c.334-.166.836-.334 1.336-.334 1.002 0 1.836.5 2.506.836.334.166.668 0 .502-.336-.168-.334-.502-1.336-.336-1.67.168-.334.502-.5 1.17-.668.668-.168 1.336-.502 1.17-1.004-.166-.502-1-.668-1.67-.836-.668-.168-1.168-.836-1.336-1.17.334-.168.5-.502.5-.836 0-.502-.502-.836-.502-.836.334-.168.502-.5.502-.836 0-.502-.502-.836-.502-.836.334-.168.168-.668.168-.668s-.668-.334-1.336-.502v-.668C17.335 4.002 15.335 2 12.002 2z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
