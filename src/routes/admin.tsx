@@ -1174,10 +1174,10 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`pb-3 text-xs uppercase tracking-[0.24em] transition-colors ${
+                className={`pb-3 px-4 text-xs uppercase tracking-[0.24em] transition-all rounded-t-lg ${
                   activeTab === tab
-                    ? "border-b-2 border-ink text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "border-b-2 border-[#b8952a] text-[#e8c55a] bg-[#b8952a]/10"
+                    : "text-white/40 hover:text-white/70 hover:bg-white/5"
                 }`}
               >
                 {tab}
