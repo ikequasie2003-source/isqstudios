@@ -109,7 +109,7 @@ function AvailabilityBadge({ totalStock }: { totalStock: number }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 function ProductDetail() {
-  const base = Route.useLoaderData();
+  const base = Route.useLoaderData() as Product;
   const { add, setOpen } = useCart();
 
   if (!base) throw notFound();
