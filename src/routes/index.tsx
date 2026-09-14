@@ -377,7 +377,11 @@ function Footer() {
           <p>© {new Date().getFullYear()} ISQ Studios. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-foreground"><Instagram className="h-6 w-6" /></a>
-            <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X" className="hover:text-foreground"><X className="h-6 w-6" /></a>
+            <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X" className="hover:text-foreground">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
             <a href="mailto:ikequasie2003@gmail.com" aria-label="Email" className="hover:text-foreground">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75" />
