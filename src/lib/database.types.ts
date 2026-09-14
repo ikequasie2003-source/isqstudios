@@ -21,6 +21,7 @@ export type Database = {
         };
         Insert: Omit<Database["public"]["Tables"]["variants"]["Row"], "id" | "created_at" | "updated_at">;
         Update: Partial<Database["public"]["Tables"]["variants"]["Insert"]>;
+        Relationships: never[];
       };
       orders: {
         Row: {
@@ -37,6 +38,13 @@ export type Database = {
         };
         Insert: Omit<Database["public"]["Tables"]["orders"]["Row"], "id" | "created_at" | "updated_at">;
         Update: Partial<Database["public"]["Tables"]["orders"]["Insert"]>;
+        Relationships: {
+          foreignKeyName: "order_items_order_id_fkey";
+          columns: ["id"];
+          isOneToOne: false;
+          referencedRelation: "order_items";
+          referencedColumns: ["order_id"];
+        }[];
       };
       order_items: {
         Row: {
@@ -54,6 +62,13 @@ export type Database = {
         };
         Insert: Omit<Database["public"]["Tables"]["order_items"]["Row"], "id" | "created_at">;
         Update: Partial<Database["public"]["Tables"]["order_items"]["Insert"]>;
+        Relationships: {
+          foreignKeyName: "order_items_order_id_fkey";
+          columns: ["order_id"];
+          isOneToOne: false;
+          referencedRelation: "orders";
+          referencedColumns: ["id"];
+        }[];
       };
       media: {
         Row: {
@@ -69,7 +84,20 @@ export type Database = {
         };
         Insert: Omit<Database["public"]["Tables"]["media"]["Row"], "id" | "created_at">;
         Update: Partial<Database["public"]["Tables"]["media"]["Insert"]>;
+        Relationships: never[];
       };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
 };
