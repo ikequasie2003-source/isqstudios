@@ -105,6 +105,7 @@ export async function createOrder(params: CreateOrderParams) {
       subtotal: params.subtotal,
       shipping,
       total,
+      notes: null,
     })
     .select()
     .single();

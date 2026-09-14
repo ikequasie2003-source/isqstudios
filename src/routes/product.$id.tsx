@@ -4,7 +4,7 @@ import { Minus, Plus, ShoppingBag, Truck, RotateCcw, Shield, ChevronDown } from 
 import { CartProvider } from "@/lib/cart";
 import { Header, CartDrawer } from "@/components/site-chrome";
 import { useCart } from "@/lib/cart";
-import { tees, gsmOptions, sizes, type Gsm, type Size } from "@/lib/products";
+import { tees, gsmOptions, sizes, type Gsm, type Size, type Product } from "@/lib/products";
 import { ProductGallery } from "@/components/product-gallery";
 import { getQty, getTotalQty, getAvailability, getVariant } from "@/lib/inventory";
 import { resolveGalleryImages } from "@/lib/media-resolver";
@@ -109,8 +109,10 @@ function AvailabilityBadge({ totalStock }: { totalStock: number }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 function ProductDetail() {
-  const base = Route.useLoaderData();
+  const base = Route.useLoaderData() as Product;
   const { add, setOpen } = useCart();
+
+  if (!base) throw notFound();
 
   const [gsm, setGsm] = useState<Gsm>((base.gsm as Gsm) ?? "260");
   const [color, setColor] = useState<string>(base.color);
