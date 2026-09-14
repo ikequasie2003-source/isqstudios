@@ -112,6 +112,8 @@ function ProductDetail() {
   const base = Route.useLoaderData();
   const { add, setOpen } = useCart();
 
+  if (!base) throw notFound();
+
   const [gsm, setGsm] = useState<Gsm>((base.gsm as Gsm) ?? "260");
   const [color, setColor] = useState<string>(base.color);
   const [size, setSize] = useState<Size | null>(null);
