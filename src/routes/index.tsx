@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowRight, Instagram } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
 import lb1 from "@/assets/lookbook/q.png";
 import lb2 from "@/assets/lookbook/qa.png";
@@ -376,20 +376,51 @@ function Footer() {
         <div className="mx-auto flex max-w-[1400px] flex-col-reverse items-center justify-between gap-4 px-6 py-6 text-xs text-muted-foreground md:flex-row lg:px-14">
           <p>© {new Date().getFullYear()} ISQ Studios. All rights reserved.</p>
           <div className="flex items-center gap-5">
-            <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-foreground"><Instagram className="h-6 w-6" /></a>
-            <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="hover:text-foreground">
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.918l4.259 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
+            {/* Instagram */}
+            <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="ig-grad1" cx="30%" cy="107%" r="120%">
+                    <stop offset="0%" stopColor="#fdf497"/>
+                    <stop offset="5%" stopColor="#fdf497"/>
+                    <stop offset="45%" stopColor="#fd5949"/>
+                    <stop offset="60%" stopColor="#d6249f"/>
+                    <stop offset="90%" stopColor="#285AEB"/>
+                  </radialGradient>
+                </defs>
+                <rect width="24" height="24" rx="6" fill="url(#ig-grad1)"/>
+                <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="white"/>
+                <circle cx="16.5" cy="7.5" r="1" fill="white"/>
+                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="white" strokeWidth="1.5" fill="none"/>
               </svg>
             </a>
-            <a href="mailto:ikequasie2003@gmail.com" aria-label="Email" className="hover:text-foreground">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0l-9.75 6.75L2.25 6.75" />
+            {/* X (Twitter) */}
+            <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="6" fill="black"/>
+                <path d="M18.244 4.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 4.25h6.918l4.259 5.632L18.244 4.25zm-1.161 17.52h1.833L7.084 6.126H5.117L17.083 21.77z" fill="white"/>
               </svg>
             </a>
-            <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat" className="hover:text-foreground">
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.002 2C8.667 2 6.667 4.002 6.667 7.335v.668c-.668.168-1.336.502-1.336.502s-.166.5.168.668c0 0-.502.334-.502.836 0 .334.168.668.502.836 0 0-.334.668-.334 1.17 0 .334.166.668.5.836-.168.334-.668 1.002-1.336 1.17-.668.168-1.502.334-1.67.836-.166.502.502.836 1.17 1.004.668.168 1.002.334 1.17.668.166.334-.168 1.336-.336 1.67-.166.336.168.502.504.336.668-.336 1.502-.836 2.504-.836.5 0 1.002.168 1.336.334.502.334 1.004.668 1.506.668s1.002-.334 1.504-.668c.334-.166.836-.334 1.336-.334 1.002 0 1.836.5 2.506.836.334.166.668 0 .502-.336-.168-.334-.502-1.336-.336-1.67.168-.334.502-.5 1.17-.668.668-.168 1.336-.502 1.17-1.004-.166-.502-1-.668-1.67-.836-.668-.168-1.168-.836-1.336-1.17.334-.168.5-.502.5-.836 0-.502-.502-.836-.502-.836.334-.168.502-.5.502-.836 0-.502-.502-.836-.502-.836.334-.168.168-.668.168-.668s-.668-.334-1.336-.502v-.668C17.335 4.002 15.335 2 12.002 2z"/>
+            {/* Gmail */}
+            <a href="mailto:ikequasie2003@gmail.com" aria-label="Gmail">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="4" fill="white"/>
+                <path d="M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 17.5V6.5z" fill="white" stroke="#e0e0e0" strokeWidth="0.5"/>
+                <path d="M4 6l8 6 8-6" stroke="none" fill="none"/>
+                <path d="M4.5 4h-2A2.5 2.5 0 0 0 2 6.5V18h3.5V8.5L12 13l6.5-4.5V18H22V6.5A2.5 2.5 0 0 0 19.5 4h-2L12 8.5 4.5 4z" fill="#EA4335"/>
+                <path d="M2 6.5V18h3.5V8.5L2 6.5z" fill="#34A853"/>
+                <path d="M18.5 8.5V18H22V6.5L18.5 8.5z" fill="#FBBC05"/>
+                <path d="M2 18h3.5v-9.5l-3.5-2V18z" fill="#34A853"/>
+                <path d="M22 6.5l-3.5 2V18H22V6.5z" fill="#FBBC05"/>
+                <path d="M2 6.5l10 7 10-7-10-6.5-10 6.5z" fill="#EA4335"/>
+                <path d="M5.5 8.5V18h13V8.5L12 13.5 5.5 8.5z" fill="white"/>
+              </svg>
+            </a>
+            {/* Snapchat */}
+            <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="6" fill="#FFFC00"/>
+                <path d="M12.002 4C9.335 4 7.667 5.668 7.667 8.335v.5c-.5.125-1 .375-1 .375s-.125.375.125.5c0 0-.375.25-.375.625 0 .25.125.5.375.625 0 0-.25.5-.25.875 0 .25.125.5.375.625-.125.25-.5.75-1 .875-.5.125-1.125.25-1.25.625-.125.375.375.625.875.75.5.125.75.25.875.5.125.25-.125 1-.25 1.25-.125.25.125.375.375.25.5-.25 1.125-.625 1.875-.625.375 0 .75.125 1 .25.375.25.75.5 1.125.5s.75-.25 1.125-.5c.25-.125.625-.25 1-.25.75 0 1.375.375 1.875.625.25.125.5 0 .375-.25-.125-.25-.375-1-.25-1.25.125-.25.375-.375.875-.5.5-.125 1-.375.875-.75-.125-.375-.75-.5-1.25-.625-.5-.125-.875-.625-1-.875.25-.125.375-.375.375-.625 0-.375-.375-.625-.375-.625.25-.125.375-.375.375-.625 0-.375-.375-.625-.375-.625.25-.125.125-.5.125-.5s-.5-.25-1-.375v-.5C16.335 5.668 14.667 4 12.002 4z" fill="black"/>
               </svg>
             </a>
           </div>
