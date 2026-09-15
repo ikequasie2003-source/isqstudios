@@ -341,56 +341,6 @@ function Newsletter() {
         <button className="px-2 py-3 text-xs uppercase tracking-[0.24em]">Subscribe →</button>
       </form>
       {ok && <p className="mt-4 text-xs uppercase tracking-[0.24em] text-gold">Welcome to the culture.</p>}
-      {/* Social icons below newsletter */}
-      <div className="mt-10 flex items-center justify-center gap-5">
-        {/* Instagram */}
-        <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram">
-          <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="ig-grad2" cx="30%" cy="107%" r="120%">
-                <stop offset="0%" stopColor="#fdf497"/>
-                <stop offset="5%" stopColor="#fdf497"/>
-                <stop offset="45%" stopColor="#fd5949"/>
-                <stop offset="60%" stopColor="#d6249f"/>
-                <stop offset="90%" stopColor="#285AEB"/>
-              </radialGradient>
-            </defs>
-            <rect width="24" height="24" rx="6" fill="url(#ig-grad2)"/>
-            <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="white"/>
-            <circle cx="16.5" cy="7.5" r="1" fill="white"/>
-            <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="white" strokeWidth="1.5" fill="none"/>
-          </svg>
-        </a>
-        {/* X (Twitter) */}
-        <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)">
-          <svg className="h-8 w-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="6" fill="black"/>
-            <path d="M18.244 4.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 4.25h6.918l4.259 5.632L18.244 4.25zm-1.161 17.52h1.833L7.084 6.126H5.117L17.083 21.77z" fill="white"/>
-          </svg>
-        </a>
-        {/* Gmail */}
-        <a href="mailto:ikequasie2003@gmail.com" aria-label="Gmail">
-          <svg className="h-8 w-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            {/* White envelope body */}
-            <path d="M2 5.5A1.5 1.5 0 0 1 3.5 4h17A1.5 1.5 0 0 1 22 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5V5.5z" fill="white"/>
-            {/* Left green flap */}
-            <path d="M2 5.5v13A1.5 1.5 0 0 0 3.5 20H6V9L2 5.5z" fill="#34A853"/>
-            {/* Right yellow flap */}
-            <path d="M22 5.5V18.5A1.5 1.5 0 0 1 20.5 20H18V9l4-3.5z" fill="#FBBC04"/>
-            {/* Bottom white center */}
-            <path d="M6 9v11h12V9l-6 5-6-5z" fill="white"/>
-            {/* Red M top triangle */}
-            <path d="M2 5.5L12 14l10-8.5A1.5 1.5 0 0 0 20.5 4h-17A1.5 1.5 0 0 0 2 5.5z" fill="#EA4335"/>
-          </svg>
-        </a>
-        {/* Snapchat */}
-        <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat">
-          <svg className="h-8 w-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <rect width="24" height="24" rx="5" fill="#FFFC00"/>
-            <path d="M12 2.8c-2.514 0-4.636 1.763-4.636 4.554 0 .31.028.613.08.906-.228.07-.48.11-.74.11-.28 0-.543-.047-.784-.133-.075-.026-.152-.04-.228-.04-.31 0-.553.228-.553.51 0 .237.166.44.405.507.96.273 1.64.933 1.89 1.814-.057.033-.116.062-.178.086-.37.14-.79.21-1.256.21-.23 0-.46-.018-.685-.055-.08-.013-.16-.02-.236-.02-.35 0-.617.232-.617.53 0 .255.185.476.455.527.99.188 1.736.842 2.02 1.724-.17.134-.26.316-.26.51 0 .45.48.796 1.11.796.31 0 .633-.072.96-.215.44-.19.9-.285 1.365-.285.38 0 .743.064 1.08.19.44.163.862.246 1.255.246.394 0 .816-.083 1.256-.246.337-.126.7-.19 1.08-.19.466 0 .926.096 1.365.285.327.143.65.215.96.215.63 0 1.11-.346 1.11-.796 0-.194-.09-.376-.26-.51.284-.882 1.03-1.536 2.02-1.724.27-.051.455-.272.455-.527 0-.298-.267-.53-.617-.53-.076 0-.156.007-.236.02-.225.037-.455.055-.685.055-.466 0-.886-.07-1.256-.21-.062-.024-.121-.053-.178-.086.25-.881.93-1.541 1.89-1.814.239-.067.405-.27.405-.507 0-.282-.243-.51-.553-.51-.076 0-.153.014-.228.04-.241.086-.504.133-.784.133-.26 0-.512-.04-.74-.11.052-.293.08-.596.08-.906C16.636 4.563 14.514 2.8 12 2.8z" fill="black"/>
-          </svg>
-        </a>
-      </div>
     </section>
   );
 }
@@ -423,8 +373,53 @@ function Footer() {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-center px-6 py-6 text-xs text-muted-foreground lg:px-14">
+        <div className="mx-auto flex max-w-[1400px] flex-col-reverse items-center justify-between gap-4 px-6 py-6 text-xs text-muted-foreground md:flex-row lg:px-14">
           <p>© {new Date().getFullYear()} ISQ Studios. All rights reserved.</p>
+          <div className="flex items-center gap-5">
+            {/* Instagram */}
+            <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="ig-grad1" cx="30%" cy="107%" r="120%">
+                    <stop offset="0%" stopColor="#fdf497"/>
+                    <stop offset="5%" stopColor="#fdf497"/>
+                    <stop offset="45%" stopColor="#fd5949"/>
+                    <stop offset="60%" stopColor="#d6249f"/>
+                    <stop offset="90%" stopColor="#285AEB"/>
+                  </radialGradient>
+                </defs>
+                <rect width="24" height="24" rx="6" fill="url(#ig-grad1)"/>
+                <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="white"/>
+                <circle cx="16.5" cy="7.5" r="1" fill="white"/>
+                <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="white" strokeWidth="1.5" fill="none"/>
+              </svg>
+            </a>
+            {/* X (Twitter) */}
+            <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="6" fill="black"/>
+                <path d="M18.244 4.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 4.25h6.918l4.259 5.632L18.244 4.25zm-1.161 17.52h1.833L7.084 6.126H5.117L17.083 21.77z" fill="white"/>
+              </svg>
+            </a>
+            {/* Gmail */}
+            <a href="mailto:ikequasie2003@gmail.com" aria-label="Gmail">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="4" fill="white"/>
+                <path d="M4.5 4h-2A2.5 2.5 0 0 0 2 6.5V18h3.5V8.5L12 13l6.5-4.5V18H22V6.5A2.5 2.5 0 0 0 19.5 4h-2L12 8.5 4.5 4z" fill="#EA4335"/>
+                <path d="M2 6.5V18h3.5V8.5L2 6.5z" fill="#34A853"/>
+                <path d="M18.5 8.5V18H22V6.5L18.5 8.5z" fill="#FBBC05"/>
+                <path d="M2 6.5l10 7 10-7-10-6.5-10 6.5z" fill="#EA4335"/>
+                <path d="M5.5 8.5V18h13V8.5L12 13.5 5.5 8.5z" fill="white"/>
+              </svg>
+            </a>
+            {/* Snapchat */}
+            <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat">
+              <svg className="h-6 w-6" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <rect width="24" height="24" rx="6" fill="#FFFC00"/>
+                <path d="M12.002 2C8.667 2 6.667 4.002 6.667 7.335v.668c-.668.168-1.336.502-1.336.502s-.166.5.168.668c0 0-.502.334-.502.836 0 .334.168.668.502.836 0 0-.334.668-.334 1.17 0 .334.166.668.5.836-.168.334-.668 1.002-1.336 1.17-.668.168-1.502.334-1.67.836-.166.502.502.836 1.17 1.004.668.168 1.002.334 1.17.668.166.334-.168 1.336-.336 1.67-.166.336.168.502.504.336.668-.336 1.502-.836 2.504-.836.5 0 1.002.168 1.336.334.502.334 1.004.668 1.506.668s1.002-.334 1.504-.668c.334-.166.836-.334 1.336-.334 1.002 0 1.836.5 2.506.836.334.166.668 0 .502-.336-.168-.334-.502-1.336-.336-1.67.168-.334.502-.5 1.17-.668.668-.168 1.336-.502 1.17-1.004-.166-.502-1-.668-1.67-.836-.668-.168-1.168-.836-1.336-1.17.334-.168.5-.502.5-.836 0-.502-.502-.836-.502-.836.334-.168.502-.5.502-.836 0-.502-.502-.836-.502-.836.334-.168.168-.668.168-.668s-.668-.334-1.336-.502v-.668C17.335 4.002 15.335 2 12.002 2z" fill="black"/>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
