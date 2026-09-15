@@ -371,28 +371,33 @@ function Newsletter() {
 function Footer() {
   return (
     <footer id="footer" className="border-t border-border bg-bone/60">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-2 gap-10 px-6 py-16 md:grid-cols-4 lg:px-14">
-        <div className="col-span-2">
-          <Logo className="h-14 w-auto" />
-          <p className="mt-6 max-w-xs text-sm text-foreground/70">
-            Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
-          </p>
-        </div>
-        <div>
-          <h4 className="text-xs uppercase tracking-[0.24em]">Shop</h4>
-          <ul className="mt-4 space-y-2 text-sm text-foreground/70">
-            <li><a href="#tees" className="hover:text-foreground">T-Shirts</a></li>
-            <li><a href="#caps" className="hover:text-foreground">Trucker Caps</a></li>
-            <li><a href="#tees" className="hover:text-foreground">New Arrivals</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-xs uppercase tracking-[0.24em]">Studio</h4>
-          <ul className="mt-4 space-y-2 text-sm text-foreground/70">
-            <li><a href="#story" className="hover:text-foreground">About</a></li>
-            <li><a href="#" className="hover:text-foreground">Contact</a></li>
-            <li><a href="#" className="hover:text-foreground">Shipping & Returns</a></li>
-          </ul>
+      <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <Logo className="h-14 w-auto" />
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-foreground/60">
+              Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
+            </p>
+          </div>
+          {/* Shop */}
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Shop</h4>
+            <ul className="mt-5 space-y-3 text-sm">
+              <li><a href="#tees" className="text-foreground/60 transition-colors hover:text-foreground">T-Shirts</a></li>
+              <li><a href="#caps" className="text-foreground/60 transition-colors hover:text-foreground">Trucker Caps</a></li>
+              <li><a href="#tees" className="text-foreground/60 transition-colors hover:text-foreground">New Arrivals</a></li>
+            </ul>
+          </div>
+          {/* Studio */}
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
+            <ul className="mt-5 space-y-3 text-sm">
+              <li><a href="#story" className="text-foreground/60 transition-colors hover:text-foreground">About</a></li>
+              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Contact</a></li>
+              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Shipping & Returns</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div className="border-t border-border">
