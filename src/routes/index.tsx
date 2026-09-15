@@ -120,7 +120,7 @@ function Hero() {
 function Marquee() {
   const words = ["Heavyweight Cotton", "Garment Dyed", "Made Considered", "The Reckless Culture", "Everyday Essentials"];
   return (
-    <div className="overflow-hidden border-y border-border bg-bone/40 py-4">
+    <div className="overflow-hidden border-y border-border bg-bone/10 py-4">
       <div className="flex animate-[marquee_40s_linear_infinite] gap-14 whitespace-nowrap text-xs uppercase tracking-[0.32em] text-foreground/70">
         {[...words, ...words, ...words].map((w, i) => (
           <span key={i} className="flex items-center gap-14">
@@ -185,7 +185,7 @@ function Caps() {
     <section id="caps" className="relative overflow-hidden">
       <div className="relative h-[85vh] min-h-[560px]">
         {/* Two grey caps facing opposite directions */}
-        <div className="absolute inset-0 flex items-center justify-between gap-8 bg-white px-16">
+        <div className="absolute inset-0 flex items-center justify-between gap-8 bg-white/5 px-16">
           {/* Cap 1 — facing right */}
           <img
             src={capFlatlay}
@@ -269,7 +269,7 @@ function Story() {
 
 function Lookbook() {
   return (
-    <section className="bg-[#f5f4f3]">
+    <section className="bg-transparent">
       <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
         <div className="eyebrow">The Lookbook</div>
         <h2 className="mt-3 max-w-2xl font-display text-4xl md:text-5xl">
@@ -430,7 +430,7 @@ function FooterScrollIn() {
 
 function Footer() {
   return (
-    <footer id="footer" className="border-t border-border bg-bone/60">
+    <footer id="footer" className="border-t border-border bg-transparent">
       <div className="border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
           <FooterScrollIn />

@@ -49,8 +49,8 @@
   --ink: oklch(0.16 0.005 60);
   --gold: oklch(0.72 0.09 75);
 
-  --background: oklch(0.965 0.012 85);
-  --foreground: oklch(0.16 0.005 60);
+  --background: #16130E;
+  --foreground: oklch(0.93 0.012 85);
   --card: oklch(0.98 0.008 85);
   --card-foreground: oklch(0.16 0.005 60);
   --popover: oklch(0.98 0.008 85);
