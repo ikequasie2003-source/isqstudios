@@ -372,7 +372,7 @@ function Footer() {
   return (
     <footer id="footer" className="border-t border-border bg-bone/60">
       <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
           {/* Brand */}
           <div className="md:col-span-1">
             <Logo className="h-14 w-auto" />
@@ -381,15 +381,6 @@ function Footer() {
             </p>
           </div>
           {/* Shop */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Shop</h4>
-            <ul className="mt-5 space-y-3 text-sm">
-              <li><a href="#tees" className="text-foreground/60 transition-colors hover:text-foreground">T-Shirts</a></li>
-              <li><a href="#caps" className="text-foreground/60 transition-colors hover:text-foreground">Trucker Caps</a></li>
-              <li><a href="#tees" className="text-foreground/60 transition-colors hover:text-foreground">New Arrivals</a></li>
-            </ul>
-          </div>
-          {/* Studio */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
             <ul className="mt-5 space-y-3 text-sm">
