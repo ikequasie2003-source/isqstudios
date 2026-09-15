@@ -430,14 +430,7 @@ function Footer() {
   return (
     <footer id="footer" className="border-t border-border bg-bone/60">
       <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-          {/* Brand */}
-          <div className="md:col-span-1">
-            <Logo className="h-14 w-auto" />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-foreground/60">
-              Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
-            </p>
-          </div>
+        <div className="grid grid-cols-1 gap-12">
           {/* Shop */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
