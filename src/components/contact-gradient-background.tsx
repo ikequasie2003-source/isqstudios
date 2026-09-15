@@ -16,6 +16,9 @@ export function ContactGradientBackground({ children, className = "" }: ContactG
         }}
       />
 
+      {/* Dark scrim so text stays readable over bright gold */}
+      <div className="absolute inset-0 bg-black/30" />
+
       {/* Noise texture */}
       <div
         className="absolute inset-0 opacity-5 bg-repeat"
