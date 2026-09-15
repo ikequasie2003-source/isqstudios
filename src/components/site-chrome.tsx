@@ -17,6 +17,7 @@ export function Header() {
           <a href="/shop" className="hover:text-foreground">Shop</a>
           <a href="/about" className="hover:text-foreground">About</a>
           <a href="/contact" className="hover:text-foreground">Contact</a>
+          <a href="/shipping" className="hover:text-foreground">Shipping & Returns</a>
         </nav>
         <div className="flex items-center justify-end gap-4">
           <SearchButton />
@@ -36,6 +37,7 @@ export function Header() {
             <a href="/shop" onClick={() => setNavOpen(false)}>Shop</a>
             <a href="/about" onClick={() => setNavOpen(false)}>About</a>
             <a href="/contact" onClick={() => setNavOpen(false)}>Contact</a>
+            <a href="/shipping" onClick={() => setNavOpen(false)}>Shipping & Returns</a>
           </nav>
         </div>
       )}
