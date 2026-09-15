@@ -12,7 +12,7 @@ export function ContactGradientBackground({ children, className = "" }: ContactG
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(180deg, #000000 0%, #05080F 20%, #032F3A 40%, #0891b2 70%, #22d3ee 100%)",
+          background: "linear-gradient(180deg, #000000 0%, #0F0A02 20%, #3A2800 40%, #B8860B 70%, #F5C842 100%)",
         }}
       />
 
