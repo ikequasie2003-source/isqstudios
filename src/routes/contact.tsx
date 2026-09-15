@@ -64,7 +64,7 @@ function ContactPage() {
                     <label className="block text-xs uppercase tracking-[0.24em] text-white/80">Message</label>
                     <textarea required rows={4} className="mt-2 w-full border-b border-white/40 bg-transparent py-3 text-sm text-white outline-none placeholder:text-white/50 resize-none" placeholder="What's on your mind?" />
                   </div>
-                  <button type="submit" className="border border-white px-8 py-3 text-xs uppercase tracking-[0.24em] text-white hover:bg-white hover:text-black transition-colors">
+                  <button type="submit" className="px-8 py-3 text-xs uppercase tracking-[0.24em] text-white transition-all backdrop-blur-md border border-white/20 bg-white/10 hover:bg-white/20 hover:border-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)]">
                     Send Message
                   </button>
                 </form>
