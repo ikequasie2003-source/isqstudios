@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import ExpandOnHover from "@/components/ui/expand-cards";
 import lb1 from "@/assets/lookbook/q.png";
@@ -368,6 +368,39 @@ function Newsletter() {
   );
 }
 
+function FooterScrollIn() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="flex flex-col items-center text-center"
+      style={{ opacity: 0, transform: "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}
+    >
+      <Logo className="h-20 w-auto" />
+      <p className="mt-5 max-w-sm text-sm leading-relaxed text-foreground/60">
+        Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
+      </p>
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer id="footer" className="border-t border-border bg-bone/60">
@@ -392,15 +425,8 @@ function Footer() {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-6 py-16 md:grid-cols-2 lg:px-14">
-          {/* Brand — mirrored from above */}
-          <div className="md:col-span-1">
-            <Logo className="h-14 w-auto" />
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-foreground/60">
-              Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
-            </p>
-          </div>
-          <div />
+        <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
+          <FooterScrollIn />
         </div>
       </div>
       <div className="border-t border-border">
