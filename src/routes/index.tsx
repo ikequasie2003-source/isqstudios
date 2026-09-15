@@ -378,7 +378,9 @@ function FooterScrollIn() {
         if (entry.isIntersecting) {
           el.style.opacity = "1";
           el.style.transform = "translateY(0)";
-          observer.disconnect();
+        } else {
+          el.style.opacity = "0";
+          el.style.transform = "translateY(32px)";
         }
       },
       { threshold: 0.2 }
