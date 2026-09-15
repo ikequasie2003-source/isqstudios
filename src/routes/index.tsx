@@ -370,17 +370,35 @@ function Newsletter() {
 
 function FooterScrollIn() {
   const ref = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const taglineRef = useRef<HTMLParagraphElement>(null);
+
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    const logo = logoRef.current;
+    const tagline = taglineRef.current;
+    if (!el || !logo || !tagline) return;
+
+    const reset = () => {
+      logo.style.opacity = "0";
+      logo.style.transform = "translateY(28px)";
+      tagline.style.opacity = "0";
+      tagline.style.transform = "translateY(20px)";
+    };
+
+    reset();
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.style.opacity = "1";
-          el.style.transform = "translateY(0)";
+          logo.style.opacity = "1";
+          logo.style.transform = "translateY(0)";
+          setTimeout(() => {
+            tagline.style.opacity = "1";
+            tagline.style.transform = "translateY(0)";
+          }, 500);
         } else {
-          el.style.opacity = "0";
-          el.style.transform = "translateY(32px)";
+          reset();
         }
       },
       { threshold: 0.2 }
@@ -390,13 +408,18 @@ function FooterScrollIn() {
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className="flex flex-col items-center text-center"
-      style={{ opacity: 0, transform: "translateY(32px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}
-    >
-      <Logo className="h-20 w-auto" />
-      <p className="mt-5 max-w-sm text-sm leading-relaxed text-foreground/60">
+    <div ref={ref} className="flex flex-col items-center text-center">
+      <div
+        ref={logoRef}
+        style={{ opacity: 0, transform: "translateY(28px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}
+      >
+        <Logo className="h-20 w-auto" />
+      </div>
+      <p
+        ref={taglineRef}
+        className="mt-5 max-w-sm text-sm leading-relaxed text-foreground/60"
+        style={{ opacity: 0, transform: "translateY(20px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}
+      >
         Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
       </p>
     </div>
