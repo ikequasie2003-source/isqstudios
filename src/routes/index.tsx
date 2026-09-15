@@ -23,6 +23,7 @@ import { Header, CartDrawer } from "@/components/site-chrome";
 import { ProductCard } from "@/components/product-card";
 import { tees, caps, sizes, gsmOptions, type Gsm } from "@/lib/products";
 import { Logo } from "@/components/logo";
+import { GradientBackground } from "@/components/gradient-background";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -39,7 +40,8 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="relative min-h-screen text-foreground">
+        <GradientBackground className="fixed inset-0 -z-10" />
         <TopBanner />
         <Header />
         <main>
