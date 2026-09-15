@@ -392,6 +392,25 @@ function Footer() {
         </div>
       </div>
       <div className="border-t border-border">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-6 py-16 md:grid-cols-2 lg:px-14">
+          {/* Brand — mirrored from above */}
+          <div className="md:col-span-1">
+            <Logo className="h-14 w-auto" />
+            <p className="mt-5 max-w-xs text-sm leading-relaxed text-foreground/60">
+              Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
+            <ul className="mt-5 space-y-3 text-sm">
+              <li><a href="#story" className="text-foreground/60 transition-colors hover:text-foreground">About</a></li>
+              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Contact</a></li>
+              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Shipping & Returns</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-border">
         <div className="mx-auto flex max-w-[1400px] items-center justify-center px-6 py-6 text-xs text-muted-foreground lg:px-14">
           <p>© {new Date().getFullYear()} ISQ Studios. All rights reserved.</p>
         </div>
