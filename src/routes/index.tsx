@@ -435,9 +435,9 @@ function Footer() {
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
             <ul className="mt-5 space-y-3 text-sm">
-              <li><a href="#story" className="text-foreground/60 transition-colors hover:text-foreground">About</a></li>
-              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Contact</a></li>
-              <li><a href="#" className="text-foreground/60 transition-colors hover:text-foreground">Shipping & Returns</a></li>
+              <li><a href="/about" className="text-foreground/60 transition-colors hover:text-foreground">About</a></li>
+              <li><a href="/contact" className="text-foreground/60 transition-colors hover:text-foreground">Contact</a></li>
+              <li><a href="/shipping" className="text-foreground/60 transition-colors hover:text-foreground">Shipping & Returns</a></li>
             </ul>
           </div>
         </div>

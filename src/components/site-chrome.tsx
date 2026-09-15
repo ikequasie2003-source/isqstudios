@@ -15,9 +15,8 @@ export function Header() {
         </a>
         <nav className="hidden flex-1 items-center justify-center gap-8 text-xs uppercase tracking-[0.24em] text-foreground/80 md:flex">
           <a href="/shop" className="hover:text-foreground">Shop</a>
-          <a href="#caps" className="hover:text-foreground">Caps</a>
-          <a href="#story" className="hover:text-foreground">About</a>
-          <a href="#footer" className="hover:text-foreground">Contact</a>
+          <a href="/about" className="hover:text-foreground">About</a>
+          <a href="/contact" className="hover:text-foreground">Contact</a>
         </nav>
         <div className="flex items-center justify-end gap-4">
           <SearchButton />
@@ -35,9 +34,8 @@ export function Header() {
         <div className="border-t border-border/60 px-6 py-4 md:hidden">
           <nav className="flex flex-col gap-3 text-xs uppercase tracking-[0.24em]">
             <a href="/shop" onClick={() => setNavOpen(false)}>Shop</a>
-            <a href="#caps" onClick={() => setNavOpen(false)}>Caps</a>
-            <a href="#story" onClick={() => setNavOpen(false)}>About</a>
-            <a href="#footer" onClick={() => setNavOpen(false)}>Contact</a>
+            <a href="/about" onClick={() => setNavOpen(false)}>About</a>
+            <a href="/contact" onClick={() => setNavOpen(false)}>Contact</a>
           </nav>
         </div>
       )}
