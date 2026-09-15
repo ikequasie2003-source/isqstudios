@@ -429,19 +429,6 @@ function FooterScrollIn() {
 function Footer() {
   return (
     <footer id="footer" className="border-t border-border bg-bone/60">
-      <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
-        <div className="grid grid-cols-1 gap-12">
-          {/* Shop */}
-          <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground">Studio</h4>
-            <ul className="mt-5 space-y-3 text-sm">
-              <li><a href="/about" className="text-foreground/60 transition-colors hover:text-foreground">About</a></li>
-              <li><a href="/contact" className="text-foreground/60 transition-colors hover:text-foreground">Contact</a></li>
-              <li><a href="/shipping" className="text-foreground/60 transition-colors hover:text-foreground">Shipping & Returns</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
       <div className="border-t border-border">
         <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
           <FooterScrollIn />
