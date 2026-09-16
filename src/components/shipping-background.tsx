@@ -9,7 +9,7 @@ export function ShippingBackground({ children, className = "" }: ShippingBackgro
   return (
     <div className={`relative min-h-screen w-full overflow-hidden ${className}`}>
       {/* Base dark background */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, #0a0f0d 0%, #0f1a14 50%, #0a0f0d 100%)" }} />
+      <div className="absolute inset-0" style={{ background: "#0A0803" }} />
 
       {/* Topo contour lines SVG */}
       <svg
