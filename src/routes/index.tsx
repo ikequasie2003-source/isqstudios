@@ -157,7 +157,7 @@ function Tees() {
         <div className="relative z-10 flex h-full items-center">
           <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-14">
             <div className="max-w-lg">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[#b8952a]">Collection 001</p>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-[#C9A227]">Collection 001</p>
               <h2 className="mt-3 font-display text-5xl leading-[0.95] text-white md:text-6xl">
                 The Tee.
               </h2>
@@ -166,7 +166,7 @@ function Tees() {
               </p>
               <a
                 href="/shop?cat=tees"
-                className="mt-8 inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#b8952a] hover:bg-[#b8952a]/20"
+                className="mt-8 inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#C9A227] hover:bg-[#C9A227]/20"
               >
                 Shop T-Shirts <ArrowRight className="h-3.5 w-3.5" />
               </a>
@@ -184,7 +184,7 @@ function Caps() {
     <section id="caps" className="relative overflow-hidden">
       <div className="relative h-[85vh] min-h-[560px]">
         {/* Two grey caps facing opposite directions */}
-        <div className="absolute inset-0 flex items-center justify-between gap-8 bg-white px-16">
+        <div className="absolute inset-0 flex items-center justify-between gap-8 bg-[#F7F4EE] px-16">
           {/* Cap 1 — facing right */}
           <img
             src={capFlatlay}
@@ -217,7 +217,7 @@ function Caps() {
         <div className="relative z-10 flex h-full items-end">
           <div className="mx-auto w-full max-w-[1400px] px-6 pb-14 lg:px-14 lg:pb-20">
             <div className="max-w-lg">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-[#b8952a]">Collection 002</p>
+              <p className="text-[10px] uppercase tracking-[0.4em] text-[#C9A227]">Collection 002</p>
               <h2 className="mt-3 font-display text-5xl leading-[0.95] text-white md:text-6xl">
                 The Cap.
               </h2>
@@ -227,7 +227,7 @@ function Caps() {
               <div className="mt-8">
                 <a
                   href="/shop?cat=caps"
-                  className="inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#b8952a] hover:bg-[#b8952a]/20"
+                  className="inline-flex items-center gap-2 border border-white/30 bg-white/10 px-8 py-4 text-xs uppercase tracking-[0.24em] text-white backdrop-blur-md transition-all hover:border-[#C9A227] hover:bg-[#C9A227]/20"
                 >
                   Shop Caps <ArrowRight className="h-3.5 w-3.5" />
                 </a>

@@ -72,10 +72,10 @@ const ExpandOnHover = ({ images = defaultImages, defaultExpanded = 3, videoIndex
   const isVideo = (idx: number) => videoIndex === idx && videoUrl;
 
   return (
-    <div className="w-full bg-[#f5f4f3]" ref={sectionRef}>
+    <div className="w-full bg-[#F7F4EE]" ref={sectionRef}>
       <div className="relative flex w-full items-center justify-center p-2">
         <div className="w-full overflow-hidden rounded-3xl">
-          <div className="flex w-full items-center justify-center overflow-hidden bg-[#f5f4f3]">
+          <div className="flex w-full items-center justify-center overflow-hidden bg-[#F7F4EE]">
             <div className="relative w-full max-w-6xl px-5">
               <div className="flex w-full items-center justify-center gap-1">
                 {images.map((src, idx) => (
