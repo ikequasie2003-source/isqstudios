@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-import ExpandOnHover from "@/components/ui/expand-cards";
+import { SplitReveal } from "@/components/ui/split-reveal";
 import lb1 from "@/assets/lookbook/q.png";
 import lb2 from "@/assets/lookbook/qa.png";
 import lb3 from "@/assets/lookbook/qq.png";
@@ -272,14 +272,16 @@ function Lookbook() {
       <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
         <div className="eyebrow">The Lookbook</div>
         <h2 className="mt-3 max-w-2xl font-display text-4xl md:text-5xl">
-          Studio 001 — hover to expand.
+          Studio 001 — split reveal.
         </h2>
       </div>
       <div className="pt-10 pb-20 lg:pb-28">
-        <ExpandOnHover
-          images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb1]}
-          videoIndex={8}
-          videoUrl={lbVideo}
+        <SplitReveal
+          leftFront={lb1}
+          rightFront={lb4}
+          leftReveal={lb2}
+          rightReveal={lb5}
+          stripImages={[lb3, lb6, lb7, lb8]}
         />
       </div>
     </section>
