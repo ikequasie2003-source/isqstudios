@@ -18,7 +18,7 @@ export function ShippingBackground({ children, className = "" }: ShippingBackgro
       >
         <defs>
           <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
             <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
 
@@ -72,73 +72,73 @@ export function ShippingBackground({ children, className = "" }: ShippingBackgro
         {/* ══ PLANETS — one per ring ══ */}
 
         {/* Center ring1 */}
-        <circle r="6" fill="#D4A830" opacity="0.9">
+        <circle r="18" fill="#D4A830" opacity="0.9">
           <animateMotion dur="32s" repeatCount="indefinite" rotate="auto"><mpath href="#ring1"/></animateMotion>
         </circle>
         {/* Center ring2 */}
-        <circle r="4.5" fill="#F5C842" opacity="0.8">
+        <circle r="14" fill="#F5C842" opacity="0.8">
           <animateMotion dur="27s" repeatCount="indefinite" begin="-10s" rotate="auto"><mpath href="#ring2"/></animateMotion>
         </circle>
         {/* Center ring3 */}
-        <circle r="5" fill="#B8860B" opacity="0.85">
+        <circle r="15" fill="#B8860B" opacity="0.85">
           <animateMotion dur="22s" repeatCount="indefinite" begin="-5s" rotate="auto"><mpath href="#ring3"/></animateMotion>
         </circle>
         {/* Center ring4 */}
-        <circle r="4" fill="#FFD700" opacity="0.9">
+        <circle r="12" fill="#FFD700" opacity="0.9">
           <animateMotion dur="17s" repeatCount="indefinite" begin="-7s" rotate="auto"><mpath href="#ring4"/></animateMotion>
         </circle>
         {/* Center ring5 */}
-        <circle r="3.5" fill="#D4A830" opacity="0.85">
+        <circle r="11" fill="#D4A830" opacity="0.85">
           <animateMotion dur="13s" repeatCount="indefinite" begin="-3s" rotate="auto"><mpath href="#ring5"/></animateMotion>
         </circle>
         {/* Center ring6 */}
-        <circle r="4" fill="#F5C842" opacity="0.8">
+        <circle r="12" fill="#F5C842" opacity="0.8">
           <animateMotion dur="10s" repeatCount="indefinite" begin="-6s" rotate="auto"><mpath href="#ring6"/></animateMotion>
         </circle>
         {/* Center ring7 — glowing */}
-        <circle r="7" fill="#FFD700" opacity="0.95" filter="url(#glow)">
+        <circle r="20" fill="#FFD700" opacity="0.95" filter="url(#glow)">
           <animateMotion dur="8s" repeatCount="indefinite" begin="-2s" rotate="auto"><mpath href="#ring7"/></animateMotion>
         </circle>
         {/* Center ring8 */}
-        <circle r="3" fill="#D4A830" opacity="0.8">
+        <circle r="9" fill="#D4A830" opacity="0.8">
           <animateMotion dur="6s" repeatCount="indefinite" begin="-1s" rotate="auto"><mpath href="#ring8"/></animateMotion>
         </circle>
         {/* Center ring9 (innermost) */}
-        <circle r="2.5" fill="#FFD700" opacity="0.9">
+        <circle r="8" fill="#FFD700" opacity="0.9">
           <animateMotion dur="4s" repeatCount="indefinite" begin="-2s" rotate="auto"><mpath href="#ring9"/></animateMotion>
         </circle>
 
         {/* Top-left ringTL1 */}
-        <circle r="4" fill="#D4A830" opacity="0.7">
+        <circle r="12" fill="#D4A830" opacity="0.7">
           <animateMotion dur="24s" repeatCount="indefinite" begin="-12s" rotate="auto"><mpath href="#ringTL1"/></animateMotion>
         </circle>
         {/* Top-left ringTL2 */}
-        <circle r="3.5" fill="#F5C842" opacity="0.75">
+        <circle r="11" fill="#F5C842" opacity="0.75">
           <animateMotion dur="18s" repeatCount="indefinite" begin="-6s" rotate="auto"><mpath href="#ringTL2"/></animateMotion>
         </circle>
         {/* Top-left ringTL3 */}
-        <circle r="3" fill="#B8860B" opacity="0.8">
+        <circle r="9" fill="#B8860B" opacity="0.8">
           <animateMotion dur="12s" repeatCount="indefinite" begin="-4s" rotate="auto"><mpath href="#ringTL3"/></animateMotion>
         </circle>
         {/* Top-left ringTL4 */}
-        <circle r="2.5" fill="#FFD700" opacity="0.85">
+        <circle r="8" fill="#FFD700" opacity="0.85">
           <animateMotion dur="8s" repeatCount="indefinite" begin="-3s" rotate="auto"><mpath href="#ringTL4"/></animateMotion>
         </circle>
 
         {/* Bottom-right ringBR1 */}
-        <circle r="5" fill="#D4A830" opacity="0.7">
+        <circle r="15" fill="#D4A830" opacity="0.7">
           <animateMotion dur="28s" repeatCount="indefinite" begin="-14s" rotate="auto"><mpath href="#ringBR1"/></animateMotion>
         </circle>
         {/* Bottom-right ringBR2 */}
-        <circle r="4" fill="#F5C842" opacity="0.75">
+        <circle r="12" fill="#F5C842" opacity="0.75">
           <animateMotion dur="22s" repeatCount="indefinite" begin="-8s" rotate="auto"><mpath href="#ringBR2"/></animateMotion>
         </circle>
         {/* Bottom-right ringBR3 */}
-        <circle r="3.5" fill="#B8860B" opacity="0.8">
+        <circle r="11" fill="#B8860B" opacity="0.8">
           <animateMotion dur="15s" repeatCount="indefinite" begin="-5s" rotate="auto"><mpath href="#ringBR3"/></animateMotion>
         </circle>
         {/* Bottom-right ringBR4 */}
-        <circle r="3" fill="#FFD700" opacity="0.9">
+        <circle r="9" fill="#FFD700" opacity="0.9">
           <animateMotion dur="9s" repeatCount="indefinite" begin="-2s" rotate="auto"><mpath href="#ringBR4"/></animateMotion>
         </circle>
       </svg>
