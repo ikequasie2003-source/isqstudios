@@ -11,106 +11,115 @@ export function ShippingBackground({ children, className = "" }: ShippingBackgro
       {/* Base dark background */}
       <div className="absolute inset-0" style={{ background: "#0A0803" }} />
 
-      {/* Topo contour lines + orbiting planets */}
       <svg
         className="absolute inset-0 w-full h-full"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1440 900"
         preserveAspectRatio="xMidYMid slice"
       >
-        {/* ── Center topo rings ── */}
-        <ellipse cx="720" cy="450" rx="680" ry="380" fill="none" stroke="rgba(212,168,48,0.07)" strokeWidth="1" />
-        <ellipse cx="720" cy="450" rx="580" ry="310" fill="none" stroke="rgba(212,168,48,0.09)" strokeWidth="1" />
-        <ellipse cx="720" cy="450" rx="480" ry="250" fill="none" stroke="rgba(212,168,48,0.11)" strokeWidth="1" />
-        <ellipse cx="720" cy="450" rx="380" ry="195" fill="none" stroke="rgba(212,168,48,0.13)" strokeWidth="1" />
-        <ellipse cx="720" cy="450" rx="290" ry="148" fill="none" stroke="rgba(212,168,48,0.15)" strokeWidth="1.2" />
-        <ellipse cx="720" cy="450" rx="210" ry="108" fill="none" stroke="rgba(212,168,48,0.18)" strokeWidth="1.2" />
-        <ellipse cx="720" cy="450" rx="140" ry="72"  fill="none" stroke="rgba(212,168,48,0.22)" strokeWidth="1.5" />
-        <ellipse cx="720" cy="450" rx="80"  ry="42"  fill="none" stroke="rgba(212,168,48,0.28)" strokeWidth="1.5" />
-        <ellipse cx="720" cy="450" rx="35"  ry="18"  fill="none" stroke="rgba(212,168,48,0.35)" strokeWidth="2"   />
-
-        {/* ── Top-left cluster ── */}
-        <ellipse cx="200" cy="150" rx="320" ry="180" fill="none" stroke="rgba(212,168,48,0.05)" strokeWidth="1" />
-        <ellipse cx="200" cy="150" rx="240" ry="135" fill="none" stroke="rgba(212,168,48,0.07)" strokeWidth="1" />
-        <ellipse cx="200" cy="150" rx="160" ry="90"  fill="none" stroke="rgba(212,168,48,0.09)" strokeWidth="1" />
-        <ellipse cx="200" cy="150" rx="90"  ry="50"  fill="none" stroke="rgba(212,168,48,0.12)" strokeWidth="1.2" />
-
-        {/* ── Bottom-right cluster ── */}
-        <ellipse cx="1280" cy="780" rx="350" ry="200" fill="none" stroke="rgba(212,168,48,0.05)" strokeWidth="1" />
-        <ellipse cx="1280" cy="780" rx="260" ry="150" fill="none" stroke="rgba(212,168,48,0.08)" strokeWidth="1" />
-        <ellipse cx="1280" cy="780" rx="170" ry="98"  fill="none" stroke="rgba(212,168,48,0.11)" strokeWidth="1" />
-        <ellipse cx="1280" cy="780" rx="90"  ry="52"  fill="none" stroke="rgba(212,168,48,0.15)" strokeWidth="1.2" />
-
-        {/* ── Orbiting planets on center rings ── */}
-        {/* Planet on rx=680 ry=380 — slow */}
-        <circle r="7" fill="#D4A830" opacity="0.9">
-          <animateMotion dur="28s" repeatCount="indefinite">
-            <mpath href="#orbit1" />
-          </animateMotion>
-        </circle>
-
-        {/* Planet on rx=480 ry=250 — medium */}
-        <circle r="5" fill="#F5C842" opacity="0.85">
-          <animateMotion dur="20s" repeatCount="indefinite" begin="-7s">
-            <mpath href="#orbit3" />
-          </animateMotion>
-        </circle>
-
-        {/* Small moon on rx=380 ry=195 */}
-        <circle r="3.5" fill="#B8860B" opacity="0.95">
-          <animateMotion dur="15s" repeatCount="indefinite" begin="-3s">
-            <mpath href="#orbit4" />
-          </animateMotion>
-        </circle>
-
-        {/* Tiny planet on rx=210 ry=108 — fast */}
-        <circle r="4" fill="#F5C842" opacity="0.8">
-          <animateMotion dur="10s" repeatCount="indefinite" begin="-5s">
-            <mpath href="#orbit6" />
-          </animateMotion>
-        </circle>
-
-        {/* Glowing planet on rx=140 ry=72 */}
-        <circle r="6" fill="#FFD700" opacity="0.9" filter="url(#glow)">
-          <animateMotion dur="8s" repeatCount="indefinite" begin="-2s">
-            <mpath href="#orbit7" />
-          </animateMotion>
-        </circle>
-
-        {/* Planet on top-left cluster rx=240 ry=135 */}
-        <circle r="4" fill="#D4A830" opacity="0.75">
-          <animateMotion dur="18s" repeatCount="indefinite" begin="-9s">
-            <mpath href="#orbitTL" />
-          </animateMotion>
-        </circle>
-
-        {/* Planet on bottom-right cluster rx=260 ry=150 */}
-        <circle r="5" fill="#F5C842" opacity="0.7">
-          <animateMotion dur="22s" repeatCount="indefinite" begin="-4s">
-            <mpath href="#orbitBR" />
-          </animateMotion>
-        </circle>
-
-        {/* ── Path definitions for orbits ── */}
         <defs>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
             <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
 
-          {/* Center orbits */}
-          <path id="orbit1" d="M1400,450 A680,380 0 1,1 1399.9,450" fill="none" transform="translate(720,450) translate(-720,-450)" />
-          <path id="orbit3" d="M1200,450 A480,250 0 1,1 1199.9,450" fill="none" transform="translate(720,450) translate(-720,-450)" />
-          <path id="orbit4" d="M1100,450 A380,195 0 1,1 1099.9,450" fill="none" transform="translate(720,450) translate(-720,-450)" />
-          <path id="orbit6" d="M930,450 A210,108 0 1,1 929.9,450"  fill="none" transform="translate(720,450) translate(-720,-450)" />
-          <path id="orbit7" d="M860,450 A140,72  0 1,1 859.9,450"  fill="none" transform="translate(720,450) translate(-720,-450)" />
+          {/* Exact ellipse paths for animateMotion — center cluster */}
+          <path id="ring1" d="M 1400,450 A 680,380 0 1,1 1399.99,450.01" fill="none"/>
+          <path id="ring2" d="M 1300,450 A 580,310 0 1,1 1299.99,450.01" fill="none"/>
+          <path id="ring3" d="M 1200,450 A 480,250 0 1,1 1199.99,450.01" fill="none"/>
+          <path id="ring4" d="M 1100,450 A 380,195 0 1,1 1099.99,450.01" fill="none"/>
+          <path id="ring5" d="M 1010,450 A 290,148 0 1,1 1009.99,450.01" fill="none"/>
+          <path id="ring6" d="M 930,450 A 210,108 0 1,1 929.99,450.01" fill="none"/>
+          <path id="ring7" d="M 860,450 A 140,72  0 1,1 859.99,450.01"  fill="none"/>
+          <path id="ring8" d="M 800,450 A 80,42   0 1,1 799.99,450.01"  fill="none"/>
 
-          {/* Top-left orbit */}
-          <path id="orbitTL" d="M440,150 A240,135 0 1,1 439.9,150" fill="none" transform="translate(200,150) translate(-200,-150)" />
+          {/* Top-left cluster */}
+          <path id="ringTL" d="M 440,150 A 240,135 0 1,1 439.99,150.01" fill="none"/>
 
-          {/* Bottom-right orbit */}
-          <path id="orbitBR" d="M1540,780 A260,150 0 1,1 1539.9,780" fill="none" transform="translate(1280,780) translate(-1280,-780)" />
+          {/* Bottom-right cluster */}
+          <path id="ringBR" d="M 1540,780 A 260,150 0 1,1 1539.99,780.01" fill="none"/>
         </defs>
+
+        {/* ── Center topo rings ── */}
+        <use href="#ring1" stroke="rgba(212,168,48,0.07)" strokeWidth="1" />
+        <use href="#ring2" stroke="rgba(212,168,48,0.09)" strokeWidth="1" />
+        <use href="#ring3" stroke="rgba(212,168,48,0.11)" strokeWidth="1" />
+        <use href="#ring4" stroke="rgba(212,168,48,0.13)" strokeWidth="1" />
+        <use href="#ring5" stroke="rgba(212,168,48,0.15)" strokeWidth="1.2" />
+        <use href="#ring6" stroke="rgba(212,168,48,0.18)" strokeWidth="1.2" />
+        <use href="#ring7" stroke="rgba(212,168,48,0.22)" strokeWidth="1.5" />
+        <use href="#ring8" stroke="rgba(212,168,48,0.28)" strokeWidth="1.5" />
+        <ellipse cx="720" cy="450" rx="35" ry="18" fill="none" stroke="rgba(212,168,48,0.35)" strokeWidth="2" />
+
+        {/* ── Top-left cluster ── */}
+        <use href="#ringTL" stroke="rgba(212,168,48,0.07)" strokeWidth="1" />
+        <ellipse cx="200" cy="150" rx="320" ry="180" fill="none" stroke="rgba(212,168,48,0.05)" strokeWidth="1" />
+        <ellipse cx="200" cy="150" rx="160" ry="90"  fill="none" stroke="rgba(212,168,48,0.09)" strokeWidth="1" />
+        <ellipse cx="200" cy="150" rx="90"  ry="50"  fill="none" stroke="rgba(212,168,48,0.12)" strokeWidth="1.2" />
+
+        {/* ── Bottom-right cluster ── */}
+        <use href="#ringBR" stroke="rgba(212,168,48,0.08)" strokeWidth="1" />
+        <ellipse cx="1280" cy="780" rx="350" ry="200" fill="none" stroke="rgba(212,168,48,0.05)" strokeWidth="1" />
+        <ellipse cx="1280" cy="780" rx="170" ry="98"  fill="none" stroke="rgba(212,168,48,0.11)" strokeWidth="1" />
+        <ellipse cx="1280" cy="780" rx="90"  ry="52"  fill="none" stroke="rgba(212,168,48,0.15)" strokeWidth="1.2" />
+
+        {/* ── Planets on exact ring paths ── */}
+
+        {/* On ring1 (outermost) */}
+        <circle r="6" fill="#D4A830" opacity="0.9">
+          <animateMotion dur="30s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#ring1"/>
+          </animateMotion>
+        </circle>
+
+        {/* On ring3 */}
+        <circle r="5" fill="#F5C842" opacity="0.85">
+          <animateMotion dur="22s" repeatCount="indefinite" begin="-8s" rotate="auto">
+            <mpath href="#ring3"/>
+          </animateMotion>
+        </circle>
+
+        {/* On ring4 */}
+        <circle r="4" fill="#B8860B" opacity="0.95">
+          <animateMotion dur="16s" repeatCount="indefinite" begin="-4s" rotate="auto">
+            <mpath href="#ring4"/>
+          </animateMotion>
+        </circle>
+
+        {/* On ring5 */}
+        <circle r="3.5" fill="#FFD700" opacity="0.8">
+          <animateMotion dur="12s" repeatCount="indefinite" begin="-2s" rotate="auto">
+            <mpath href="#ring5"/>
+          </animateMotion>
+        </circle>
+
+        {/* On ring7 — glowing */}
+        <circle r="7" fill="#FFD700" opacity="0.95" filter="url(#glow)">
+          <animateMotion dur="9s" repeatCount="indefinite" begin="-1s" rotate="auto">
+            <mpath href="#ring7"/>
+          </animateMotion>
+        </circle>
+
+        {/* On ring8 */}
+        <circle r="3" fill="#D4A830" opacity="0.8">
+          <animateMotion dur="6s" repeatCount="indefinite" begin="-3s" rotate="auto">
+            <mpath href="#ring8"/>
+          </animateMotion>
+        </circle>
+
+        {/* On top-left cluster */}
+        <circle r="4" fill="#D4A830" opacity="0.75">
+          <animateMotion dur="18s" repeatCount="indefinite" begin="-9s" rotate="auto">
+            <mpath href="#ringTL"/>
+          </animateMotion>
+        </circle>
+
+        {/* On bottom-right cluster */}
+        <circle r="5" fill="#F5C842" opacity="0.7">
+          <animateMotion dur="24s" repeatCount="indefinite" begin="-12s" rotate="auto">
+            <mpath href="#ringBR"/>
+          </animateMotion>
+        </circle>
       </svg>
 
       {/* Content */}
