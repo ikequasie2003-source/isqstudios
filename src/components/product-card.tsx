@@ -9,7 +9,6 @@ export function ProductCard({ product }: { product: Product }) {
   const { add } = useCart();
   const isLight = ["#f5f2ea", "#e9dfc9"].includes(product.swatch);
 
-  // Use admin-uploaded image if available, fall back to built-in
   const image = resolveCardImage(product.category, product.gsm, product.color, product.image);
 
   const handleAdd = () => {
@@ -19,7 +18,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="group flex flex-col">
-      <div className="relative aspect-[4/5] overflow-hidden bg-bone">
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#EDE8DF]">
         {image ? (
           <img
             src={image}
@@ -44,7 +43,7 @@ export function ProductCard({ product }: { product: Product }) {
         )}
         <button
           onClick={handleAdd}
-          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center bg-background/90 text-foreground opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+          className="absolute bottom-3 right-3 flex h-10 w-10 items-center justify-center bg-[#F7F4EE]/90 text-[#111111] opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 hover:bg-[#C9A227] hover:text-white"
           aria-label={`Add ${product.color} ${product.name} to cart`}
         >
           <Plus className="h-4 w-4" />
@@ -52,17 +51,19 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
       <div className="pt-4">
         <div className="flex items-baseline justify-between">
-          <h3 className="text-base font-normal">{product.name}</h3>
-          <p className="text-sm tabular-nums">${product.price}</p>
+          <h3 className="text-base font-normal text-[#111111]">{product.name}</h3>
+          <p className="text-sm tabular-nums font-medium text-[#C9A227]">${product.price}</p>
         </div>
-        <p className="mt-1 text-xs uppercase tracking-[0.24em] text-muted-foreground">{product.color}</p>
+        <p className="mt-1 text-xs uppercase tracking-[0.24em] text-[#555555]">{product.color}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {sizes.map((s) => (
             <button
               key={s}
               onClick={() => setSize(s)}
               className={`h-8 min-w-8 border px-2 text-[11px] uppercase tracking-widest transition-colors ${
-                size === s ? "border-ink bg-ink text-cream" : "border-border text-foreground hover:border-ink"
+                size === s
+                  ? "border-[#111111] bg-[#111111] text-[#F7F4EE]"
+                  : "border-[#E3DED3] text-[#555555] hover:border-[#111111] hover:text-[#111111]"
               }`}
             >
               {s}
@@ -71,7 +72,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         <button
           onClick={handleAdd}
-          className="mt-3 w-full border border-ink py-2.5 text-[11px] uppercase tracking-[0.24em] transition-colors hover:bg-ink hover:text-cream"
+          className="mt-3 w-full border border-[#111111] bg-[#111111] py-2.5 text-[11px] uppercase tracking-[0.24em] text-[#F7F4EE] transition-colors hover:bg-[#C9A227] hover:border-[#C9A227]"
         >
           Add to Bag
         </button>

@@ -62,11 +62,11 @@ function Index() {
 
 function TopBanner() {
   return (
-    <div className="bg-ink py-2 overflow-hidden text-center text-[10px] uppercase tracking-[0.32em] text-cream/90">
+    <div className="bg-[#111111] py-2 overflow-hidden text-center text-[10px] uppercase tracking-[0.32em] text-[#F7F4EE]/80">
       <div className="flex animate-[marquee_18s_linear_infinite] gap-16 whitespace-nowrap">
         {Array.from({ length: 6 }).map((_, i) => (
           <span key={i} style={{ fontFamily: "'Times New Roman', Times, serif" }}>
-            The Reckless Culture <span className="text-gold/60">✦</span>
+            The Reckless Culture <span className="text-[#C9A227]">✦</span>
           </span>
         ))}
       </div>
@@ -119,11 +119,11 @@ function Hero() {
 function Marquee() {
   const words = ["Heavyweight Cotton", "Garment Dyed", "Made Considered", "The Reckless Culture", "Everyday Essentials"];
   return (
-    <div className="overflow-hidden border-y border-border bg-bone/40 py-4">
-      <div className="flex animate-[marquee_40s_linear_infinite] gap-14 whitespace-nowrap text-xs uppercase tracking-[0.32em] text-foreground/70">
+    <div className="overflow-hidden border-y border-[#E3DED3] bg-[#EDE8DF]/60 py-4">
+      <div className="flex animate-[marquee_40s_linear_infinite] gap-14 whitespace-nowrap text-xs uppercase tracking-[0.32em] text-[#555555]">
         {[...words, ...words, ...words].map((w, i) => (
           <span key={i} className="flex items-center gap-14">
-            {w} <span className="text-gold">✦</span>
+            {w} <span className="text-[#C9A227]">✦</span>
           </span>
         ))}
       </div>
@@ -254,7 +254,7 @@ function Story() {
             that let people express themselves without unnecessary noise — quiet garments made
             for people with something to say.
           </p>
-          <a href="#tees" className="mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-foreground underline underline-offset-8">
+          <a href="#tees" className="mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-[#111111] underline underline-offset-8 transition-colors hover:text-[#C9A227]">
             Explore the collection <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
@@ -268,7 +268,7 @@ function Story() {
 
 function Lookbook() {
   return (
-    <section className="bg-[#f5f4f3]">
+    <section className="bg-[#F7F4EE]">
       <div className="mx-auto max-w-[1400px] px-6 pt-20 lg:px-14 lg:pt-28">
         <div className="eyebrow">The Lookbook</div>
         <h2 className="mt-3 max-w-2xl font-display text-4xl md:text-5xl">
@@ -294,18 +294,18 @@ function Values() {
     { n: "04", t: "Streetwear Roots", d: "Grown from culture. Built for the street, refined for the studio." },
   ];
   return (
-    <section className="border-y border-border bg-ink text-cream">
+    <section className="border-y border-[#E3DED3] bg-[#111111] text-[#F7F4EE]">
       <div className="mx-auto max-w-[1400px] px-6 py-20 lg:px-14 lg:py-28">
-        <div className="eyebrow text-cream/60">Why ISQ Studios</div>
-        <h2 className="mt-3 max-w-3xl font-display text-4xl text-cream md:text-5xl">
+        <div className="eyebrow text-[#F7F4EE]/50">Why ISQ Studios</div>
+        <h2 className="mt-3 max-w-3xl font-display text-4xl text-[#F7F4EE] md:text-5xl">
           Considered essentials, made without compromise.
         </h2>
         <div className="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-14">
           {items.map((i) => (
-            <div key={i.n} className="border-t border-cream/20 pt-6">
-              <div className="text-xs tracking-[0.32em] text-gold">{i.n}</div>
-              <h3 className="mt-4 font-display text-2xl text-cream">{i.t}</h3>
-              <p className="mt-3 text-sm text-cream/70">{i.d}</p>
+            <div key={i.n} className="border-t border-[#F7F4EE]/15 pt-6">
+              <div className="text-xs tracking-[0.32em] text-[#C9A227]">{i.n}</div>
+              <h3 className="mt-4 font-display text-2xl text-[#F7F4EE]">{i.t}</h3>
+              <p className="mt-3 text-sm text-[#F7F4EE]/60">{i.d}</p>
             </div>
           ))}
         </div>
@@ -320,8 +320,8 @@ function Newsletter() {
   return (
     <section className="mx-auto max-w-[1400px] px-6 py-24 text-center lg:py-32">
       <div className="eyebrow">The Newsletter</div>
-      <h2 className="mt-4 font-display text-4xl md:text-6xl">Join The Reckless Culture.</h2>
-      <p className="mx-auto mt-4 max-w-md text-sm text-foreground/70">
+      <h2 className="mt-4 font-display text-4xl md:text-6xl text-[#111111]">Join The Reckless Culture.</h2>
+      <p className="mx-auto mt-4 max-w-md text-sm text-[#555555]">
         Get first access to new drops, private collections, and studio notes. No noise.
       </p>
       <form
@@ -329,7 +329,7 @@ function Newsletter() {
           e.preventDefault();
           if (email) setOk(true);
         }}
-        className="mx-auto mt-10 flex max-w-md items-center border-b border-ink"
+        className="mx-auto mt-10 flex max-w-md items-center border-b border-[#111111]"
       >
         <input
           type="email"
@@ -337,29 +337,29 @@ function Newsletter() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Your email address"
-          className="flex-1 bg-transparent px-1 py-3 text-sm outline-none placeholder:text-muted-foreground"
+          className="flex-1 bg-transparent px-1 py-3 text-sm text-[#111111] outline-none placeholder:text-[#555555]"
         />
-        <button className="px-2 py-3 text-xs uppercase tracking-[0.24em]">Subscribe →</button>
+        <button className="px-2 py-3 text-xs uppercase tracking-[0.24em] text-[#111111] transition-colors hover:text-[#C9A227]">Subscribe →</button>
       </form>
-      {ok && <p className="mt-4 text-xs uppercase tracking-[0.24em] text-gold">Welcome to the culture.</p>}
+      {ok && <p className="mt-4 text-xs uppercase tracking-[0.24em] text-[#C9A227]">Welcome to the culture.</p>}
       {/* Social icons */}
-      <div className="mt-8 flex items-center justify-center gap-5 text-muted-foreground">
-        <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-foreground">
+      <div className="mt-8 flex items-center justify-center gap-5 text-[#555555]">
+        <a href="https://instagram.com/he.is.mr.quasie" target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-[#C9A227]">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
           </svg>
         </a>
-        <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="hover:text-foreground">
+        <a href="https://twitter.com/big_H_M" target="_blank" rel="noreferrer" aria-label="X (Twitter)" className="transition-colors hover:text-[#C9A227]">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L2.25 2.25h6.918l4.259 5.632L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>
           </svg>
         </a>
-        <a href="mailto:ikequasie2003@gmail.com" aria-label="Gmail" className="hover:text-foreground">
+        <a href="mailto:ikequasie2003@gmail.com" aria-label="Gmail" className="transition-colors hover:text-[#C9A227]">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
           </svg>
         </a>
-        <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat" className="hover:text-foreground">
+        <a href="https://snapchat.com/add/mr.quasie" target="_blank" rel="noreferrer" aria-label="Snapchat" className="transition-colors hover:text-[#C9A227]">
           <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12.002 2C8.667 2 6.667 4.002 6.667 7.335v.668c-.668.168-1.336.502-1.336.502s-.166.5.168.668c0 0-.502.334-.502.836 0 .334.168.668.502.836 0 0-.334.668-.334 1.17 0 .334.166.668.5.836-.168.334-.668 1.002-1.336 1.17-.668.168-1.502.334-1.67.836-.166.502.502.836 1.17 1.004.668.168 1.002.334 1.17.668.166.334-.168 1.336-.336 1.67-.166.336.168.502.504.336.668-.336 1.502-.836 2.504-.836.5 0 1.002.168 1.336.334.502.334 1.004.668 1.506.668s1.002-.334 1.504-.668c.334-.166.836-.334 1.336-.334 1.002 0 1.836.5 2.506.836.334.166.668 0 .502-.336-.168-.334-.502-1.336-.336-1.67.168-.334.502-.5 1.17-.668.668-.168 1.336-.502 1.17-1.004-.166-.502-1-.668-1.67-.836-.668-.168-1.168-.836-1.336-1.17.334-.168.5-.502.5-.836 0-.502-.502-.836-.502-.836.334-.168.502-.5.502-.836 0-.502-.502-.836-.502-.836.334-.168.168-.668.168-.668s-.668-.334-1.336-.502v-.668C17.335 4.002 15.335 2 12.002 2z"/>
           </svg>
@@ -418,7 +418,7 @@ function FooterScrollIn() {
       </div>
       <p
         ref={taglineRef}
-        className="mt-5 max-w-sm text-sm leading-relaxed text-foreground/60"
+        className="mt-5 max-w-sm text-sm leading-relaxed text-[#F7F4EE]/50"
         style={{ opacity: 0, transform: "translateY(20px)", transition: "opacity 0.6s ease, transform 0.6s ease" }}
       >
         Minimal essentials designed for everyday expression. Built in-studio, worn in the world.
@@ -429,14 +429,14 @@ function FooterScrollIn() {
 
 function Footer() {
   return (
-    <footer id="footer" className="border-t border-border bg-bone/60">
-      <div className="border-t border-border">
+    <footer id="footer" className="border-t border-[#E3DED3] bg-[#111111]">
+      <div className="border-t border-[#F7F4EE]/10">
         <div className="mx-auto max-w-[1400px] px-6 py-16 lg:px-14">
           <FooterScrollIn />
         </div>
       </div>
-      <div className="border-t border-border">
-        <div className="mx-auto flex max-w-[1400px] items-center justify-center px-6 py-6 text-xs text-muted-foreground lg:px-14">
+      <div className="border-t border-[#F7F4EE]/10">
+        <div className="mx-auto flex max-w-[1400px] items-center justify-center px-6 py-6 text-xs text-[#F7F4EE]/40 lg:px-14">
           <p>© {new Date().getFullYear()} ISQ Studios. All rights reserved.</p>
         </div>
       </div>

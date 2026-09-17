@@ -113,7 +113,7 @@ function QuickView({ product, onClose }: { product: Product; onClose: () => void
             <div className="eyebrow">ISQ Studios</div>
             <h2 className="mt-2 font-display text-2xl">{product.name}</h2>
             <p className="mt-1 text-sm uppercase tracking-[0.24em] text-muted-foreground">{product.color}</p>
-            <p className="mt-4 text-xl">${product.price}</p>
+            <p className="mt-4 text-xl text-[#C9A227] font-medium">${product.price}</p>
             {product.gsm && (
               <span className="mt-3 inline-block border border-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-muted-foreground">
                 {product.gsm} GSM
@@ -127,7 +127,7 @@ function QuickView({ product, onClose }: { product: Product; onClose: () => void
                     key={s}
                     onClick={() => setSize(s)}
                     className={`h-9 min-w-9 border px-2 text-[11px] uppercase tracking-widest transition-colors ${
-                      size === s ? "border-ink bg-ink text-cream" : "border-border hover:border-ink"
+                      size === s ? "border-[#111111] bg-[#111111] text-[#F7F4EE]" : "border-[#E3DED3] hover:border-[#111111]"
                     }`}
                   >
                     {s}
@@ -144,13 +144,13 @@ function QuickView({ product, onClose }: { product: Product; onClose: () => void
                 }
                 onClose();
               }}
-              className="flex items-center justify-center gap-2 bg-ink py-3 text-xs uppercase tracking-[0.24em] text-cream transition-opacity hover:opacity-80"
+              className="flex w-full items-center justify-center gap-2 bg-[#111111] py-3 text-xs uppercase tracking-[0.24em] text-[#F7F4EE] transition-opacity hover:opacity-80"
             >
               <ShoppingBag className="h-4 w-4" /> Add to Bag
             </button>
             <a
               href={`/product/${product.id}`}
-              className="flex items-center justify-center gap-2 border border-ink py-3 text-xs uppercase tracking-[0.24em] transition-colors hover:bg-ink hover:text-cream"
+              className="flex items-center justify-center gap-2 border border-[#111111] py-3 text-xs uppercase tracking-[0.24em] transition-colors hover:bg-[#111111] hover:text-[#F7F4EE]"
             >
               View Full Product <ArrowRight className="h-3.5 w-3.5" />
             </a>
@@ -228,7 +228,7 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
           {gsmVariants.map((g) => (
             <span
               key={g.value}
-              className="border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-widest text-muted-foreground"
+              className="border border-[#E3DED3] px-1.5 py-0.5 text-[10px] uppercase tracking-widest text-[#555555]"
             >
               {g.label}
             </span>
@@ -242,7 +242,9 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
               key={s}
               onClick={() => setSize(s)}
               className={`h-7 min-w-7 border px-1.5 text-[10px] uppercase tracking-widest transition-colors ${
-                size === s ? "border-ink bg-ink text-cream" : "border-border text-foreground hover:border-ink"
+                size === s
+                  ? "border-[#111111] bg-[#111111] text-[#F7F4EE]"
+                  : "border-[#E3DED3] text-[#555555] hover:border-[#111111] hover:text-[#111111]"
               }`}
             >
               {s}
@@ -254,13 +256,13 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
         <div className="mt-3 flex gap-2">
           <button
             onClick={() => product.gsm && add({ gsm: product.gsm, color: product.color, size: size as Size, qty: 1, name: product.name, image })}
-            className="flex flex-1 items-center justify-center gap-1.5 border border-ink py-2.5 text-[11px] uppercase tracking-[0.24em] transition-colors hover:bg-ink hover:text-cream"
+            className="flex flex-1 items-center justify-center gap-1.5 border border-[#111111] bg-[#111111] py-2.5 text-[11px] uppercase tracking-[0.24em] text-[#F7F4EE] transition-colors hover:bg-[#C9A227] hover:border-[#C9A227]"
           >
             <ShoppingBag className="h-3 w-3" /> Add to Bag
           </button>
           <a
             href={`/product/${product.id}`}
-            className="flex items-center justify-center border border-border px-3 py-2.5 text-[11px] uppercase tracking-[0.24em] transition-colors hover:border-ink"
+            className="flex items-center justify-center border border-[#E3DED3] px-3 py-2.5 text-[11px] uppercase tracking-[0.24em] text-[#555555] transition-colors hover:border-[#111111] hover:text-[#111111]"
             aria-label="View product"
           >
             <ArrowRight className="h-3.5 w-3.5" />
@@ -312,7 +314,7 @@ function FilterPanel({
     <div>
       <div className="flex items-center justify-between pb-4">
         <span className="text-xs uppercase tracking-[0.24em]">
-          Filters {activeCount > 0 && <span className="ml-1 text-gold">({activeCount})</span>}
+          Filters {activeCount > 0 && <span className="ml-1 text-[#C9A227]">({activeCount})</span>}
         </span>
         {activeCount > 0 && (
           <button onClick={onReset} className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground">
@@ -372,8 +374,8 @@ function FilterPanel({
               onClick={() => onChange({ ...filters, sizes: toggle(filters.sizes, s as string) })}
               className={`h-8 min-w-8 border px-2 text-[11px] uppercase tracking-widest transition-colors ${
                 filters.sizes.includes(s)
-                  ? "border-ink bg-ink text-cream"
-                  : "border-border hover:border-ink"
+                  ? "border-[#111111] bg-[#111111] text-[#F7F4EE]"
+                  : "border-[#E3DED3] hover:border-[#111111]"
               }`}
             >
               {s}
@@ -533,8 +535,8 @@ function Shop() {
               onClick={() => { setCategory(cat); setFilters(DEFAULT_FILTERS); setSearchQuery(""); }}
               className={`pb-3 pr-8 text-xs uppercase tracking-[0.24em] transition-colors ${
                 category === cat
-                  ? "border-b-2 border-ink text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "border-b-2 border-[#111111] text-[#111111]"
+                  : "text-[#555555] hover:text-[#111111]"
               }`}
             >
               {cat === "tees" ? "T-Shirts" : "Caps"}
@@ -591,7 +593,7 @@ function Shop() {
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <span className="flex h-4 w-4 items-center justify-center bg-ink text-[10px] text-cream">
+                  <span className="flex h-4 w-4 items-center justify-center bg-[#C9A227] text-[10px] text-white">
                     {activeFilterCount}
                   </span>
                 )}
@@ -617,8 +619,8 @@ function Shop() {
                     <button
                       key={s.value}
                       onClick={() => { setSort(s.value); setSortOpen(false); }}
-                      className={`block w-full px-4 py-2.5 text-left text-xs uppercase tracking-[0.24em] transition-colors hover:bg-bone ${
-                        sort === s.value ? "text-foreground underline underline-offset-4" : "text-muted-foreground"
+                      className={`block w-full px-4 py-2.5 text-left text-xs uppercase tracking-[0.24em] transition-colors hover:bg-[#EDE8DF] ${
+                        sort === s.value ? "text-[#111111] underline underline-offset-4" : "text-[#555555]"
                       }`}
                     >
                       {s.label}
@@ -636,7 +638,7 @@ function Shop() {
                 <button
                   key={g}
                   onClick={() => setFilters({ ...filters, gsm: filters.gsm.filter((v) => v !== g) })}
-                  className="flex items-center gap-1.5 border border-border bg-bone px-3 py-1 text-[11px] uppercase tracking-widest hover:border-ink"
+                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
                 >
                   {g} GSM <X className="h-3 w-3" />
                 </button>
@@ -645,7 +647,7 @@ function Shop() {
                 <button
                   key={c}
                   onClick={() => setFilters({ ...filters, colors: filters.colors.filter((v) => v !== c) })}
-                  className="flex items-center gap-1.5 border border-border bg-bone px-3 py-1 text-[11px] uppercase tracking-widest hover:border-ink"
+                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
                 >
                   {c} <X className="h-3 w-3" />
                 </button>
@@ -654,7 +656,7 @@ function Shop() {
                 <button
                   key={s}
                   onClick={() => setFilters({ ...filters, sizes: filters.sizes.filter((v) => v !== s) })}
-                  className="flex items-center gap-1.5 border border-border bg-bone px-3 py-1 text-[11px] uppercase tracking-widest hover:border-ink"
+                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
                 >
                   {s} <X className="h-3 w-3" />
                 </button>
@@ -675,7 +677,7 @@ function Shop() {
               <p className="mt-2 text-sm text-muted-foreground">Try adjusting your filters</p>
               <button
                 onClick={() => setFilters(DEFAULT_FILTERS)}
-                className="mt-6 border border-ink px-6 py-3 text-xs uppercase tracking-[0.24em] transition-colors hover:bg-ink hover:text-cream"
+                className="mt-6 border border-[#111111] px-6 py-3 text-xs uppercase tracking-[0.24em] transition-colors hover:bg-[#111111] hover:text-[#F7F4EE]"
               >
                 Clear Filters
               </button>
@@ -711,7 +713,7 @@ function Shop() {
             <div className="border-t border-border p-6">
               <button
                 onClick={() => setDrawerOpen(false)}
-                className="w-full bg-ink py-3 text-xs uppercase tracking-[0.24em] text-cream"
+              className="w-full bg-[#111111] py-3 text-xs uppercase tracking-[0.24em] text-[#F7F4EE] transition-colors hover:bg-[#C9A227]"
               >
                 View {filtered.length} {filtered.length === 1 ? "Product" : "Products"}
               </button>

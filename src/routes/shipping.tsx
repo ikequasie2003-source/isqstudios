@@ -13,8 +13,8 @@ function ShippingPage() {
       <ShippingBackground>
         <Header />
         <main className="mx-auto max-w-[1400px] px-6 py-24 text-white lg:px-14 lg:py-32">
-          <div className="eyebrow text-yellow-400/70">Policies</div>
-          <h1 className="mt-4 font-display text-5xl md:text-7xl">Shipping & Returns</h1>
+          <div className="eyebrow text-[#C9A227]/80">Policies</div>
+          <h1 className="mt-4 font-display text-5xl md:text-7xl text-white">Shipping & Returns</h1>
           <div className="mt-12 grid grid-cols-1 gap-16 md:grid-cols-2">
             {/* Shipping */}
             <div className="space-y-8">

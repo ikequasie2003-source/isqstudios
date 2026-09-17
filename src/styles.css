@@ -33,6 +33,7 @@
   --color-cream: var(--cream);
   --color-bone: var(--bone);
   --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
 
   --font-display: "Cormorant Garamond", serif;
   --font-sans: "Inter", sans-serif;
@@ -44,33 +45,34 @@
 :root {
   --radius: 0.25rem;
 
-  --cream: oklch(0.965 0.012 85);
-  --bone: oklch(0.94 0.014 80);
-  --ink: oklch(0.16 0.005 60);
-  --gold: oklch(0.72 0.09 75);
+  --cream: #F7F4EE;
+  --bone: #EDE8DF;
+  --ink: #111111;
+  --gold: #C9A227;
+  --gold-hover: #B08B1E;
 
-  --background: oklch(0.965 0.012 85);
-  --foreground: oklch(0.16 0.005 60);
-  --card: oklch(0.98 0.008 85);
-  --card-foreground: oklch(0.16 0.005 60);
-  --popover: oklch(0.98 0.008 85);
-  --popover-foreground: oklch(0.16 0.005 60);
-  --primary: oklch(0.16 0.005 60);
-  --primary-foreground: oklch(0.965 0.012 85);
-  --secondary: oklch(0.94 0.014 80);
-  --secondary-foreground: oklch(0.16 0.005 60);
-  --muted: oklch(0.92 0.012 80);
-  --muted-foreground: oklch(0.45 0.008 60);
-  --accent: oklch(0.72 0.09 75);
-  --accent-foreground: oklch(0.16 0.005 60);
+  --background: #F7F4EE;
+  --foreground: #111111;
+  --card: #FFFFFF;
+  --card-foreground: #111111;
+  --popover: #FFFFFF;
+  --popover-foreground: #111111;
+  --primary: #111111;
+  --primary-foreground: #F7F4EE;
+  --secondary: #EDE8DF;
+  --secondary-foreground: #111111;
+  --muted: #EDE8DF;
+  --muted-foreground: #555555;
+  --accent: #C9A227;
+  --accent-foreground: #111111;
   --destructive: oklch(0.55 0.18 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.86 0.012 75);
-  --input: oklch(0.86 0.012 75);
-  --ring: oklch(0.16 0.005 60);
+  --border: #E3DED3;
+  --input: #E3DED3;
+  --ring: #111111;
 }
 
-.dark { --background: oklch(0.16 0.005 60); --foreground: oklch(0.965 0.012 85); }
+.dark { --background: #111111; --foreground: #F7F4EE; --card: #1a1a1a; --card-foreground: #F7F4EE; --border: #2a2a2a; }
 
 @layer base {
   * { border-color: var(--color-border); }
