@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-import { MasonryLookbook } from "@/components/ui/masonry-lookbook";
+import { Filmstrip } from "@/components/ui/filmstrip";
 import lb1 from "@/assets/lookbook/q.png";
 import lb2 from "@/assets/lookbook/qa.png";
 import lb3 from "@/assets/lookbook/qq.png";
@@ -275,8 +275,8 @@ function Lookbook() {
           Studio 001 — the collection.
         </h2>
       </div>
-      <div className="px-6 pt-10 pb-20 lg:px-14 lg:pb-28">
-        <MasonryLookbook images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8]} />
+      <div className="pt-10 pb-20 lg:pb-28">
+        <Filmstrip images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8]} />
       </div>
     </section>
   );
