@@ -1115,7 +1115,7 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
         <div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between px-6">
           <div className="flex items-center gap-4">
             <a href="/" className="flex items-center">
-              <Logo className="h-9 w-auto" />
+              <Logo className="h-9 w-auto" style={{ animation: "flipY 12s linear infinite" }} />
             </a>
             <span className="border border-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-muted-foreground">
               Admin
