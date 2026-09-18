@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState, useRef, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
-import { ScrollGallery } from "@/components/ui/scroll-gallery";
+import { Slideshow } from "@/components/ui/slideshow";
 import lb1 from "@/assets/lookbook/q.png";
 import lb2 from "@/assets/lookbook/qa.png";
 import lb3 from "@/assets/lookbook/qq.png";
@@ -276,7 +276,7 @@ function Lookbook() {
         </h2>
       </div>
       <div className="pt-10 pb-20 lg:pb-28">
-        <ScrollGallery images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8]} />
+        <Slideshow images={[lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8]} />
       </div>
     </section>
   );
