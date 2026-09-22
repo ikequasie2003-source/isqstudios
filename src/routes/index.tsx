@@ -10,7 +10,6 @@ import lb5 from "@/assets/lookbook/qw.png";
 import lb6 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_38_05 PM - Copy.png";
 import lb7 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_40_12 PM - Copy.png";
 import lb8 from "@/assets/lookbook/ChatGPT Image Jul 5, 2026, 01_42_37 PM - Copy.png";
-import lbVideo from "@/assets/lookbook/qv.mp4";
 import heroImg from "@/assets/hero.jpg";
 import storyImg from "@/assets/story.jpg";
 import teeBlack from "@/assets/tee-black.jpg";
