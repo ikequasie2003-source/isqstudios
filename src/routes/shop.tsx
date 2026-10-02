@@ -179,7 +179,6 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
             className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
             style={{ backgroundColor: product.swatch }}
           />
-          </div>
         )}
         {/* Hover overlay actions */}
         <div className="absolute inset-0 flex flex-col items-center justify-end gap-2 bg-black/0 p-3 opacity-0 transition-all duration-300 group-hover:bg-black/10 group-hover:opacity-100">
