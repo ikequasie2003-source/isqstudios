@@ -57,7 +57,7 @@ function ShopPage() {
           </div>
         ))}
         <Header />
-        <main className="font-semibold [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
+        <main className="font-semibold text-[15px] [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
           <Shop />
         </main>
         <CartDrawer />
