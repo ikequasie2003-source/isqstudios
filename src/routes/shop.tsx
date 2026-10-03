@@ -92,7 +92,16 @@ function QuickView({ product, onClose }: { product: Product; onClose: () => void
           {product.image ? (
             <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
           ) : (
-            <div className="h-full w-full" style={{ backgroundColor: product.swatch }} />
+            <div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: product.swatch }}>
+              <svg viewBox="0 0 200 240" className={`h-3/5 w-3/5 ${isLight ? "opacity-15" : "opacity-25"}`} fill="none">
+                <path
+                  d="M60 30 L100 15 L140 30 L175 50 L165 90 L145 82 L145 220 L55 220 L55 82 L35 90 L25 50 Z"
+                  stroke={isLight ? "#111" : "#fff"}
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           )}          )}
         </div>
         {/* Info */}
@@ -178,7 +187,16 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
           <div
             className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
             style={{ backgroundColor: product.swatch }}
-          />
+          >
+            <svg viewBox="0 0 200 240" className={`h-3/5 w-3/5 ${isLight ? "opacity-15" : "opacity-25"}`} fill="none">
+              <path
+                d="M60 30 L100 15 L140 30 L175 50 L165 90 L145 82 L145 220 L55 220 L55 82 L35 90 L25 50 Z"
+                stroke={isLight ? "#111" : "#fff"}
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
         )}
         {/* Hover overlay actions */}
         <div className="absolute inset-0 flex flex-col items-center justify-end gap-2 bg-black/0 p-3 opacity-0 transition-all duration-300 group-hover:bg-black/10 group-hover:opacity-100">
