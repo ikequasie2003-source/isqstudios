@@ -34,7 +34,7 @@ function ShopPage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
-    }, 4000);
+    }, 8000);
     return () => clearInterval(timer);
   }, []);
 
@@ -45,10 +45,10 @@ function ShopPage() {
         {SHOP_BG_IMAGES.map((src, i) => (
           <div
             key={i}
-            className="fixed inset-0 -z-10 transition-opacity duration-1000"
+            className="fixed inset-0 -z-10 transition-opacity duration-[2000ms]"
             style={{ opacity: bgIndex === i ? 1 : 0 }}
           >
-            <img src={src} alt="" className="h-full w-full object-cover" />
+            <img src={src} alt="" className="h-full w-full object-contain" style={{ backgroundColor: "#111" }} />
             <div className="absolute inset-0 bg-black/40" />
           </div>
         ))}
