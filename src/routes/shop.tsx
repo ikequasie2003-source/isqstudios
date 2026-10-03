@@ -25,7 +25,7 @@ export const Route = createFileRoute("/shop")({
 function ShopPage() {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen text-foreground" style={{ background: "linear-gradient(160deg, #f0eeea 0%, #e8e5e0 40%, #dedad4 100%)" }}>
         <Header />
         <main>
           <Shop />
