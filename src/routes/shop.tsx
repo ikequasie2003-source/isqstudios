@@ -11,12 +11,11 @@ import shopPic1 from "@/assets/shop pic.jfif";
 import shopPic2 from "@/assets/shop picc.jfif";
 import shopPic3 from "@/assets/shop piccc.jfif";
 import shopPic4 from "@/assets/shop picccc.jfif";
-import shopPic5 from "@/assets/shop piccccc.jfif";
-import shopPic6 from "@/assets/shop picccccc.jfif";
-import shopPic7 from "@/assets/shop piccccccc.jfif";
+import shopPic5 from "@/assets/shop picccccc.jfif";
+import shopPic6 from "@/assets/shop piccccccc.jfif";
 import shopPicZ from "@/assets/shop picz.jfif";
 
-const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPic7, shopPicZ];
+const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPicZ];
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
