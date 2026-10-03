@@ -7,6 +7,12 @@ import { useCart } from "@/lib/cart";
 import { tees, caps, sizes, gsmOptions, type Product, type Gsm, type Size } from "@/lib/products";
 import { search } from "@/lib/search";
 import { resolveCardImage } from "@/lib/media-resolver";
+import shopPic1 from "@/assets/shop pic.jfif";
+import shopPic2 from "@/assets/shop picc.jfif";
+import shopPic3 from "@/assets/shop piccc.jfif";
+import shopPic4 from "@/assets/shop picccc.jfif";
+
+const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4];
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -23,9 +29,29 @@ export const Route = createFileRoute("/shop")({
 });
 
 function ShopPage() {
+  const [bgIndex, setBgIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <CartProvider>
-      <div className="min-h-screen text-foreground" style={{ background: "linear-gradient(90deg, #ffffff 0%, #7fffd4 100%)" }}>
+      <div className="relative min-h-screen text-foreground">
+        {/* Rotating background images */}
+        {SHOP_BG_IMAGES.map((src, i) => (
+          <div
+            key={i}
+            className="fixed inset-0 -z-10 transition-opacity duration-1000"
+            style={{ opacity: bgIndex === i ? 1 : 0 }}
+          >
+            <img src={src} alt="" className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-black/40" />
+          </div>
+        ))}
         <Header />
         <main>
           <Shop />
