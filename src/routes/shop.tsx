@@ -48,7 +48,7 @@ function ShopPage() {
             className="fixed inset-0 -z-10 transition-opacity duration-[2000ms]"
             style={{ opacity: bgIndex === i ? 1 : 0 }}
           >
-            <img src={src} alt="" className="h-full w-full object-contain" style={{ backgroundColor: "#111" }} />
+            <img src={src} alt="" className="h-full w-full object-cover" />
             <div className="absolute inset-0 bg-black/40" />
           </div>
         ))}
