@@ -14,8 +14,9 @@ import shopPic4 from "@/assets/shop picccc.jfif";
 import shopPic5 from "@/assets/shop piccccc.jfif";
 import shopPic6 from "@/assets/shop picccccc.jfif";
 import shopPic7 from "@/assets/shop piccccccc.jfif";
+import shopPicZ from "@/assets/shop picz.jfif";
 
-const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPic7];
+const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPic7, shopPicZ];
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
