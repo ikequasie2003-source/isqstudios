@@ -544,6 +544,7 @@ function Shop() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-16 lg:px-14">
+      <div className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md shadow-xl p-8">
       {/* Page Header */}
       <div className="mb-10 border-b border-border pb-8">
         <div className="inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-8 py-6 shadow-lg">
@@ -757,6 +758,7 @@ function Shop() {
       {quickViewProduct && (
         <QuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
       )}
+      </div>
     </div>
   );
 }
