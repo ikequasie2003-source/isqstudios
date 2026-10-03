@@ -38,7 +38,7 @@ function ShopPage() {
   useEffect(() => {
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
-    }, 8000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
