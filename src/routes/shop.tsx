@@ -102,7 +102,7 @@ function QuickView({ product, onClose }: { product: Product; onClose: () => void
                 />
               </svg>
             </div>
-          )}          )}
+          )}
         </div>
         {/* Info */}
         <div className="flex flex-1 flex-col justify-between p-8">
