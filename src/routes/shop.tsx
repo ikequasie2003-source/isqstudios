@@ -546,15 +546,17 @@ function Shop() {
     <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-16 lg:px-14">
       {/* Page Header */}
       <div className="mb-10 border-b border-border pb-8">
-        <div className="eyebrow">Collection 001</div>
-        <h1 className="mt-2 font-display text-4xl md:text-5xl">
-          {category === "tees" ? "The Tee" : "The Cap"}
-        </h1>
-        <p className="mt-3 max-w-md text-sm text-foreground/70">
-          {category === "tees"
-            ? "Heavyweight cotton, considered cuts. Three weights. Eight tones. One silhouette."
-            : "Structured six-panel. Cotton twill front, breathable mesh back. Adjustable snap."}
-        </p>
+        <div className="inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-8 py-6 shadow-lg">
+          <div className="eyebrow text-white/70">Collection 001</div>
+          <h1 className="mt-2 font-display text-4xl md:text-5xl text-white">
+            {category === "tees" ? "The Tee" : "The Cap"}
+          </h1>
+          <p className="mt-3 max-w-md text-sm text-white/70">
+            {category === "tees"
+              ? "Heavyweight cotton, considered cuts. Three weights. Eight tones. One silhouette."
+              : "Structured six-panel. Cotton twill front, breathable mesh back. Adjustable snap."}
+          </p>
+        </div>
 
         {/* Category tabs */}
         <div className="mt-6 flex gap-0 border-b border-border">
