@@ -550,9 +550,8 @@ function Shop() {
 
   return (
     <div className="mx-auto max-w-[1400px] px-6 pb-32 pt-16 lg:px-14">
-      <div className="rounded-3xl border border-white/20 bg-white/10 backdrop-blur-md shadow-xl p-8">
-      {/* Page Header */}
-      <div className="mb-10 border-b border-border pb-8">
+      {/* Page Header — already has its own glass box */}
+      <div className="mb-10 pb-8">
         <div className="inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-8 py-6 shadow-lg">
           <div className="eyebrow text-white/70">Collection 001</div>
           <h1 className="mt-2 font-display text-4xl md:text-5xl text-white">
@@ -566,26 +565,28 @@ function Shop() {
         </div>
 
         {/* Category tabs */}
-        <div className="mt-6 flex gap-0 border-b border-border">
-          {(["tees", "caps"] as const).map((cat) => (
-            <button
-              key={cat}
-              onClick={() => { setCategory(cat); setFilters(DEFAULT_FILTERS); setSearchQuery(""); }}
-              className={`pb-3 pr-8 text-xs uppercase tracking-[0.24em] transition-colors ${
-                category === cat
-                  ? "border-b-2 border-[#111111] text-[#111111]"
-                  : "text-[#555555] hover:text-[#111111]"
-              }`}
-            >
-              {cat === "tees" ? "T-Shirts" : "Caps"}
-            </button>
-          ))}
+        <div className="mt-4 inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-6 py-3 shadow-lg">
+          <div className="flex gap-0">
+            {(["tees", "caps"] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => { setCategory(cat); setFilters(DEFAULT_FILTERS); setSearchQuery(""); }}
+                className={`pb-1 pr-8 text-xs uppercase tracking-[0.24em] transition-colors ${
+                  category === cat
+                    ? "border-b-2 border-white text-white"
+                    : "text-white/50 hover:text-white"
+                }`}
+              >
+                {cat === "tees" ? "T-Shirts" : "Caps"}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Search bar — tees only */}
         {category === "tees" && (
-          <div className="mt-6 flex max-w-md items-center gap-3 border-b border-ink pb-1">
-            <svg className="h-4 w-4 shrink-0 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <div className="mt-4 inline-flex max-w-md items-center gap-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg w-full">
+            <svg className="h-4 w-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
             </svg>
             <input
@@ -593,18 +594,18 @@ function Shop() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by color, GSM, size… e.g. 260 GSM Black XL"
-              className="flex-1 bg-transparent py-2 text-sm outline-none placeholder:text-muted-foreground/60"
+              className="flex-1 bg-transparent py-1 text-sm text-white outline-none placeholder:text-white/40"
               aria-label="Search products"
             />
             {searchQuery && (
               <button onClick={() => setSearchQuery("")} aria-label="Clear search">
-                <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
+                <X className="h-4 w-4 text-white/60 hover:text-white" />
               </button>
             )}
           </div>
         )}
         {searchQuery && category === "tees" && (
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="mt-2 text-xs text-white/60">
             {filtered.length} result{filtered.length !== 1 ? "s" : ""} for "{searchQuery}"
           </p>
         )}
@@ -614,19 +615,20 @@ function Shop() {
         {/* Desktop Sidebar — tees only */}
         {category === "tees" && (
           <aside className="hidden w-56 shrink-0 lg:block xl:w-64">
-            <FilterPanel filters={filters} onChange={setFilters} onReset={() => setFilters(DEFAULT_FILTERS)} />
+            <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-5 shadow-lg">
+              <FilterPanel filters={filters} onChange={setFilters} onReset={() => setFilters(DEFAULT_FILTERS)} />
+            </div>
           </aside>
         )}
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
           {/* Toolbar */}
-          <div className="mb-8 flex items-center justify-between gap-4">
-            {/* Mobile filter button — tees only */}
+          <div className="mb-6 inline-flex w-full items-center justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg">
             {category === "tees" && (
               <button
                 onClick={() => setDrawerOpen(true)}
-                className="flex items-center gap-2 border border-border px-4 py-2.5 text-xs uppercase tracking-[0.24em] lg:hidden"
+                className="flex items-center gap-2 border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.24em] text-white lg:hidden"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" />
                 Filters
@@ -637,28 +639,25 @@ function Shop() {
                 )}
               </button>
             )}
-
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/70">
               {filtered.length} {filtered.length === 1 ? "product" : "products"}
             </p>
-
-            {/* Sort */}
             <div className="relative ml-auto">
               <button
                 onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 border border-border px-4 py-2.5 text-xs uppercase tracking-[0.24em]"
+                className="flex items-center gap-2 border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.24em] text-white"
               >
                 {SORT_OPTIONS.find((s) => s.value === sort)?.label}
                 <ChevronDown className={`h-3.5 w-3.5 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
               </button>
               {sortOpen && (
-                <div className="absolute right-0 top-full z-20 mt-1 w-48 border border-border bg-background shadow-lg">
+                <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md shadow-lg">
                   {SORT_OPTIONS.map((s) => (
                     <button
                       key={s.value}
                       onClick={() => { setSort(s.value); setSortOpen(false); }}
-                      className={`block w-full px-4 py-2.5 text-left text-xs uppercase tracking-[0.24em] transition-colors hover:bg-[#EDE8DF] ${
-                        sort === s.value ? "text-[#111111] underline underline-offset-4" : "text-[#555555]"
+                      className={`block w-full px-4 py-2.5 text-left text-xs uppercase tracking-[0.24em] transition-colors hover:bg-white/10 text-white ${
+                        sort === s.value ? "underline underline-offset-4" : "text-white/70"
                       }`}
                     >
                       {s.label}
@@ -671,62 +670,51 @@ function Shop() {
 
           {/* Active filter chips */}
           {activeFilterCount > 0 && (
-            <div className="mb-6 flex flex-wrap gap-2">
+            <div className="mb-6 inline-flex flex-wrap gap-2 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg w-full">
               {filters.gsm.map((g) => (
-                <button
-                  key={g}
-                  onClick={() => setFilters({ ...filters, gsm: filters.gsm.filter((v) => v !== g) })}
-                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
-                >
+                <button key={g} onClick={() => setFilters({ ...filters, gsm: filters.gsm.filter((v) => v !== g) })}
+                  className="flex items-center gap-1.5 border border-white/30 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-widest text-white hover:border-white">
                   {g} GSM <X className="h-3 w-3" />
                 </button>
               ))}
               {filters.colors.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setFilters({ ...filters, colors: filters.colors.filter((v) => v !== c) })}
-                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
-                >
+                <button key={c} onClick={() => setFilters({ ...filters, colors: filters.colors.filter((v) => v !== c) })}
+                  className="flex items-center gap-1.5 border border-white/30 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-widest text-white hover:border-white">
                   {c} <X className="h-3 w-3" />
                 </button>
               ))}
               {filters.sizes.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setFilters({ ...filters, sizes: filters.sizes.filter((v) => v !== s) })}
-                  className="flex items-center gap-1.5 border border-[#E3DED3] bg-[#EDE8DF] px-3 py-1 text-[11px] uppercase tracking-widest hover:border-[#111111]"
-                >
+                <button key={s} onClick={() => setFilters({ ...filters, sizes: filters.sizes.filter((v) => v !== s) })}
+                  className="flex items-center gap-1.5 border border-white/30 bg-white/10 px-3 py-1 text-[11px] uppercase tracking-widest text-white hover:border-white">
                   {s} <X className="h-3 w-3" />
                 </button>
               ))}
-              <button
-                onClick={() => setFilters(DEFAULT_FILTERS)}
-                className="px-3 py-1 text-[11px] uppercase tracking-widest text-muted-foreground underline underline-offset-4 hover:text-foreground"
-              >
+              <button onClick={() => setFilters(DEFAULT_FILTERS)}
+                className="px-3 py-1 text-[11px] uppercase tracking-widest text-white/60 underline underline-offset-4 hover:text-white">
                 Clear all
               </button>
             </div>
           )}
 
           {/* Product Grid */}
-          {filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-32 text-center">
-              <p className="font-display text-2xl">No products found</p>
-              <p className="mt-2 text-sm text-muted-foreground">Try adjusting your filters</p>
-              <button
-                onClick={() => setFilters(DEFAULT_FILTERS)}
-                className="mt-6 border border-[#111111] px-6 py-3 text-xs uppercase tracking-[0.24em] transition-colors hover:bg-[#111111] hover:text-[#F7F4EE]"
-              >
-                Clear Filters
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 md:grid-cols-3 xl:grid-cols-4">
-              {filtered.map((p) => (
-                <ShopProductCard key={p.id} product={p} onQuickView={setQuickViewProduct} />
-              ))}
-            </div>
-          )}
+          <div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md p-6 shadow-lg">
+            {filtered.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-32 text-center">
+                <p className="font-display text-2xl text-white">No products found</p>
+                <p className="mt-2 text-sm text-white/60">Try adjusting your filters</p>
+                <button onClick={() => setFilters(DEFAULT_FILTERS)}
+                  className="mt-6 border border-white/40 px-6 py-3 text-xs uppercase tracking-[0.24em] text-white transition-colors hover:bg-white/20">
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 md:grid-cols-3 xl:grid-cols-4">
+                {filtered.map((p) => (
+                  <ShopProductCard key={p.id} product={p} onQuickView={setQuickViewProduct} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -764,7 +752,6 @@ function Shop() {
       {quickViewProduct && (
         <QuickView product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />
       )}
-      </div>
     </div>
   );
 }
