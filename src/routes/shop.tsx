@@ -564,25 +564,6 @@ function Shop() {
           </p>
         </div>
 
-        {/* Category tabs */}
-        <div className="mt-4 inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-6 py-3 shadow-lg">
-          <div className="flex gap-0">
-            {(["tees", "caps"] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => { setCategory(cat); setFilters(DEFAULT_FILTERS); setSearchQuery(""); }}
-                className={`pb-1 pr-8 text-xs uppercase tracking-[0.24em] transition-colors ${
-                  category === cat
-                    ? "border-b-2 border-white text-white"
-                    : "text-white/50 hover:text-white"
-                }`}
-              >
-                {cat === "tees" ? "T-Shirts" : "Caps"}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Search bar — tees only */}
         {category === "tees" && (
           <div className="mt-4 inline-flex max-w-md items-center gap-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg w-full">
@@ -623,6 +604,25 @@ function Shop() {
 
         {/* Main Content */}
         <div className="flex-1 min-w-0">
+          {/* Category tabs */}
+          <div className="mb-4 inline-block rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-6 py-3 shadow-lg">
+            <div className="flex gap-0">
+              {(["tees", "caps"] as const).map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => { setCategory(cat); setFilters(DEFAULT_FILTERS); setSearchQuery(""); }}
+                  className={`pb-1 pr-8 text-xs uppercase tracking-[0.24em] transition-colors ${
+                    category === cat
+                      ? "border-b-2 border-white text-white"
+                      : "text-white/50 hover:text-white"
+                  }`}
+                >
+                  {cat === "tees" ? "T-Shirts" : "Caps"}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Toolbar */}
           <div className="mb-6 inline-flex w-full items-center justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg">
             {category === "tees" && (
