@@ -35,6 +35,12 @@ function ShopPage() {
   const [bgIndex, setBgIndex] = useState(0);
 
   useEffect(() => {
+    // Preload all background images
+    SHOP_BG_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
     }, 5000);
