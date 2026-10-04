@@ -43,7 +43,7 @@ function ShopPage() {
 
     const timer = setInterval(() => {
       setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
-    }, 5000);
+    }, 60000);
     return () => clearInterval(timer);
   }, []);
 
