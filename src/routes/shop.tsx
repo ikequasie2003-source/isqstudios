@@ -563,33 +563,6 @@ function Shop() {
               : "Structured six-panel. Cotton twill front, breathable mesh back. Adjustable snap."}
           </p>
         </div>
-
-        {/* Search bar — tees only */}
-        {category === "tees" && (
-          <div className="mt-4 inline-flex max-w-md items-center gap-3 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md px-5 py-3 shadow-lg w-full">
-            <svg className="h-4 w-4 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-            </svg>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by color, GSM, size… e.g. 260 GSM Black XL"
-              className="flex-1 bg-transparent py-1 text-sm text-white outline-none placeholder:text-white/40"
-              aria-label="Search products"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery("")} aria-label="Clear search">
-                <X className="h-4 w-4 text-white/60 hover:text-white" />
-              </button>
-            )}
-          </div>
-        )}
-        {searchQuery && category === "tees" && (
-          <p className="mt-2 text-xs text-white/60">
-            {filtered.length} result{filtered.length !== 1 ? "s" : ""} for "{searchQuery}"
-          </p>
-        )}
       </div>
 
       <div className="flex gap-10 lg:gap-14">
@@ -642,14 +615,36 @@ function Shop() {
             <p className="text-xs text-white/70">
               {filtered.length} {filtered.length === 1 ? "product" : "products"}
             </p>
-            <div className="relative ml-auto">
-              <button
-                onClick={() => setSortOpen(!sortOpen)}
-                className="flex items-center gap-2 border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.24em] text-white"
-              >
-                {SORT_OPTIONS.find((s) => s.value === sort)?.label}
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
-              </button>
+            <div className="flex items-center gap-3 ml-auto">
+              {/* Search bar — tees only, top right */}
+              {category === "tees" && (
+                <div className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md px-3 py-1.5">
+                  <svg className="h-3.5 w-3.5 shrink-0 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search…"
+                    className="w-36 bg-transparent text-xs text-white outline-none placeholder:text-white/40 md:w-52"
+                    aria-label="Search products"
+                  />
+                  {searchQuery && (
+                    <button onClick={() => setSearchQuery("")} aria-label="Clear search">
+                      <X className="h-3.5 w-3.5 text-white/60 hover:text-white" />
+                    </button>
+                  )}
+                </div>
+              )}
+              <div className="relative">
+                <button
+                  onClick={() => setSortOpen(!sortOpen)}
+                  className="flex items-center gap-2 border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.24em] text-white"
+                >
+                  {SORT_OPTIONS.find((s) => s.value === sort)?.label}
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+                </button>
               {sortOpen && (
                 <div className="absolute right-0 top-full z-20 mt-1 w-48 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md shadow-lg">
                   {SORT_OPTIONS.map((s) => (
@@ -665,6 +660,7 @@ function Shop() {
                   ))}
                 </div>
               )}
+            </div>
             </div>
           </div>
 
