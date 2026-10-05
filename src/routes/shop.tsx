@@ -11,7 +11,7 @@ import shopPic1 from "@/assets/shop pic.jfif";
 import shopPic2 from "@/assets/shop picc.jfif";
 import shopPic3 from "@/assets/shop piccc.jfif";
 import shopPic4 from "@/assets/shop picccc.jfif";
-import shopPic5 from "@/assets/shop picccccc.jfif";
+import shopPic5 from "@/assets/shop piccccc.jfif";
 import shopPic6 from "@/assets/shop piccccccc.jfif";
 import shopPicZ from "@/assets/shop picz.jfif";
 
