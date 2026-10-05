@@ -50,17 +50,18 @@ function ShopPage() {
   return (
     <CartProvider>
       <div className="relative min-h-screen text-foreground">
-        {/* Rotating background images */}
-        {SHOP_BG_IMAGES.map((src, i) => (
-          <div
-            key={i}
-            className="fixed inset-0 -z-10 transition-opacity duration-[2000ms]"
-            style={{ opacity: bgIndex === i ? 1 : 0 }}
-          >
-            <img src={src} alt="" className="absolute inset-0 h-full w-full object-contain" style={{ minHeight: "100vh", minWidth: "100vw" }} />
-            <div className="absolute inset-0 bg-black/40" />
-          </div>
-        ))}
+        {/* Tiled background images */}
+        <div
+          className="fixed inset-0 -z-10"
+          style={{
+            backgroundImage: `url(${SHOP_BG_IMAGES[bgIndex]})`,
+            backgroundRepeat: "repeat",
+            backgroundSize: "300px 300px",
+            transition: "background-image 2s ease",
+          }}
+        >
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
         <Header />
         <main className="font-semibold text-[15px] [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
           <Shop />
