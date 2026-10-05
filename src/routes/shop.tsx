@@ -12,10 +12,38 @@ import shopPic2 from "@/assets/shop picc.jfif";
 import shopPic3 from "@/assets/shop piccc.jfif";
 import shopPic4 from "@/assets/shop picccc.jfif";
 import shopPic5 from "@/assets/shop piccccc.jfif";
-import shopPic6 from "@/assets/shop piccccccc.jfif";
+import shopPic6 from "@/assets/shop picccccc.jfif";
+import shopPic7 from "@/assets/shop piccccccc.jfif";
 import shopPicZ from "@/assets/shop picz.jfif";
+import bg1 from "@/assets/bg1.jfif";
+import bg2 from "@/assets/bg2.jfif";
+import bg3 from "@/assets/bg3.jfif";
+import bg4 from "@/assets/bg4.jfif";
+import bg5 from "@/assets/bg5.jfif";
+import bg6 from "@/assets/bg6.jfif";
+import bg7 from "@/assets/bg7.jfif";
+import bg8 from "@/assets/bg8.jfif";
+import bg9 from "@/assets/bg9.jfif";
+import bg10 from "@/assets/bg10.jfif";
+import bg11 from "@/assets/bg11.jfif";
+import bg12 from "@/assets/bg12.jfif";
+import bg13 from "@/assets/bg13.jfif";
+import bg14 from "@/assets/bg14.jfif";
+import bg15 from "@/assets/bg15.jfif";
+import bg16 from "@/assets/bg16.jfif";
+import bg17 from "@/assets/bg17.jfif";
+import bg18 from "@/assets/bg18.jfif";
+import bg19 from "@/assets/bg19.jfif";
+import bg20 from "@/assets/bg20.jfif";
+import bg21 from "@/assets/bg21.jfif";
+import bg22 from "@/assets/bg22.jfif";
+import bg23 from "@/assets/bg23.jfif";
 
-const SHOP_BG_IMAGES = [shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPicZ];
+const SHOP_BG_IMAGES = [
+  shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPic7, shopPicZ,
+  bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10, bg11, bg12,
+  bg13, bg14, bg15, bg16, bg17, bg18, bg19, bg20, bg21, bg22, bg23,
+];
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
