@@ -32,7 +32,9 @@ export const Route = createFileRoute("/shop")({
 });
 
 function ShopPage() {
-  const [bgIndex, setBgIndex] = useState(0);
+  const [tileIndices, setTileIndices] = useState(
+    Array.from({ length: 12 }, (_, i) => i % SHOP_BG_IMAGES.length)
+  );
 
   useEffect(() => {
     // Preload all background images
@@ -41,30 +43,44 @@ function ShopPage() {
       img.src = src;
     });
 
-    const timer = setInterval(() => {
-      setBgIndex((prev) => (prev + 1) % SHOP_BG_IMAGES.length);
-    }, 60000);
-    return () => clearInterval(timer);
+    // Each tile cycles independently at a random interval between 5–20s
+    const timers = Array.from({ length: 12 }, (_, i) => {
+      const delay = 3000 + i * 800; // staggered start
+      const interval = 5000 + Math.floor(Math.random() * 15000); // 5–20s each
+      const timeout = setTimeout(() => {
+        const timer = setInterval(() => {
+          setTileIndices((prev) => {
+            const next = [...prev];
+            next[i] = (next[i] + 1) % SHOP_BG_IMAGES.length;
+            return next;
+          });
+        }, interval);
+        return () => clearInterval(timer);
+      }, delay);
+      return timeout;
+    });
+
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   return (
     <CartProvider>
       <div className="relative min-h-screen text-foreground">
-        {/* Mosaic tiled background — staggered cascade transition */}
+        {/* Mosaic tiled background — each tile cycles independently */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="grid h-full w-full" style={{
             gridTemplateColumns: "repeat(4, 1fr)",
             gridTemplateRows: "repeat(3, 1fr)",
           }}>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={`${bgIndex}-${i}`} className="overflow-hidden relative">
+            {tileIndices.map((imgIdx, i) => (
+              <div key={`${i}-${imgIdx}`} className="overflow-hidden relative">
                 <img
-                  src={SHOP_BG_IMAGES[(bgIndex + i) % SHOP_BG_IMAGES.length]}
+                  src={SHOP_BG_IMAGES[imgIdx]}
                   alt=""
                   className="h-full w-full object-cover"
                   style={{
                     animation: `tileReveal 0.8s ease forwards`,
-                    animationDelay: `${i * 0.08}s`,
+                    animationDelay: `0s`,
                     opacity: 0,
                   }}
                 />
