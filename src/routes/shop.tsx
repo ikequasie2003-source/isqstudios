@@ -50,16 +50,22 @@ function ShopPage() {
   return (
     <CartProvider>
       <div className="relative min-h-screen text-foreground">
-        {/* Tiled background images */}
-        <div
-          className="fixed inset-0 -z-10"
-          style={{
-            backgroundImage: `url(${SHOP_BG_IMAGES[bgIndex]})`,
-            backgroundRepeat: "repeat",
-            backgroundSize: "300px 300px",
-            transition: "background-image 2s ease",
-          }}
-        >
+        {/* Mosaic tiled background — each tile shows a different image */}
+        <div className="fixed inset-0 -z-10 overflow-hidden">
+          <div className="grid h-full w-full" style={{
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridTemplateRows: "repeat(3, 1fr)",
+          }}>
+            {Array.from({ length: 12 }).map((_, i) => (
+              <div key={i} className="overflow-hidden transition-opacity duration-[2000ms]">
+                <img
+                  src={SHOP_BG_IMAGES[(bgIndex + i) % SHOP_BG_IMAGES.length]}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
           <div className="absolute inset-0 bg-black/40" />
         </div>
         <Header />
