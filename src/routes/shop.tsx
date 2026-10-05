@@ -50,23 +50,34 @@ function ShopPage() {
   return (
     <CartProvider>
       <div className="relative min-h-screen text-foreground">
-        {/* Mosaic tiled background — each tile shows a different image */}
+        {/* Mosaic tiled background — staggered cascade transition */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="grid h-full w-full" style={{
             gridTemplateColumns: "repeat(4, 1fr)",
             gridTemplateRows: "repeat(3, 1fr)",
           }}>
             {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="overflow-hidden transition-opacity duration-[2000ms]">
+              <div key={`${bgIndex}-${i}`} className="overflow-hidden relative">
                 <img
                   src={SHOP_BG_IMAGES[(bgIndex + i) % SHOP_BG_IMAGES.length]}
                   alt=""
                   className="h-full w-full object-cover"
+                  style={{
+                    animation: `tileReveal 0.8s ease forwards`,
+                    animationDelay: `${i * 0.08}s`,
+                    opacity: 0,
+                  }}
                 />
               </div>
             ))}
           </div>
           <div className="absolute inset-0 bg-black/40" />
+          <style>{`
+            @keyframes tileReveal {
+              0%   { opacity: 0; transform: scale(1.08); filter: blur(6px); }
+              100% { opacity: 1; transform: scale(1);    filter: blur(0px); }
+            }
+          `}</style>
         </div>
         <Header />
         <main className="font-semibold text-[15px] [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
