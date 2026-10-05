@@ -79,8 +79,7 @@ function ShopPage() {
                   alt=""
                   className="h-full w-full object-cover"
                   style={{
-                    animation: `tileReveal 0.8s ease forwards`,
-                    animationDelay: `0s`,
+                    animation: `tileFade 2.5s ease forwards`,
                     opacity: 0,
                   }}
                 />
@@ -89,9 +88,9 @@ function ShopPage() {
           </div>
           <div className="absolute inset-0 bg-black/40" />
           <style>{`
-            @keyframes tileReveal {
-              0%   { opacity: 0; transform: scale(1.08); filter: blur(6px); }
-              100% { opacity: 1; transform: scale(1);    filter: blur(0px); }
+            @keyframes tileFade {
+              0%   { opacity: 0; }
+              100% { opacity: 1; }
             }
           `}</style>
         </div>
