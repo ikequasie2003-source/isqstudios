@@ -210,7 +210,7 @@ function ShopProductCard({ product, onQuickView }: { product: Product; onQuickVi
   return (
     <article className="group flex flex-col">
       {/* Image */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-bone">
+      <div className="relative aspect-square overflow-hidden bg-bone">
         {image ? (
           <img
             src={image}
