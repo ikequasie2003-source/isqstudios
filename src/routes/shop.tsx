@@ -20,7 +20,6 @@ import bg2 from "@/assets/bg2.jfif";
 import bg3 from "@/assets/bg3.jfif";
 import bg4 from "@/assets/bg4.jfif";
 import bg5 from "@/assets/bg5.jfif";
-import bg6 from "@/assets/bg6.jfif";
 import bg7 from "@/assets/bg7.jfif";
 import bg8 from "@/assets/bg8.jfif";
 import bg9 from "@/assets/bg9.jfif";
@@ -41,7 +40,7 @@ import bg23 from "@/assets/bg23.jfif";
 
 const SHOP_BG_IMAGES = [
   shopPic1, shopPic2, shopPic3, shopPic4, shopPic5, shopPic6, shopPic7, shopPicZ,
-  bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10, bg11, bg12,
+  bg1, bg2, bg3, bg4, bg5, bg7, bg8, bg9, bg10, bg11, bg12,
   bg13, bg14, bg15, bg16, bg17, bg18, bg19, bg20, bg21, bg22, bg23,
 ];
 
