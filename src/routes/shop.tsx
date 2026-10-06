@@ -106,7 +106,7 @@ function ShopPage() {
                   alt=""
                   className="h-full w-full object-cover"
                   style={{
-                    animation: `tileFade 2.5s ease forwards`,
+                    animation: `tileFade 5s ease forwards`,
                     opacity: 0,
                   }}
                 />
